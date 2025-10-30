@@ -1,0 +1,17 @@
+// src/pages/tools/take_home_pay_launcher.tsx
+import React from "react";
+
+export default function TakeHomePayLauncher() {
+  return (
+    <iframe
+      src="/tools/take_home_pay_app/index.html"
+      title="U.S. Take-Home Pay Calculator"
+      style={{
+        width: "100%",
+        height: "100vh",
+        border: "none",
+        overflow: "hidden",
+      }}
+    />
+  );
+}

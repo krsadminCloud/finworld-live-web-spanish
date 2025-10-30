@@ -1,0 +1,258 @@
+import * as React from "react";
+import {
+  Drawer,
+  Toolbar,
+  Box,
+  Typography,
+  TextField,
+  Button,
+  Stack,
+  MenuItem,
+  Select,
+  InputLabel,
+  FormControl,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+} from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+
+const drawerWidth = 340;
+
+export default function Sidebar({
+  mobileOpen,
+  onClose,
+  inputs,
+  setInputs,
+  onCalculate,
+  onReset,
+}) {
+  const allowNumeric = (val) => val === "" || /^[0-9]*\.?[0-9]*$/.test(val);
+
+  const updateField = (field, value) => {
+    const newInputs = { ...inputs, [field]: value };
+    setInputs(newInputs);
+  };
+
+  const formatWithCommas = (value) => {
+    if (!value) return "";
+    const num = Number(value.toString().replace(/,/g, ""));
+    return isNaN(num) ? "" : num.toLocaleString();
+  };
+
+  const creditScoreOptions = [
+    "Excellent (740+)",
+    "Good (700-739)",
+    "Fair (650-699)",
+    "Poor (600-649)",
+    "Very Poor (<600)",
+  ];
+
+  const loanTermOptions = ["30", "20", "15", "10"];
+
+  const content = (
+    <Box sx={{ p: 2.5 }}>
+      <Typography variant="h6" sx={{ mb: 2, fontWeight: 700 }}>
+        Mortgage Calculator
+      </Typography>
+
+      <Stack spacing={2.5}>
+        <TextField
+          label="Home Price"
+          value={formatWithCommas(inputs.homePrice)}
+          onChange={(e) => {
+            const val = e.target.value.replace(/,/g, "");
+            if (allowNumeric(val)) updateField("homePrice", val);
+          }}
+          InputProps={{
+            startAdornment: <span style={{ marginRight: 8 }}>$</span>,
+          }}
+          fullWidth
+        />
+
+        <TextField
+          label="Down Payment"
+          value={formatWithCommas(inputs.downPayment)}
+          onChange={(e) => {
+            const val = e.target.value.replace(/,/g, "");
+            if (allowNumeric(val)) updateField("downPayment", val);
+          }}
+          InputProps={{
+            startAdornment: <span style={{ marginRight: 8 }}>$</span>,
+          }}
+          fullWidth
+        />
+
+        <Box sx={{ display: "flex", gap: 2 }}>
+          <FormControl sx={{ flex: 1 }}>
+            <InputLabel>Loan Term</InputLabel>
+            <Select
+              value={inputs.loanTerm}
+              label="Loan Term"
+              onChange={(e) => updateField("loanTerm", e.target.value)}
+            >
+              {loanTermOptions.map((term) => (
+                <MenuItem key={term} value={term}>
+                  {term} Years
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          <TextField
+            label="Interest Rate"
+            value={inputs.interestRate}
+            onChange={(e) => {
+              const val = e.target.value;
+              if (allowNumeric(val)) updateField("interestRate", val);
+            }}
+            InputProps={{
+              endAdornment: <span style={{ marginLeft: 8 }}>%</span>,
+            }}
+            sx={{ flex: 1 }}
+          />
+        </Box>
+
+        <TextField
+          label="ZIP Code"
+          value={inputs.zipCode}
+          onChange={(e) => {
+            const val = e.target.value;
+            if (val === "" || /^[0-9]{0,5}$/.test(val)) {
+              updateField("zipCode", val);
+            }
+          }}
+          fullWidth
+        />
+
+        <Accordion>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography sx={{ fontWeight: 600 }}>
+              Taxes, Insurance & HOA
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Stack spacing={2}>
+              <TextField
+                label="Property Tax"
+                value={formatWithCommas(inputs.propertyTax)}
+                onChange={(e) => {
+                  const val = e.target.value.replace(/,/g, "");
+                  if (allowNumeric(val)) updateField("propertyTax", val);
+                }}
+                InputProps={{
+                  startAdornment: <span style={{ marginRight: 8 }}>$</span>,
+                }}
+                fullWidth
+                helperText="Annual property tax"
+              />
+
+              <TextField
+                label="Home Insurance"
+                value={formatWithCommas(inputs.homeInsurance)}
+                onChange={(e) => {
+                  const val = e.target.value.replace(/,/g, "");
+                  if (allowNumeric(val)) updateField("homeInsurance", val);
+                }}
+                InputProps={{
+                  startAdornment: <span style={{ marginRight: 8 }}>$</span>,
+                }}
+                fullWidth
+                helperText="Annual home insurance premium"
+              />
+
+              <TextField
+                label="PMI (if applicable)"
+                value={formatWithCommas(inputs.pmi)}
+                onChange={(e) => {
+                  const val = e.target.value.replace(/,/g, "");
+                  if (allowNumeric(val)) updateField("pmi", val);
+                }}
+                InputProps={{
+                  startAdornment: <span style={{ marginRight: 8 }}>$</span>,
+                }}
+                fullWidth
+                helperText="Monthly PMI payment"
+              />
+
+              <TextField
+                label="HOA Fees"
+                value={formatWithCommas(inputs.hoaFees)}
+                onChange={(e) => {
+                  const val = e.target.value.replace(/,/g, "");
+                  if (allowNumeric(val)) updateField("hoaFees", val);
+                }}
+                InputProps={{
+                  startAdornment: <span style={{ marginRight: 8 }}>$</span>,
+                }}
+                fullWidth
+                helperText="Monthly HOA fees"
+              />
+            </Stack>
+          </AccordionDetails>
+        </Accordion>
+
+        <FormControl fullWidth>
+          <InputLabel>Credit Score</InputLabel>
+          <Select
+            value={inputs.creditScore}
+            label="Credit Score"
+            onChange={(e) => updateField("creditScore", e.target.value)}
+          >
+            {creditScoreOptions.map((option) => (
+              <MenuItem key={option} value={option}>
+                {option}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
+        <Button
+          variant="contained"
+          onClick={onReset}
+          sx={{
+            py: 1.5,
+            bgcolor: "#1976d2",
+            fontWeight: 600,
+            textTransform: "none",
+            fontSize: "1rem",
+            "&:hover": {
+              bgcolor: "#1565c0",
+            },
+          }}
+        >
+          Reset
+        </Button>
+      </Stack>
+    </Box>
+  );
+
+  return (
+    <>
+      <Drawer
+        variant="temporary"
+        open={mobileOpen}
+        onClose={onClose}
+        ModalProps={{ keepMounted: true }}
+        sx={{
+          display: { xs: "block", md: "none" },
+          "& .MuiDrawer-paper": { width: drawerWidth },
+        }}
+      >
+        <Toolbar />
+        {content}
+      </Drawer>
+      <Drawer
+        variant="permanent"
+        open
+        sx={{
+          display: { xs: "none", md: "block" },
+          "& .MuiDrawer-paper": { width: drawerWidth, boxSizing: "border-box" },
+        }}
+      >
+        <Toolbar />
+        {content}
+      </Drawer>
+    </>
+  );
+}

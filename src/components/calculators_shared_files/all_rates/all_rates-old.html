@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Compare Current Mortgage Rates across Lenders | FinWorld</title>
+<style>
+:root{--bg:#f8fafc;--card:#fff;--border:#e5e7eb;--text:#1e293b;--sub:#64748b;--blue:#2563eb;--blueh:#1d4ed8;--row:#f9fafb;--rowh:#eef2ff;--r:12px;--b:8px;--shadow:0 8px 20px rgba(0,0,0,.06);font-family:Inter,Arial,sans-serif}
+body{background:var(--bg);color:var(--text);margin:0;padding:32px 16px}
+h1{font-size:1.8rem;font-weight:700;margin:0 0 6px}
+p{margin:0}.page{max-width:1200px;margin:auto}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;background:var(--card);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);padding:16px 20px;margin:24px 0}
+.bar label{font-size:.85rem;color:var(--sub)}
+select{padding:10px 14px;font-size:1rem;border:1px solid var(--border);border-radius:var(--b);cursor:pointer;font-family:inherit;color:var(--text)}
+table{width:100%;border-collapse:collapse;background:var(--card);border-radius:var(--r);box-shadow:var(--shadow)}
+th,td{padding:14px 16px;border-bottom:1px solid var(--border)}
+th{background:#f1f5f9;text-align:left;font-size:.8rem;text-transform:uppercase;color:var(--text)}
+tbody tr:nth-child(even){background:var(--row)}
+tbody tr:hover{background:var(--rowh)}
+.lender{display:flex;align-items:center;gap:10px}
+.logo{width:32px;height:32px;object-fit:contain}
+.cta{background:var(--blue);color:#fff;border:0;border-radius:var(--b);padding:8px 14px;cursor:pointer;box-shadow:0 4px 10px rgba(37,99,235,.25);transition:all .2s;font-weight:600}
+.cta:hover{background:var(--blueh)}
+.disc{font-size:.8rem;color:var(--sub);text-align:center;margin-top:20px}
+</style>
+</head>
+<body>
+<div class="page">
+<h1>Compare Current Mortgage Rates across Lenders</h1>
+<p id="updated">Updated: </p>
+<div class="bar"><div><label for="state">Select State:</label><select id="state"></select></div><div id="region" style="font-size:.9rem;color:var(--sub)">North Carolina rates</div></div>
+<table><thead><tr><th>Lender</th><th>30-Year Fixed</th><th>15-Year Fixed</th><th>ARM</th><th></th></tr></thead>
+<tbody id="body"><tr><td colspan="5" style="text-align:center;color:var(--sub)">Loading rates...</td></tr></tbody></table>
+<p class="disc">Rates shown are for informational purposes only and do not constitute a loan offer.</p></div>
+<script>
+const L=[
+{name:"LendingTree",url:"https://www.lendingtree.com/mortgage/rates/",logo:"assets/logos/lendingtree.svg"},
+{name:"Bankrate",url:"https://www.bankrate.com/mortgages/mortgage-rates/",logo:"assets/logos/bankrate.png"},
+{name:"Zillow",url:"https://www.zillow.com/mortgage-rates/",logo:"assets/logos/zillow.svg"},
+{name:"SmartAsset",url:"https://smartasset.com/mortgage/mortgage-rates",logo:"assets/logos/smartasset.png"},
+{name:"Better.com",url:"https://better.com/mortgage",logo:"assets/logos/better.svg"}];
+
+const S={"AL":"Alabama","AK":"Alaska","AZ":"Arizona","AR":"Arkansas","CA":"California","CO":"Colorado","CT":"Connecticut","DE":"Delaware","FL":"Florida","GA":"Georgia","HI":"Hawaii","ID":"Idaho","IL":"Illinois","IN":"Indiana","IA":"Iowa","KS":"Kansas","KY":"Kentucky","LA":"Louisiana","ME":"Maine","MD":"Maryland","MA":"Massachusetts","MI":"Michigan","MN":"Minnesota","MS":"Mississippi","MO":"Missouri","MT":"Montana","NE":"Nebraska","NV":"Nevada","NH":"New Hampshire","NJ":"New Jersey","NM":"New Mexico","NY":"New York","NC":"North Carolina","ND":"North Dakota","OH":"Ohio","OK":"Oklahoma","OR":"Oregon","PA":"Pennsylvania","RI":"Rhode Island","SC":"South Carolina","SD":"South Dakota","TN":"Tennessee","TX":"Texas","UT":"Utah","VT":"Vermont","VA":"Virginia","WA":"Washington","WV":"West Virginia","WI":"Wisconsin","WY":"Wyoming"};
+
+const st=document.getElementById("state"),tb=document.getElementById("body"),rg=document.getElementById("region"),ud=document.getElementById("updated");
+Object.entries(S).forEach(([a,b])=>{const o=document.createElement("option");o.value=a;o.textContent=b;if(a==="NC")o.selected=!0;st.appendChild(o)});
+ud.textContent="Updated: "+new Date().toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"});
+
+async function f(s){try{const r=await fetch(`http://localhost:8080/api/getRates?state=${s}`);const e=await r.json();return{f30:e.thirty_year_fixed||7.05,f15:e.fifteen_year_fixed||6.38,arm:e.arm5_1||6.52}}catch{return{f30:7.1,f15:6.4,arm:6.55}}}
+function t(l,s){fetch(`http://localhost:8080/api/trackClick?lender=${encodeURIComponent(l)}&state=${s}`)}
+function d(r,s){tb.innerHTML="";L.forEach(l=>{const e=document.createElement("tr");e.innerHTML=`<td><div class='lender'><img src='${l.logo}' class='logo' alt='${l.name}'/><span>${l.name}</span></div></td><td>${r.f30.toFixed(2)}%</td><td>${r.f15.toFixed(2)}%</td><td>${r.arm.toFixed(2)}%</td><td><button class='cta' onclick="t('${l.name}','${s}');window.open('${l.url}','_blank')">Check Rate</button></td>`;tb.appendChild(e)})}
+async function R(s){tb.innerHTML=`<tr><td colspan='5' style='text-align:center;color:var(--sub)'>Fetching rates for ${S[s]}...</td></tr>`;const r=await f(s);rg.textContent=`${S[s]} rates`;d(r,s)}
+st.addEventListener("change",()=>R(st.value));R("NC");
+</script></body></html>
