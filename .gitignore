@@ -1,5 +1,32 @@
-﻿node_modules/
+﻿# ==============================
+# Node / Vite / Azure Defaults
+# ==============================
+node_modules/
 dist/
 .env
-.DS_Store
 *.log
+
+# Ignore local helper scripts
+git-friendly.ps1
+
+# VSCode and IDE settings
+.vscode/
+.idea/
+*.code-workspace
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+*.cache
+*.temp
+*.tmp
+
+# Azure Static Web App temporary files
+.azure/
+swa-db/
+
+# ==============================
+# End of File
+# ==============================
