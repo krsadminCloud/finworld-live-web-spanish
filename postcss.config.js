@@ -1,10 +1,7 @@
-// postcss.config.js
-import tailwindcss from "@tailwindcss/postcss";
-import autoprefixer from "autoprefixer";
+// postcss.config.js - for Azure build / CI
+const tailwind = require("@tailwindcss/postcss");
+const autoprefixer = require("autoprefixer");
 
-export default {
-  plugins: [
-    tailwindcss,
-    autoprefixer,
-  ],
+module.exports = {
+  plugins: [tailwind, autoprefixer],
 };
