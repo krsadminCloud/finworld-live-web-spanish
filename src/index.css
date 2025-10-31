@@ -2,15 +2,122 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Optional: global adjustments */
-html, body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Inter', sans-serif;
-  background-color: #f9fafb;
+/* Custom CSS for enhanced UX */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
 }
 
-/* Light/Dark transition smoothing */
-* {
-  transition: background-color 0.25s ease, color 0.25s ease;
+@layer components {
+  /* Custom scrollbar */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: theme('colors.border-subtle');
+    border-radius: 3px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: theme('colors.primary.300');
+  }
+
+  /* Input field focus styles */
+  .input-focus {
+    @apply focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all duration-200;
+  }
+
+  /* Button hover animation */
+  .btn-hover {
+    @apply transition-all duration-200 ease-in-out;
+  }
+
+  .btn-hover:hover {
+    @apply transform -translate-y-0.5;
+  }
+
+  /* Card animations */
+  .card-hover {
+    @apply transition-all duration-300 ease-in-out;
+  }
+
+  .card-hover:hover {
+    @apply shadow-card-hover transform -translate-y-1;
+  }
+}
+
+@layer utilities {
+  /* Animation utilities */
+  .animate-count-up {
+    animation: countUp 0.8s ease-out forwards;
+  }
+
+  @keyframes countUp {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Text selection */
+  .select-none {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  /* Glass effect */
+  .glass {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  /* Add custom dark-border-subtle utility */
+  .dark-border-subtle {
+    @apply border-dark-border-subtle;
+  }
+}
+
+/* Dark mode styles */
+.dark {
+  @apply bg-dark-bg-page text-dark-text-primary;
+}
+
+.dark .bg-surface {
+  @apply bg-dark-bg-surface;
+}
+
+.dark .text-text-secondary {
+  @apply text-dark-text-secondary;
+}
+
+.dark .border-subtle {
+  @apply dark-border-subtle;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

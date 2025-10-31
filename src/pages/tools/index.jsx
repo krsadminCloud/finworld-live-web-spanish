@@ -58,7 +58,7 @@ export default function FinancialCalculators() {
     { title: "Mortgage Calculator", icon: <PaymentsIcon sx={{ color: "#A5F3FC" }} fontSize="large" />, to: "/tools/mortgage_calculator", disabled: false, cat: "Mortgage" },
     { title: "Loan Payoff Calculator", icon: <PaidIcon sx={{ color: "#6EE7B7" }} fontSize="large" />, to: "/tools/extra_payment", disabled: false, cat: "Mortgage" },
     { title: "Mortgage Amortization Calculator", icon: <ReceiptLongIcon sx={{ color: "#93C5FD" }} fontSize="large" />, disabled: true, cat: "Mortgage" },
-    { title: "Mortgage Affordability Calculator", icon: <AttachMoneyIcon sx={{ color: "#86EFAC" }} fontSize="large" />, disabled: true, cat: "Mortgage" },
+    { title: "Mortgage Affordability Calculator", icon: <AttachMoneyIcon sx={{ color: "#86EFAC" }} fontSize="large" />, to: "/tools/home_affordability", disabled: false, cat: "Mortgage" },
     { title: "Bi-Weekly Payment Calculator", icon: <EventRepeatIcon sx={{ color: "#C4B5FD" }} fontSize="large" />, disabled: true, cat: "Mortgage" },
     { title: "Interest-Only Mortgage Calculator", icon: <MoneyOffIcon sx={{ color: "#FCA5A5" }} fontSize="large" />, disabled: true, cat: "Mortgage" },
     { title: "Adjustable Rate (ARM) Calculator", icon: <TrendingUpIcon sx={{ color: "#FCD34D" }} fontSize="large" />, disabled: true, cat: "Mortgage" },

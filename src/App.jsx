@@ -10,6 +10,7 @@ import ExtraPayment from "./pages/tools/extra_payment";
 import TakeHomePayCalculator from "./pages/tools/take_home_pay";
 import MortgageCalculator from "./pages/tools/Mortgage_calculator";
 import AllRates from "./pages/tools/Mortgage_calculator/allrates";
+import HomeAffordabilityCalculator from "./pages/tools/home_affordability";
 
 export default function App() {
   return (
@@ -31,6 +32,9 @@ export default function App() {
 
           {/* 🏠 Mortgage Calculator */}
           <Route path="/tools/mortgage_calculator" element={<MortgageCalculator />} />
+
+          {/* 🏡 Home Affordability Calculator */}
+          <Route path="/tools/home_affordability" element={<HomeAffordabilityCalculator />} />
 
           {/* 📊 All Rates Comparison */}
           <Route path="/tools/mortgage_calculator/allrates" element={<AllRates />} />
