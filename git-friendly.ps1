@@ -59,4 +59,21 @@
 # Set-Content -Path $gitignorePath -Value $ignoreEntries -Encoding UTF8
 
 # Write-Host "✅ .gitignore file created/updated successfully at $gitignorePath"
-az staticwebapp secrets list --name finworld-live-website-prd-eus --query "properties.apiKey"
+# az staticwebapp secrets list --name finworld-live-website-prd-eus --query "properties.apiKey"
+# az staticwebapp secrets list `
+#   --name finworld-live-website-prd-eus `
+#   --resource-group rg-finword-live-prd-eus `
+#   --query "properties.apiKey" `
+#   --output tsv
+# 9eea79e97d70b0e998c60240aa0333be73b504bf3407e4673ca3871d55262c8403-5cee6b18-a367-4e06-9661-0d9bcc7b81b800f180504c44e30f
+# az staticwebapp secrets list `
+#   --name finworld-live-website-prd-eus `
+#   --resource-group rg-finword-live-prd-eus `
+#   --query "properties.apiKey" `
+#   -o tsv
+# 9eea79e97d70b0e998c60240aa0333be73b504bf3407e4673ca3871d55262c8403-5cee6b18-a367-4e06-9661-0d9bcc7b81b800f180504c44e30f
+# 9eea79e97d70b0e998c60240aa0333be73b504bf3407e4673ca3871d55262c8403-5cee6b18-a367-4e06-9661-0d9bcc7b81b800f180504c44e30f
+az staticwebapp secrets regenerate `
+  --name finworld-live-website-prd-eus `
+  --resource-group rg-finword-live-prd-eus `
+  --query "properties.apiKey" -o tsv
