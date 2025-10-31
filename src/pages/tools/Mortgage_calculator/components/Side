@@ -188,8 +188,8 @@ export default function Sidebar({
             value={inputs.state}
             label="State (Optional)"
             onChange={(e) => updateField("state", e.target.value)}
+            displayEmpty
           >
-            <MenuItem value="">— Select —</MenuItem>
             {Object.entries(STATES).map(([abbr, name]) => (
               <MenuItem key={abbr} value={abbr}>
                 {name} ({abbr})

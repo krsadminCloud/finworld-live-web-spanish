@@ -114,6 +114,26 @@ export default function Sidebar({
           />
         </Box>
 
+        {/* State dropdown moved here to be on its own line with proper spacing */}
+        <FormControl fullWidth sx={{ mt: 4 }}>
+          <InputLabel>State (Optional)</InputLabel>
+          <Select
+            value={inputs.state}
+            label="State (Optional)"
+            onChange={(e) => updateField("state", e.target.value)}
+            displayEmpty
+          >
+            <MenuItem value="">
+              <em>Select State</em>
+            </MenuItem>
+            {Object.entries(STATES).map(([abbr, name]) => (
+              <MenuItem key={abbr} value={abbr}>
+                {name} ({abbr})
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
         <Accordion>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Typography sx={{ fontWeight: 600 }}>
@@ -180,23 +200,6 @@ export default function Sidebar({
             </Stack>
           </AccordionDetails>
         </Accordion>
-
-        {/* State dropdown moved to be right before Credit Score */}
-        <FormControl fullWidth>
-          <InputLabel>State (Optional)</InputLabel>
-          <Select
-            value={inputs.state}
-            label="State (Optional)"
-            onChange={(e) => updateField("state", e.target.value)}
-          >
-            <MenuItem value="">— Select —</MenuItem>
-            {Object.entries(STATES).map(([abbr, name]) => (
-              <MenuItem key={abbr} value={abbr}>
-                {name} ({abbr})
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
 
         <FormControl fullWidth>
           <InputLabel>Credit Score</InputLabel>

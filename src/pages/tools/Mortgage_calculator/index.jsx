@@ -11,7 +11,7 @@ const initialInputs = {
   downPayment: "",
   loanTerm: "30",
   interestRate: "",
-  zipCode: "",
+  state: "",
   propertyTax: "",
   homeInsurance: "",
   pmi: "",
