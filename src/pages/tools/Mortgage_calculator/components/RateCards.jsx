@@ -1,28 +1,37 @@
 import * as React from "react";
-import { Box, Paper, Typography, Button, Modal } from "@mui/material";
+import { Box, Paper, Typography } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import AllRates from "../../../../components/calculators_shared_files/all_rates/AllRates";
+import { useNavigate } from "react-router-dom";
 
 const rateData = [
   {
     title: "All Rates",
     subtitle: "As low as 6.25% APR",
     description: "Compare rates from multiple lenders",
+    action: "navigate"
   },
   {
     title: "30-Year Rates",
     subtitle: "As low as 6.50% APR",
     description: "Most popular fixed-rate mortgage",
+    action: "none"
   },
   {
     title: "15-Year Rates",
     subtitle: "As low as 5.75% APR",
     description: "Save on interest with shorter term",
+    action: "none"
   },
 ];
 
 export default function RateCards() {
-  const [showAllRates, setShowAllRates] = React.useState(false);
+  const navigate = useNavigate();
+
+  const handleCardClick = (index) => {
+    if (rateData[index].action === "navigate") {
+      navigate("/tools/mortgage_calculator/allrates");
+    }
+  };
 
   return (
     <Box>
@@ -33,11 +42,7 @@ export default function RateCards() {
         {rateData.map((rate, index) => (
           <Paper
             key={index}
-            onClick={() => {
-              if (index === 0) {
-                setShowAllRates(true);
-              }
-            }}
+            onClick={() => handleCardClick(index)}
             sx={{
               p: 2.5,
               borderRadius: 2,
@@ -53,7 +58,7 @@ export default function RateCards() {
                     ? "0 8px 24px rgba(0,0,0,0.4)"
                     : "0 8px 24px rgba(0,0,0,0.12)",
               },
-              cursor: index === 0 ? "pointer" : "default",
+              cursor: rate.action === "navigate" ? "pointer" : "default",
             }}
           >
             <Typography variant="h6" sx={{ fontWeight: 700, mb: 0.5 }}>
@@ -71,7 +76,7 @@ export default function RateCards() {
             >
               {rate.description}
             </Typography>
-            {index === 0 && (
+            {rate.action === "navigate" && (
               <Box sx={{ mt: "auto" }}>
                 <Typography
                   variant="body2"
@@ -89,53 +94,6 @@ export default function RateCards() {
           </Paper>
         ))}
       </Box>
-
-      {/* Modal for All Rates */}
-      <Modal
-        open={showAllRates}
-        onClose={() => setShowAllRates(false)}
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <Box sx={{
-          width: '95%',
-          maxWidth: '1400px',
-          maxHeight: '95vh',
-          overflow: 'auto',
-          bgcolor: 'background.paper',
-          borderRadius: 2,
-          boxShadow: 24,
-        }}>
-          <Box sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            p: 2,
-            borderBottom: '1px solid',
-            borderColor: 'divider'
-          }}>
-            <Typography variant="h5" sx={{ fontWeight: 600 }}>
-              Compare Mortgage Rates
-            </Typography>
-            <Button
-              onClick={() => setShowAllRates(false)}
-              sx={{
-                minWidth: 'auto',
-                p: 1,
-                '&:hover': {
-                  backgroundColor: 'action.hover'
-                }
-              }}
-            >
-              ✕
-            </Button>
-          </Box>
-          <AllRates />
-        </Box>
-      </Modal>
     </Box>
   );
 }

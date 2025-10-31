@@ -1,4 +1,3 @@
-// src/App.jsx
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -10,6 +9,7 @@ import FinancialCalculators from "./pages/tools";
 import ExtraPayment from "./pages/tools/extra_payment";
 import TakeHomePayCalculator from "./pages/tools/take_home_pay";
 import MortgageCalculator from "./pages/tools/Mortgage_calculator";
+import AllRates from "./pages/tools/Mortgage_calculator/allrates";
 
 export default function App() {
   return (
@@ -31,6 +31,9 @@ export default function App() {
 
           {/* 🏠 Mortgage Calculator */}
           <Route path="/tools/mortgage_calculator" element={<MortgageCalculator />} />
+
+          {/* 📊 All Rates Comparison */}
+          <Route path="/tools/mortgage_calculator/allrates" element={<AllRates />} />
         </Routes>
       </div>
     </Router>
