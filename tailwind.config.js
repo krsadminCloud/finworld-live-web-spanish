@@ -26,16 +26,14 @@ export default {
         error: '#DC3545',
 
         // Dark Mode Palette
-        dark: {
-          'bg-page': '#111827',
-          'bg-surface': '#1F2937',
-          'text-primary': '#F9FAFB',
-          'text-secondary': '#9CA3AF',
-          'border-subtle': '#374151',
-          success: '#4ADE80',
-          warning: '#FBBF24',
-          error: '#F87171',
-        },
+        'dark-bg-page': '#111827',
+        'dark-bg-surface': '#1F2937',
+        'dark-text-primary': '#F9FAFB',
+        'dark-text-secondary': '#9CA3AF',
+        'dark-border-subtle': '#374151',
+        'dark-success': '#4ADE80',
+        'dark-warning': '#FBBF24',
+        'dark-error': '#F87171',
       },
       fontFamily: {
         heading: ['Poppins', 'sans-serif'],

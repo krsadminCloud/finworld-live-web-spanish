@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+
+/* Custom Components Layer */
+@layer components {
+  .card-hover:hover {
+    @apply shadow-card-hover transform -translate-y-1;
+  }
+}
+
 @layer base {
   * {
     box-sizing: border-box;
