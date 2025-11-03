@@ -15,7 +15,7 @@ const LenderOffers = () => {
     },
     {
       name: 'Quick Auto Finance',
-      description: 'Bad credit? No problem',
+      description: 'Bad credit? No problem. Let us help',
       icon: Car,
       apr: '6.75%',
       rate: 6.75,
