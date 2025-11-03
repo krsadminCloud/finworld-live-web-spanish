@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  
+  body {
+    margin: 0;
+    background-color: theme('colors.bg-page');
+    color: theme('colors.neutral.900');
+    line-height: 1.5;
+  }
+}
+
+@layer components {
+  /* Custom slider styles */
+  .slider {
+    @apply w-full h-2 bg-neutral-50 rounded-lg appearance-none cursor-pointer;
+  }
+  
+  .slider::-webkit-slider-thumb {
+    @apply appearance-none w-5 h-5 bg-primary-500 rounded-full shadow-md cursor-pointer transition-all duration-200;
+  }
+  
+  .slider::-webkit-slider-thumb:hover {
+    @apply scale-110 shadow-lg;
+  }
+  
+  .slider::-moz-range-thumb {
+    @apply w-5 h-5 bg-primary-500 rounded-full shadow-md cursor-pointer border-0 transition-all duration-200;
+  }
+  
+  .slider::-moz-range-thumb:hover {
+    @apply scale-110 shadow-lg;
+  }
+  
+  /* Custom input focus styles */
+  .input-focus {
+    @apply focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 focus:border-2 transition-all duration-300;
+  }
+  
+  /* Button styles */
+  .btn-primary {
+    @apply bg-primary-500 text-neutral-100 px-6 py-2 rounded-md font-medium hover:bg-primary-700 transition-colors duration-200;
+  }
+  
+  .btn-secondary {
+    @apply border border-neutral-400 text-neutral-700 bg-neutral-100 px-6 py-2 rounded-md font-medium hover:bg-neutral-50 transition-colors duration-200;
+  }
+  
+  /* Card hover effects */
+  .card-hover {
+    @apply transition-all duration-200 hover:shadow-lg hover:-translate-y-1;
+  }
+  
+  /* Table styles */
+  .table-striped tbody tr:nth-child(odd) {
+    @apply bg-neutral-50;
+  }
+  
+  .table-striped tbody tr:nth-child(even) {
+    @apply bg-neutral-100;
+  }
+}

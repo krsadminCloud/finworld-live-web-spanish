@@ -81,7 +81,7 @@ export default function FinancialCalculators() {
     { title: "Savings Goal", icon: <SavingsIcon sx={{ color: "#86EFAC" }} fontSize="large" />, disabled: true, cat: "Personal Finance" },
     { title: "Investment Growth", icon: <TrendingUpIcon sx={{ color: "#FCD34D" }} fontSize="large" />, disabled: true, cat: "Personal Finance" },
     { title: "Credit Card Payoff", icon: <CreditCardIcon sx={{ color: "#FBBF24" }} fontSize="large" />, disabled: true, cat: "Personal Finance" },
-    { title: "Car Loan", icon: <DirectionsCarIcon sx={{ color: "#A5F3FC" }} fontSize="large" />, disabled: true, cat: "Personal Finance" },
+{ title: "Car Loan", icon: <DirectionsCarIcon sx={{ color: "#A5F3FC" }} fontSize="large" />, disabled: false, to: "/tools/auto_loan_calculator", cat: "Personal Finance" },
     { title: "Emergency Fund", icon: <HealthAndSafetyIcon sx={{ color: "#FBCFE8" }} fontSize="large" />, disabled: true, cat: "Personal Finance" },
     { title: "College Savings", icon: <SchoolIcon sx={{ color: "#C7D2FE" }} fontSize="large" />, disabled: true, cat: "Personal Finance" },
   ];

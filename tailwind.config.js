@@ -10,11 +10,11 @@ export default {
       colors: {
         // Light Mode Palette
         primary: {
-          100: '#E6F0FF',
-          300: '#80B3FF',
-          400: '#4D94FF',
-          500: '#0057B7',
-          700: '#00418A',
+          100: '#E0F7F5',
+          300: '#80B3FF', // Keeping existing shades for consistency if not specified
+          400: '#4D94FF', // Keeping existing shades for consistency if not specified
+          500: '#00C1B0',
+          700: '#00418A', // Keeping existing shades for consistency if not specified
         },
         'bg-page': '#F8F9FA',
         'bg-surface': '#FFFFFF',
