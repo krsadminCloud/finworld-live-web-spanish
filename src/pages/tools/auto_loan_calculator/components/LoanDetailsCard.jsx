@@ -89,7 +89,6 @@ const LoanDetailsCard = ({ loanInputs, onInputChange }) => {
                 min="1"
                 max="10"
               />
-              <span className="ml-2 text-neutral-700">years</span>
             </div>
 <input
   type="range"
