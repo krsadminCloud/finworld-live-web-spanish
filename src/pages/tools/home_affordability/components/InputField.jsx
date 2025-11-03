@@ -157,7 +157,7 @@ const InputField = ({
               onChange={(e) => handleSliderChange(e.target.value)}
               className="w-full h-2 bg-bg-page rounded-lg appearance-none cursor-pointer slider"
               style={{
-                background: `linear-gradient(to right, #0057B7 0%, #0057B7 ${((value - min) / (max - min)) * 100}%, #E2E8F0 ${((value - min) / (max - min)) * 100}%, #E2E8F0 100%)`
+                background: `linear-gradient(to right, #14b8a6 0%, #14b8a6 ${((value - min) / (max - min)) * 100}%, #E2E8F0 ${((value - min) / (max - min)) * 100}%, #E2E8F0 100%)`
               }}
             />
             <div className="flex justify-between text-xs text-text-secondary mt-1">
@@ -197,25 +197,25 @@ const sliderStyles = `
     height: 20px;
     width: 20px;
     border-radius: 50%;
-    background: #0057B7;
+    background: #14b8a6;
     cursor: pointer;
-    box-shadow: 0 2px 6px rgba(0, 87, 183, 0.3);
+    box-shadow: 0 2px 6px rgba(20, 184, 166, 0.3);
     transition: all 0.15s ease-in-out;
   }
-  
+
   .slider::-webkit-slider-thumb:hover {
     transform: scale(1.1);
-    box-shadow: 0 4px 12px rgba(0, 87, 183, 0.4);
+    box-shadow: 0 4px 12px rgba(20, 184, 166, 0.4);
   }
-  
+
   .slider::-moz-range-thumb {
     height: 20px;
     width: 20px;
     border-radius: 50%;
-    background: #0057B7;
+    background: #14b8a6;
     cursor: pointer;
     border: none;
-    box-shadow: 0 2px 6px rgba(0, 87, 183, 0.3);
+    box-shadow: 0 2px 6px rgba(20, 184, 166, 0.3);
   }
 `;
 
