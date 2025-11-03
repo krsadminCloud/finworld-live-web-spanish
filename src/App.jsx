@@ -16,8 +16,7 @@ import HomeAffordabilityCalculator from "./pages/tools/home_affordability";
 export default function App() {
   return (
     <Router>
-      {/* 🌐 Global layout wrapper */}
-      <div className="min-h-screen bg-gray-50 text-gray-900">
+      <div className="min-h-screen">
         <Routes>
           {/* 🏠 Home Page */}
           <Route path="/" element={<Home />} />

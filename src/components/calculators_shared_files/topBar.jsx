@@ -116,20 +116,6 @@ export default function TopBar() {
 >
   Calculator
 </Button>
-<Button
-  component={RouterLink}
-  to="/tools/auto_loan_calculator"
-  sx={{
-    color: "text.primary",
-    fontWeight: 600,
-    textTransform: "none",
-    fontSize: "1.1rem",
-    minWidth: "auto",
-    p: 0,
-  }}
->
-  Auto Loan Calculator
-</Button>
         </Box>
 
         {/* === Right: Theme Toggle === */}
