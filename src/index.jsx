@@ -1,24 +1,19 @@
 // src/index.jsx
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App";
+import App from "./App.jsx";
 import { ThemeProvider, CssBaseline } from "@mui/material";
 import { HelmetProvider } from "react-helmet-async"; // ✅ SEO provider
-
-// ✅ Context and theme imports
-import { ColorModeContext } from "./context/ColorModeContext";
+import { ColorModeContext } from "./context/ColorModeContext"; // ✅ Context and theme imports
 import { useMode } from "./theme";
-
 // ✅ Global Tailwind styles for the entire FinWorld app
 import "./index.css";
-
 // ✅ Ensure the TakeHomePay calculator's Tailwind + custom CSS loads too
 //import "./pages/tools/take_home_pay/index.css";
 
 function Main() {
   try {
-    const [theme, colorMode] = useMode();
-
+    const [theme, colorMode] = useMode();    
     return (
       <HelmetProvider>
         <ColorModeContext.Provider value={colorMode}>

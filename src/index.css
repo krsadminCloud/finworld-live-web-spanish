@@ -138,3 +138,21 @@
     scroll-behavior: auto !important;
   }
 }
+
+@layer base {
+  html { font-family:'Inter',system-ui,sans-serif; }
+  body { background-color:theme('colors.bg-page'); color:theme('colors.neutral.900'); }
+}
+
+@layer components {
+  .slider { @apply w-full h-2 bg-neutral-50 rounded-lg appearance-none cursor-pointer; }
+  .slider::-webkit-slider-thumb { @apply appearance-none w-5 h-5 bg-primary-500 rounded-full shadow-md cursor-pointer transition-all duration-200; }
+  .slider::-webkit-slider-thumb:hover { @apply scale-110 shadow-lg; }
+  .btn-primary { @apply bg-primary-500 text-white px-6 py-2 rounded-md font-medium hover:bg-primary-700 transition; }
+  .card-hover { @apply transition-all duration-200 hover:shadow-lg hover:-translate-y-1; }
+}
+
+/* Map Tailwind surface token to dark surface when .dark is present */
+@layer base {
+  .dark .bg-bg-surface { @apply bg-dark-bg-surface; }
+}

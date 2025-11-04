@@ -35,8 +35,8 @@ export default function App() {
 <Route path="/tools/mortgage_calculator" element={<MortgageCalculator />} />
 <Route path="/tools/auto_loan_calculator" element={<AutoLoanCalculator />} />
 
-          {/* 💼 Retirement Calculator */}
-          <Route path="/tools/retirement_calculator" element={<RetirementCalculator />} />
+{/* 💼 Retirement Calculator */}
+<Route path="/tools/retirement_calculator" element={<RetirementCalculator />} />
 
           {/* 🏡 Home Affordability Calculator */}
           <Route path="/tools/home_affordability" element={<HomeAffordabilityCalculator />} />

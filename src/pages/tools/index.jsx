@@ -76,7 +76,7 @@ export default function FinancialCalculators() {
     { title: "Budget Planner", icon: <CalculateIcon sx={{ color: "#FDE68A" }} fontSize="large" />, disabled: true, cat: "Personal Finance" },
     { title: "Net Worth", icon: <AccountBalanceIcon sx={{ color: "#A7F3D0" }} fontSize="large" />, disabled: true, cat: "Personal Finance" },
     { title: "Debt Payoff", icon: <MoneyOffIcon sx={{ color: "#FCA5A5" }} fontSize="large" />, disabled: true, cat: "Personal Finance" },
-    { title: "Retirement Savings", icon: <SavingsIcon sx={{ color: "#93C5FD" }} fontSize="large" />, disabled: true, cat: "Personal Finance" },
+    { title: "Retirement Saving", icon: <SavingsIcon sx={{ color: "#93C5FD" }} fontSize="large" />, to: "/tools/retirement_calculator", disabled: false, cat: "Personal Finance" },
     { title: "Home Affordability", icon: <HomeIcon sx={{ color: "#FDBA74" }} fontSize="large" />, disabled: true, cat: "Personal Finance" },
     { title: "Savings Goal", icon: <SavingsIcon sx={{ color: "#86EFAC" }} fontSize="large" />, disabled: true, cat: "Personal Finance" },
     { title: "Investment Growth", icon: <TrendingUpIcon sx={{ color: "#FCD34D" }} fontSize="large" />, disabled: true, cat: "Personal Finance" },
@@ -203,8 +203,11 @@ export default function FinancialCalculators() {
             <Box sx={{ backgroundColor: "#FDE68A", color: "#78350F", px: 2, py: 0.5, borderRadius: "999px", fontWeight: 700, fontSize: "0.9rem" }}>
               Savings Goal
             </Box>
-            <Box sx={{ backgroundColor: "#FBCFE8", color: "#831843", px: 2, py: 0.5, borderRadius: "999px", fontWeight: 700, fontSize: "0.9rem" }}>
-              Retirement Savings
+            <Box
+              sx={{ backgroundColor: "#FBCFE8", color: "#831843", px: 2, py: 0.5, borderRadius: "999px", fontWeight: 700, fontSize: "0.9rem", cursor: "pointer" }}
+              onClick={() => navigate("/tools/retirement_calculator")}
+            >
+              Retirement Saving
             </Box>
           </Stack>
         </Stack>

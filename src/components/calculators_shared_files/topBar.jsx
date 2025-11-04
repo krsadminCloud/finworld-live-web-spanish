@@ -116,6 +116,7 @@ export default function TopBar() {
 >
   Calculator
 </Button>
+          {/* Retirement Calculator button removed per request */}
         </Box>
 
         {/* === Right: Theme Toggle === */}

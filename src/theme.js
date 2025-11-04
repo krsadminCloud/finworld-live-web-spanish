@@ -1,9 +1,29 @@
 // src/theme.js
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { createTheme } from "@mui/material/styles";
 
 export const useMode = () => {
-  const [mode, setMode] = useState("light");
+  const getInitialMode = () => {
+    try {
+      const saved = localStorage.getItem("themeMode");
+      if (saved === "light" || saved === "dark") return saved;
+      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? "dark"
+        : "light";
+    } catch (_) {
+      return "light";
+    }
+  };
+
+  const [mode, setMode] = useState(getInitialMode);
+
+  // Sync Tailwind's dark class and persist preference
+  useEffect(() => {
+    const root = document.documentElement;
+    if (mode === 'dark') root.classList.add('dark');
+    else root.classList.remove('dark');
+    try { localStorage.setItem('themeMode', mode); } catch (_) {}
+  }, [mode]);
 
   const colorMode = {
     toggleColorMode: () =>
