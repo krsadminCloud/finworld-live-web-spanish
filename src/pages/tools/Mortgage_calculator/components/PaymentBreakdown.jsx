@@ -183,9 +183,30 @@ chartColors.push("#8b5cf6");
         onChange={(e, newValue) => setActiveTab(newValue)}
         sx={{ borderBottom: 1, borderColor: "divider", mb: 3 }}
       >
-        <Tab label="Payment Breakdown" sx={{ textTransform: "none", fontWeight: 600 }} />
-        <Tab label="Loan Estimate" sx={{ textTransform: "none", fontWeight: 600 }} />
-        <Tab label="Amortization" sx={{ textTransform: "none", fontWeight: 600 }} />
+        <Tab
+          label="Payment Breakdown"
+          sx={{
+            textTransform: "none",
+            fontWeight: 600,
+            fontSize: (theme) => theme.typography.h6.fontSize,
+          }}
+        />
+        <Tab
+          label="Loan Estimate"
+          sx={{
+            textTransform: "none",
+            fontWeight: 600,
+            fontSize: (theme) => theme.typography.h6.fontSize,
+          }}
+        />
+        <Tab
+          label="Amortization"
+          sx={{
+            textTransform: "none",
+            fontWeight: 600,
+            fontSize: (theme) => theme.typography.h6.fontSize,
+          }}
+        />
       </Tabs>
 
       {activeTab === 0 && (

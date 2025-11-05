@@ -14,8 +14,10 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  ToggleButton,
+  ToggleButtonGroup,
 } from "@mui/material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+// Removed expand icon as Taxes/Insurance/HOA is no longer collapsible
 import { STATES } from "../../../../components/calculators_shared_files/all_rates/api";
 
 const drawerWidth = 340;
@@ -71,18 +73,53 @@ export default function Sidebar({
           fullWidth
         />
 
-        <TextField
-          label="Down Payment"
-          value={formatWithCommas(inputs.downPayment)}
-          onChange={(e) => {
-            const val = e.target.value.replace(/,/g, "");
-            if (allowNumeric(val)) updateField("downPayment", val);
-          }}
-          InputProps={{
-            startAdornment: <span style={{ marginRight: 8 }}>$</span>,
-          }}
-          fullWidth
-        />
+        <Box>
+          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 1 }}>
+            <Typography sx={{ fontWeight: 600 }}>Down Payment</Typography>
+            <ToggleButtonGroup
+              size="small"
+              color="primary"
+              exclusive
+              value={inputs.downPaymentMode}
+              onChange={(e, val) => {
+                if (val) updateField("downPaymentMode", val);
+              }}
+            >
+              <ToggleButton value="percent">%</ToggleButton>
+              <ToggleButton value="amount">$</ToggleButton>
+            </ToggleButtonGroup>
+          </Box>
+
+          {inputs.downPaymentMode === "percent" ? (
+            <TextField
+              label="Down Payment (%)"
+              value={inputs.downPaymentPercent}
+              onChange={(e) => {
+                const val = e.target.value;
+                if (allowNumeric(val)) updateField("downPaymentPercent", val);
+              }}
+              InputProps={{
+                endAdornment: <span style={{ marginLeft: 8 }}>%</span>,
+              }}
+              fullWidth
+              helperText={inputs.homePrice ? "Enter percentage of home price" : "Enter home price for % to apply"}
+            />
+          ) : (
+            <TextField
+              label="Down Payment Amount"
+              placeholder="Enter Dollar Amount"
+              value={formatWithCommas(inputs.downPayment)}
+              onChange={(e) => {
+                const val = e.target.value.replace(/,/g, "");
+                if (allowNumeric(val)) updateField("downPayment", val);
+              }}
+              InputProps={{
+                startAdornment: <span style={{ marginRight: 8 }}>$</span>,
+              }}
+              fullWidth
+            />
+          )}
+        </Box>
 
         <Box sx={{ display: "flex", gap: 2 }}>
           <FormControl sx={{ flex: 1 }}>
@@ -114,8 +151,8 @@ export default function Sidebar({
           />
         </Box>
 
-        <Accordion>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+        <Accordion expanded>
+          <AccordionSummary>
             <Typography sx={{ fontWeight: 600 }}>
               Taxes, Insurance & HOA
             </Typography>
@@ -218,12 +255,14 @@ export default function Sidebar({
           onClick={onReset}
           sx={{
             py: 1.5,
-            bgcolor: "#1976d2",
+            bgcolor: "#14b8a6",
+            color: "#ffffff",
             fontWeight: 600,
             textTransform: "none",
             fontSize: "1rem",
+            borderRadius: 2,
             "&:hover": {
-              bgcolor: "#1565c0",
+              bgcolor: "#0d9488",
             },
           }}
         >

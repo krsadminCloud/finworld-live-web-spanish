@@ -21,9 +21,9 @@ export default function ResultsPanel({ yearsToRetirement, finalBalanceNominal, f
           <p className="text-sm font-semibold text-white/90">Safe Withdrawal (Annual)</p>
           <p className="text-2xl font-extrabold">{formatCurrency(annualWithdrawal)}</p>
         </div>
-        <div className="p-4 rounded-lg bg-primary-500 text-white shadow-md">
-          <p className="text-sm font-semibold text-white/90">Safe Withdrawal (Monthly)</p>
-          <p className="text-2xl font-extrabold">{formatCurrency(monthlyWithdrawal)}</p>
+        <div className="p-4 rounded-lg bg-teal-100 border border-teal-500/20 text-neutral-900 shadow-md">
+          <p className="text-sm font-semibold text-neutral-700">Safe Withdrawal (Monthly)</p>
+          <p className="text-2xl font-extrabold text-semantic-success">{formatCurrency(monthlyWithdrawal)}</p>
         </div>
       </div>
     </div>

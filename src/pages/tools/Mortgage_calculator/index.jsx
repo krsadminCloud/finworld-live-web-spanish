@@ -1,6 +1,7 @@
 import * as React from "react";
 import Layout from "./components/Layout";
 import PaymentBreakdown from "./components/PaymentBreakdown";
+import AdvancedSection from "./components/AdvancedSection";
 import RateCards from "./components/RateCards";
 import LenderPartners from "./components/LenderPartners";
 import { calculateMortgage } from "./utils/mortgageCalculations";
@@ -9,6 +10,8 @@ import { Box } from "@mui/material";
 const initialInputs = {
   homePrice: "",
   downPayment: "",
+  downPaymentMode: "amount", // 'amount' | 'percent'
+  downPaymentPercent: "",
   loanTerm: "30",
   interestRate: "",
   state: "",
@@ -25,7 +28,10 @@ export default function MortgageCalculator() {
 
   const handleCalculate = React.useCallback(() => {
     const homePrice = parseFloat(inputs.homePrice.replace(/,/g, "")) || 0;
-    const downPayment = parseFloat(inputs.downPayment.replace(/,/g, "")) || 0;
+    const downPayment =
+      inputs.downPaymentMode === "percent"
+        ? (homePrice * (parseFloat(inputs.downPaymentPercent) || 0)) / 100
+        : parseFloat(inputs.downPayment.replace(/,/g, "")) || 0;
     const loanTerm = parseFloat(inputs.loanTerm) || 30;
     const interestRate = parseFloat(inputs.interestRate) || 0;
     const propertyTax = parseFloat(inputs.propertyTax) || 0;
@@ -80,6 +86,7 @@ export default function MortgageCalculator() {
           }}
         >
           <PaymentBreakdown results={results} />
+          <AdvancedSection />
           <RateCards />
           <LenderPartners />
         </Box>
