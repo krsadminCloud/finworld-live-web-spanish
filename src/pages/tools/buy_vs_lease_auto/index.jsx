@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Topbar from "../../../components/calculators_shared_files/topBar";
 import InputSection from "./components/InputSection";
@@ -7,24 +7,26 @@ import { calculateBuyVsLease } from "./utils/calc";
 
 export default function BuyVsLeaseAuto() {
   const [scenario, setScenario] = useState({
-    vehiclePrice: 35000,
+    vehiclePrice: 38000, // compact SUV MSRP example
     ownershipYears: 5,
-    taxRate: 7.5,
-    depreciation: { mode: "simple", finalPercent: 50 },
+    taxRate: 8.5,
+    depreciation: { mode: "simple", finalPercent: 50, autoFinal: true },
   });
 
   const [lease, setLease] = useState({
     termMonths: 36,
-    monthlyPayment: 450,
-    downPayment: 2000,
-    totalFees: 0,
+    monthlyPayment: 0,
+    downPayment: 2500,
+    totalFees: 500,
     advanced: {
+      useAdvanced: true,
       capCost: undefined,
       residualMode: "percent",
-      residualValue: 55,
-      moneyFactor: 0.0015,
-      acquisitionFee: 0,
-      dispositionFee: 0,
+      residualValue: 58,
+      autoResidual: true,
+      moneyFactor: 0.0020,
+      acquisitionFee: 895,
+      dispositionFee: 495,
       taxMode: "on_payment",
       taxRateOverride: undefined,
       allowedMilesPerYear: 12000,
@@ -34,15 +36,15 @@ export default function BuyVsLeaseAuto() {
   });
 
   const [buy, setBuy] = useState({
-    purchasePrice: 35000,
-    downPayment: 5000,
+    purchasePrice: 38000,
+    downPayment: 4000,
     termMonths: 60,
-    apr: 4.5,
+    apr: 6.9,
     advanced: {
-      docFee: 0,
-      registrationFee: 0,
-      maintenanceDeltaPerYear: 0,
-      insuranceDeltaPerYear: 0,
+      docFee: 300,
+      registrationFee: 400,
+      maintenanceDeltaPerYear: 150,
+      insuranceDeltaPerYear: 100,
       resaleOverridePercent: undefined,
     },
   });
@@ -62,12 +64,62 @@ export default function BuyVsLeaseAuto() {
   }
 
   function handleReset() {
-    const s = { vehiclePrice: 35000, ownershipYears: 5, taxRate: 7.5, depreciation: { mode: "simple", finalPercent: 50 } };
-    const l = { termMonths: 36, monthlyPayment: 450, downPayment: 2000, totalFees: 0, advanced: { capCost: undefined, residualMode: "percent", residualValue: 55, moneyFactor: 0.0015, acquisitionFee: 0, dispositionFee: 0, taxMode: "on_payment", taxRateOverride: undefined, allowedMilesPerYear: 12000, expectedMilesPerYear: 12000, overMileFee: 0.25 } };
-    const b = { purchasePrice: 35000, downPayment: 5000, termMonths: 60, apr: 4.5, advanced: { docFee: 0, registrationFee: 0, maintenanceDeltaPerYear: 0, insuranceDeltaPerYear: 0, resaleOverridePercent: undefined } };
+    const s = { vehiclePrice: 38000, ownershipYears: 5, taxRate: 8.5, depreciation: { mode: "simple", finalPercent: 50, autoFinal: true } };
+    const l = { termMonths: 36, monthlyPayment: 0, downPayment: 2500, totalFees: 500, advanced: { useAdvanced: true, capCost: undefined, residualMode: "percent", residualValue: 58, autoResidual: true, moneyFactor: 0.0020, acquisitionFee: 895, dispositionFee: 495, taxMode: "on_payment", taxRateOverride: undefined, allowedMilesPerYear: 12000, expectedMilesPerYear: 12000, overMileFee: 0.25 } };
+    const b = { purchasePrice: 38000, downPayment: 4000, termMonths: 60, apr: 6.9, advanced: { docFee: 300, registrationFee: 400, maintenanceDeltaPerYear: 150, insuranceDeltaPerYear: 100, resaleOverridePercent: undefined } };
     setScenario(s); setLease(l); setBuy(b);
     setResults(calculateBuyVsLease({ scenario: s, lease: l, buy: b }));
   }
+
+  // Estimate residual % based on ownership duration (average market baseline)
+  function estimateResidualPercent(years) {
+    const anchors = [
+      { y: 0, p: 100 },
+      { y: 1, p: 80 },
+      { y: 2, p: 70 },
+      { y: 3, p: 58 },
+      { y: 4, p: 48 },
+      { y: 5, p: 40 },
+      { y: 6, p: 33 },
+      { y: 7, p: 28 },
+      { y: 8, p: 24 },
+    ];
+    const x = Math.max(0, Math.min(8, Number(years || 0)));
+    // find segment
+    for (let i = 0; i < anchors.length - 1; i++) {
+      const a = anchors[i];
+      const b = anchors[i + 1];
+      if (x >= a.y && x <= b.y) {
+        const t = (x - a.y) / (b.y - a.y || 1);
+        return Math.round((a.p + (b.p - a.p) * t) * 10) / 10;
+      }
+    }
+    return anchors[anchors.length - 1].p;
+  }
+
+  // Auto-update residual percent when ownership duration changes
+  useEffect(() => {
+    const auto = lease?.advanced?.autoResidual !== false; // default true
+    const mode = lease?.advanced?.residualMode || "percent";
+    if (!auto || mode !== "percent") return;
+    const estimated = estimateResidualPercent(scenario?.ownershipYears ?? 3);
+    setLease((prev) => ({
+      ...prev,
+      advanced: { ...prev.advanced, residualValue: estimated },
+    }));
+  }, [scenario.ownershipYears, lease?.advanced?.autoResidual, lease?.advanced?.residualMode]);
+
+  // Auto-update depreciation final percent (simple mode) based on ownership duration
+  useEffect(() => {
+    const dep = scenario?.depreciation || {};
+    if (dep.mode !== "simple" || dep.autoFinal === false) return;
+    const estimated = estimateResidualPercent(scenario?.ownershipYears ?? 3);
+    setScenario((prev) => {
+      const curr = prev?.depreciation?.finalPercent;
+      if (curr === estimated) return prev;
+      return { ...prev, depreciation: { ...prev.depreciation, finalPercent: estimated } };
+    });
+  }, [scenario.ownershipYears, scenario?.depreciation?.mode, scenario?.depreciation?.autoFinal]);
 
   return (
     <div className="min-h-screen bg-bg-page text-neutral-900">
@@ -102,7 +154,7 @@ export default function BuyVsLeaseAuto() {
           />
         </motion.section>
 
-        <Insights results={results} cheaperText={cheaperText} />
+        <Insights scenario={scenario} results={results} cheaperText={cheaperText} />
       </main>
     </div>
   );

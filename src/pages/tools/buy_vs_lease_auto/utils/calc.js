@@ -29,7 +29,7 @@ function buildDepreciationCurve(price, years, mode) {
   return values;
 }
 
-function computeLeaseAdvancedMonthly({ capCost, residualMode, residualValue, termMonths, moneyFactor, taxMode, taxRate, downPayment }) {
+export function computeLeaseAdvancedMonthly({ capCost, residualMode, residualValue, termMonths, moneyFactor, taxMode, taxRate, downPayment }) {
   const term = Math.max(1, Number(termMonths || 36));
   const cap = Math.max(0, Number(capCost || 0));
   const down = Math.max(0, Number(downPayment || 0));
@@ -46,10 +46,31 @@ function computeLeaseAdvancedMonthly({ capCost, residualMode, residualValue, ter
 
 function calcBreakEven(cLease, cBuy) {
   const months = Math.min(cLease.length, cBuy.length) - 1;
-  for (let m = 0; m <= months; m++) {
-    if (cBuy[m] <= cLease[m]) return m;
+  if (months < 1) return null;
+  let diffPrev = (cBuy[0] ?? 0) - (cLease[0] ?? 0);
+  for (let m = 1; m <= months; m++) {
+    const diff = (cBuy[m] ?? 0) - (cLease[m] ?? 0);
+    if (diff === 0) return m; // exact equality
+    if (diff * diffPrev < 0) return m; // sign change indicates crossing
+    diffPrev = diff;
   }
   return null;
+}
+
+function buildYearlyScheduleFromCurve(curve) {
+  if (!Array.isArray(curve) || curve.length === 0) return [];
+  const months = curve.length - 1;
+  const years = Math.ceil(months / 12);
+  const rows = [];
+  for (let y = 0; y < years; y++) {
+    const mStart = y * 12;
+    const mEnd = Math.min(months, (y + 1) * 12);
+    const opening = curve[mStart];
+    const closing = curve[mEnd];
+    const depreciation = Math.max(0, opening - closing);
+    rows.push({ year: y + 1, opening, depreciation, closing });
+  }
+  return rows;
 }
 
 export function calculateBuyVsLease({ scenario, lease, buy }) {
@@ -61,6 +82,7 @@ export function calculateBuyVsLease({ scenario, lease, buy }) {
 
   const curve = buildDepreciationCurve(vehiclePrice, ownershipYears, depreciation);
   const endValue = curve[curve.length - 1];
+  const yearlySchedule = buildYearlyScheduleFromCurve(curve);
 
   // Lease inputs
   const leaseTerm = Math.max(1, Number(lease.termMonths ?? 36));
@@ -76,7 +98,8 @@ export function calculateBuyVsLease({ scenario, lease, buy }) {
   const expectedMiles = Math.max(0, Number(la.expectedMilesPerYear ?? 12000));
   const overMileFee = Math.max(0, Number(la.overMileFee ?? 0));
 
-  const useAdvancedLease = la && (la.capCost != null || la.residualValue != null || la.moneyFactor != null || la.taxMode != null);
+  // Use advanced lease math when toggle enabled (default true)
+  const useAdvancedLease = la && (la.useAdvanced !== false);
   let upfrontTaxPerTerm = 0;
   if (useAdvancedLease) {
     const capCost = Number(la.capCost ?? vehiclePrice);
@@ -165,11 +188,10 @@ export function calculateBuyVsLease({ scenario, lease, buy }) {
 
   return {
     ownershipMonths,
-    depreciation: { endValue, valueLost: Math.max(0, vehiclePrice - endValue) },
+    depreciation: { endValue, valueLost: Math.max(0, vehiclePrice - endValue), curve, yearly: yearlySchedule },
     lease: { totalCost: Math.round(totalLease), monthly: Math.round(leaseMonthly), termsCount },
     buy: { totalCost: Math.round(totalBuy), monthly: Math.round(buyMonthlyPayment) },
     comparison: { cheaper, difference, breakEvenMonth },
     series: { lease: leaseCum, buy: buyCum },
   };
 }
-
