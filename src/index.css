@@ -14,6 +14,11 @@
 }
 
 @layer components {
+  /* Tooltip (white/teal theme) */
+  .tooltip { @apply relative inline-flex items-center align-middle; }
+  .tooltip-bubble { @apply absolute left-full top-1/2 -translate-y-1/2 ml-2 hidden w-64 rounded-md border border-teal-200 bg-white text-neutral-700 shadow px-2 py-1 z-10; font-size: 0.75rem; }
+  .tooltip:hover .tooltip-bubble { @apply block; }
+  .tooltip:focus-within .tooltip-bubble { @apply block; }
   /* Custom scrollbar */
   .custom-scrollbar::-webkit-scrollbar {
     width: 6px;

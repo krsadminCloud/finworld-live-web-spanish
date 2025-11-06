@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>U.S. Take‑Home Pay Calculator</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#4CAF50",
+            "secondary": "#FFC107",
+            "background-light": "#F9FAFB",
+            "background-dark": "#1A202C",
+            "card-light": "#FFFFFF",
+            "text-dark": "#374151",
+            "text-light": "#6B7280",
+          },
+          fontFamily: { display: ['Inter','sans-serif'] },
+          borderRadius: { DEFAULT: '0.5rem', lg: '0.75rem', xl: '1rem', full: '9999px' },
+        },
+      },
+    }
+  </script>
+  <style>
+    body{font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial}
+    .material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+    .tooltip-container {
+      position: relative;
+      display: inline-block;
+    }
+    .tooltip-text {
+      visibility: hidden;
+      width: 200px;
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px 0;
+      position: absolute;
+      z-index: 1;
+      bottom: 125%; /* Position above the text */
+      left: 50%;
+      margin-left: -100px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .tooltip-container:hover .tooltip-text {
+      visibility: visible;
+      opacity: 1;
+    }
+  </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-text-dark">
+  <div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+    <main class="px-4 md:px-10 lg:px-20 xl:px-40 py-6 w-full">
+      <div class="max-w-7xl mx-auto">
+        <div class="flex flex-col items-center justify-center p-4 relative">
+          <button id="theme-toggle" type="button" class="absolute right-0 top-0 p-2 rounded-full text-text-dark hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-gray-300">
+            <span class="material-symbols-outlined">dark_mode</span>
+          </button>
+          <p class="text-text-dark dark:text-white text-3xl md:text-4xl font-black leading-tight tracking-[-0.033em] text-center">U.S. Take‑Home Pay Calculator</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+          <!-- Left: Inputs -->
+          <section class="lg:col-span-1 bg-card-light dark:bg-background-dark rounded-xl p-6 flex flex-col gap-6">
+            <div>
+              <label class="flex flex-col">
+                <p class="text-text-light dark:text-[#93b6c8] text-sm font-medium pb-2">
+                  Your Gross Annual Income
+                  <span class="tooltip-container">
+                    <span class="material-symbols-outlined text-xs align-middle ml-1 cursor-help">info</span>
+                    <span class="tooltip-text">Your total income before any deductions or taxes.</span>
+                  </span>
+                </p>
+                <input id="income" type="number" min="0" step="100" class="form-input w-full rounded-lg text-text-dark dark:text-white focus:outline-0 focus:ring-0 border-none bg-gray-50 dark:bg-[#243b47] h-14 p-4 text-base" placeholder="e.g. 90000" />
+              </label>
+            </div>
+
+            <div>
+              <label class="flex flex-col">
+                <p class="text-text-light dark:text-[#93b6c8] text-sm font-medium pb-2">
+                  Spouse's Gross Annual Income
+                  <span class="tooltip-container">
+                    <span class="material-symbols-outlined text-xs align-middle ml-1 cursor-help">info</span>
+                    <span class="tooltip-text">Your spouse's total income before any deductions or taxes.</span>
+                  </span>
+                </p>
+                <input id="spouseIncome" type="number" min="0" step="100" class="form-input w-full rounded-lg text-text-dark dark:text-white focus:outline-0 focus:ring-0 border-none bg-gray-50 dark:bg-[#243b47] h-14 p-4 text-base" placeholder="e.g. 75000" />
+              </label>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+              <label class="flex flex-col">
+                <p class="text-text-light dark:text-[#93b6c8] text-sm font-medium pb-2">
+                  Tax Year
+                  <span class="tooltip-container">
+                    <span class="material-symbols-outlined text-xs align-middle ml-1 cursor-help">info</span>
+                    <span class="tooltip-text">The tax year for which calculations are performed.</span>
+                  </span>
+                </p>
+                <select id="year" class="form-select w-full rounded-lg text-text-dark dark:text-white focus:outline-0 focus:ring-0 border-none bg-gray-50 dark:bg-[#243b47] h-14 p-4 text-base">
+                  <option value="2025" selected>2025</option>
+                  <option value="2024">2024</option>
+                </select>
+              </label>
+
+              <label class="flex flex-col">
+                <p class="text-text-light dark:text-[#93b6c8] text-sm font-medium pb-2">
+                  State
+                  <span class="tooltip-container">
+                    <span class="material-symbols-outlined text-xs align-middle ml-1 cursor-help">info</span>
+                    <span class="tooltip-text">Your state of residence for state tax calculations.</span>
+                  </span>
+                </p>
+                <select id="state" class="form-select w-full rounded-lg text-text-dark dark:text-white focus:outline-0 focus:ring-0 border-none bg-gray-50 dark:bg-[#243b47] h-14 p-4 text-base"></select>
+              </label>
+            </div>
+
+            <div>
+              <p class="text-text-light dark:text-[#93b6c8] text-sm font-medium pb-2">
+                Filing Status
+                <span class="tooltip-container">
+                  <span class="material-symbols-outlined text-xs align-middle ml-1 cursor-help">info</span>
+                  <span class="tooltip-text">Your tax filing status (e.g., Single, Married Filing Jointly).</span>
+                </span>
+              </p>
+              <select id="status" class="form-select w-full rounded-lg text-text-dark dark:text-white focus:outline-0 focus:ring-0 border-none bg-gray-50 dark:bg-[#243b47] h-12 p-3 text-base">
+                <option value="single">Single</option>
+                <option value="mfj">Married Filing Jointly</option>
+                <option value="mfs">Married Filing Separately</option>
+                <option value="hoh">Head of Household</option>
+              </select>
+            </div>
+
+            <details class="flex flex-col rounded-lg bg-gray-100 dark:bg-[#243b47] px-4 group">
+              <summary class="flex cursor-pointer items-center justify-between gap-6 py-3">
+                <p class="text-text-dark dark:text-white text-base font-medium">
+                  Your 401(k) Contributions
+                  <span class="tooltip-container">
+                    <span class="material-symbols-outlined text-xs align-middle ml-1 cursor-help">info</span>
+                    <span class="tooltip-text">Pre-tax contributions to your 401(k) retirement plan.</span>
+                  </span>
+                </p>
+                <span class="material-symbols-outlined text-text-light dark:text-white group-open:rotate-180 transition-transform">expand_more</span>
+              </summary>
+              <div class="pb-4 grid grid-cols-1 gap-3">
+                <label class="flex flex-col">
+                  <p class="text-text-light dark:text-[#93b6c8] text-sm font-medium pb-2">Percent of your income</p>
+                  <input id="k401pct" type="number" min="0" max="100" step="0.5" class="form-input w-full rounded-lg text-text-dark dark:text-white focus:outline-0 focus:ring-0 border-none bg-white dark:bg-[#111c21] h-12 p-3 text-base" placeholder="e.g. 10" />
+                </label>
+              </div>
+            </details>
+
+            <details class="flex flex-col rounded-lg bg-gray-100 dark:bg-[#243b47] px-4 group">
+              <summary class="flex cursor-pointer items-center justify-between gap-6 py-3">
+                <p class="text-text-dark dark:text-white text-base font-medium">
+                  Spouse's 401(k) Contributions
+                  <span class="tooltip-container">
+                    <span class="material-symbols-outlined text-xs align-middle ml-1 cursor-help">info</span>
+                    <span class="tooltip-text">Spouse's pre-tax contributions to their 401(k) retirement plan.</span>
+                  </span>
+                </p>
+                <span class="material-symbols-outlined text-text-light dark:text-white group-open:rotate-180 transition-transform">expand_more</span>
+              </summary>
+              <div class="pb-4 grid grid-cols-1 gap-3">
+                <label class="flex flex-col">
+                  <p class="text-text-light dark:text-[#93b6c8] text-sm font-medium pb-2">Percent of spouse's income</p>
+                  <input id="spouseK401pct" type="number" min="0" max="100" step="0.5" class="form-input w-full rounded-lg text-text-dark dark:text-white focus:outline-0 focus:ring-0 border-none bg-white dark:bg-[#111c21] h-12 p-3 text-base" placeholder="e.g. 8" />
+                </label>
+              </div>
+            </details>
+
+            <details class="flex flex-col rounded-lg bg-gray-100 dark:bg-[#243b47] px-4 group">
+              <summary class="flex cursor-pointer items-center justify-between gap-6 py-3">
+                <p class="text-text-dark dark:text-white text-base font-medium">
+                  Your Roth IRA (Post‑tax)
+                  <span class="tooltip-container">
+                    <span class="material-symbols-outlined text-xs align-middle ml-1 cursor-help">info</span>
+                    <span class="tooltip-text">Post-tax contributions to your Roth IRA retirement plan.</span>
+                  </span>
+                </p>
+                <span class="material-symbols-outlined text-text-light dark:text-white group-open:rotate-180 transition-transform">expand_more</span>
+              </summary>
+              <div class="pb-4 grid grid-cols-1 gap-3">
+                <label class="flex flex-col">
+                  <p class="text-text-light dark:text-[#93b6c8] text-sm font-medium pb-2">Your annual amount ($)</p>
+                  <input id="rothAmt" type="number" min="0" step="100" class="form-input w-full rounded-lg text-text-dark dark:text-white focus:outline-0 focus:ring-0 border-none bg-white dark:bg-[#111c21] h-12 p-3 text-base" placeholder="e.g. 7000" />
+                </label>
+              </div>
+            </details>
+
+            <details class="flex flex-col rounded-lg bg-gray-100 dark:bg-[#243b47] px-4 group">
+              <summary class="flex cursor-pointer items-center justify-between gap-6 py-3">
+                <p class="text-text-dark dark:text-white text-base font-medium">
+                  Spouse's Roth IRA (Post‑tax)
+                  <span class="tooltip-container">
+                    <span class="material-symbols-outlined text-xs align-middle ml-1 cursor-help">info</span>
+                    <span class="tooltip-text">Spouse's post-tax contributions to their Roth IRA retirement plan.</span>
+                  </span>
+                </p>
+                <span class="material-symbols-outlined text-text-light dark:text-white group-open:rotate-180 transition-transform">expand_more</span>
+              </summary>
+              <div class="pb-4 grid grid-cols-1 gap-3">
+                <label class="flex flex-col">
+                  <p class="text-text-light dark:text-[#93b6c8] text-sm font-medium pb-2">Spouse's annual amount ($)</p>
+                  <input id="spouseRothAmt" type="number" min="0" step="100" class="form-input w-full rounded-lg text-text-dark dark:text-white focus:outline-0 focus:ring-0 border-none bg-white dark:bg-[#111c21] h-12 p-3 text-base" placeholder="e.g. 7000" />
+                </label>
+              </div>
+            </details>
+
+            <label class="flex flex-col">
+              <p class="text-text-light dark:text-[#93b6c8] text-sm font-medium pb-2">
+                Override State Effective Rate (%)
+                <span class="tooltip-container">
+                  <span class="material-symbols-outlined text-xs align-middle ml-1 cursor-help">info</span>
+                  <span class="tooltip-text">Manually set a state tax rate to override the default calculation.</span>
+                </span>
+                <span class="text-xs text-text-light">(optional)</span>
+              </p>
+              <input id="overrideStateRate" type="number" min="0" step="0.1" class="form-input w-full rounded-lg text-text-dark dark:text-white focus:outline-0 focus:ring-0 border-none bg-gray-50 dark:bg-[#243b47] h-12 p-3 text-base" placeholder="Leave blank to use table" />
+            </label>
+
+            <div class="flex items-center justify-between mt-4">
+              <span class="text-text-light dark:text-[#93b6c8] text-sm">Advanced Options</span>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="advanced-toggle" class="sr-only peer">
+                <div class="w-11 h-6 bg-gray-300 dark:bg-gray-600 rounded-full peer peer-focus:ring-4 peer-focus:ring-primary peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+              </label>
+            </div>
+
+            <div id="advanced-options" class="hidden flex-col gap-6 mt-4">
+              <details class="flex flex-col rounded-lg bg-gray-100 dark:bg-[#243b47] px-4 group">
+                <summary class="flex cursor-pointer items-center justify-between gap-6 py-3">
+                  <p class="text-text-dark dark:text-white text-base font-medium">
+                    Pre-Tax Deductions
+                    <span class="tooltip-container">
+                      <span class="material-symbols-outlined text-xs align-middle ml-1 cursor-help">info</span>
+                      <span class="tooltip-text">Deductions from your gross income before taxes are calculated.</span>
+                    </span>
+                  </p>
+                  <span class="material-symbols-outlined text-text-light dark:text-white group-open:rotate-180 transition-transform">expand_more</span>
+                </summary>
+                <div class="pb-4 grid grid-cols-1 gap-3">
+                  <label class="flex flex-col">
+                    <p class="text-text-light dark:text-[#93b6c8] text-sm font-medium pb-2">Health Insurance ($ annual)</p>
+                    <input id="healthInsurance" type="number" min="0" step="100" class="form-input w-full rounded-lg text-text-dark dark:text-white focus:outline-0 focus:ring-0 border-none bg-white dark:bg-[#111c21] h-12 p-3 text-base" placeholder="e.g. 4800" />
+                  </label>
+                  <label class="flex flex-col">
+                    <p class="text-text-light dark:text-[#93b6c8] text-sm font-medium pb-2">HSA Contribution ($ annual)</p>
+                    <input id="hsa" type="number" min="0" step="100" class="form-input w-full rounded-lg text-text-dark dark:text-white focus:outline-0 focus:ring-0 border-none bg-white dark:bg-[#111c21] h-12 p-3 text-base" placeholder="e.g. 3850" />
+                  </label>
+                  <label class="flex flex-col">
+                    <p class="text-text-light dark:text-[#93b6c8] text-sm font-medium pb-2">Traditional IRA Contribution ($ annual)</p>
+                    <input id="traditionalIra" type="number" min="0" step="100" class="form-input w-full rounded-lg text-text-dark dark:text-white focus:outline-0 focus:ring-0 border-none bg-white dark:bg-[#111c21] h-12 p-3 text-base" placeholder="e.g. 6500" />
+                  </label>
+                  <label class="flex flex-col">
+                    <p class="text-text-light dark:text-[#93b6c8] text-sm font-medium pb-2">Student Loan Interest Paid ($ annual)</p>
+                    <input id="studentLoanInterest" type="number" min="0" step="100" class="form-input w-full rounded-lg text-text-dark dark:text-white focus:outline-0 focus:ring-0 border-none bg-white dark:bg-[#111c21] h-12 p-3 text-base" placeholder="e.g. 2500" />
+                  </label>
+                  <label class="flex flex-col">
+                    <p class="text-text-light dark:text-[#93b6c8] text-sm font-medium pb-2">FSA Contribution ($ annual)</p>
+                    <input id="fsaContribution" type="number" min="0" step="100" class="form-input w-full rounded-lg text-text-dark dark:text-white focus:outline-0 focus:ring-0 border-none bg-white dark:bg-[#111c21] h-12 p-3 text-base" placeholder="e.g. 2850" />
+                  </label>
+                  <label class="flex flex-col">
+                    <p class="text-text-light dark:text-[#93b6c8] text-sm font-medium pb-2">Other Pre-Tax Deductions ($ annual)</p>
+                    <input id="otherPreTaxDeductions" type="number" min="0" step="100" class="form-input w-full rounded-lg text-text-dark dark:text-white focus:outline-0 focus:ring-0 border-none bg-white dark:bg-[#111c21] h-12 p-3 text-base" placeholder="e.g. 1000" />
+                  </label>
+                </div>
+              </details>
+
+              <details class="flex flex-col rounded-lg bg-gray-100 dark:bg-[#243b47] px-4 group">
+                <summary class="flex cursor-pointer items-center justify-between gap-6 py-3">
+                  <p class="text-text-dark dark:text-white text-base font-medium">
+                    Federal Tax Credits
+                    <span class="tooltip-container">
+                      <span class="material-symbols-outlined text-xs align-middle ml-1 cursor-help">info</span>
+                      <span class="tooltip-text">Amounts that directly reduce your federal tax liability.</span>
+                    </span>
+                  </p>
+                  <span class="material-symbols-outlined text-text-light dark:text-white group-open:rotate-180 transition-transform">expand_more</span>
+                </summary>
+                <div class="pb-4 grid grid-cols-1 gap-3">
+                  <label class="flex flex-col">
+                    <p class="text-text-light dark:text-[#93b6c8] text-sm font-medium pb-2">Child Tax Credit ($)</p>
+                    <input id="childTaxCredit" type="number" min="0" step="100" class="form-input w-full rounded-lg text-text-dark dark:text-white focus:outline-0 focus:ring-0 border-none bg-white dark:bg-[#111c21] h-12 p-3 text-base" placeholder="e.g. 2000" />
+                  </label>
+                  <label class="flex flex-col">
+                    <p class="text-text-light dark:text-[#93b6c8] text-sm font-medium pb-2">Dependent Care Credit ($)</p>
+                    <input id="dependentCareCredit" type="number" min="0" step="100" class="form-input w-full rounded-lg text-text-dark dark:text-white focus:outline-0 focus:ring-0 border-none bg-white dark:bg-[#111c21] h-12 p-3 text-base" placeholder="e.g. 3000" />
+                  </label>
+                  <label class="flex flex-col">
+                    <p class="text-text-light dark:text-[#93b6c8] text-sm font-medium pb-2">Child and Dependent Care Expenses ($ annual)</p>
+                    <input id="childDependentCareExpenses" type="number" min="0" step="100" class="form-input w-full rounded-lg text-text-dark dark:text-white focus:outline-0 focus:ring-0 border-none bg-white dark:bg-[#111c21] h-12 p-3 text-base" placeholder="e.g. 6000" />
+                  </label>
+                </div>
+              </details>
+
+              <details class="flex flex-col rounded-lg bg-gray-100 dark:bg-[#243b47] px-4 group">
+                <summary class="flex cursor-pointer items-center justify-between gap-6 py-3">
+                  <p class="text-text-dark dark:text-white text-base font-medium">
+                    Local Taxes
+                    <span class="tooltip-container">
+                      <span class="material-symbols-outlined text-xs align-middle ml-1 cursor-help">info</span>
+                      <span class="tooltip-text">Local income taxes, if applicable.</span>
+                    </span>
+                  </p>
+                  <span class="material-symbols-outlined text-text-light dark:text-white group-open:rotate-180 transition-transform">expand_more</span>
+                </summary>
+                <div class="pb-4 grid grid-cols-1 gap-3">
+                  <label class="flex flex-col">
+                    <p class="text-text-light dark:text-[#93b6c8] text-sm font-medium pb-2">Local Tax Rate (%)</p>
+                    <input id="localTaxRate" type="number" min="0" step="0.1" class="form-input w-full rounded-lg text-text-dark dark:text-white focus:outline-0 focus:ring-0 border-none bg-white dark:bg-[#111c21] h-12 p-3 text-base" placeholder="e.g. 1.5" />
+                  </label>
+                </div>
+              </details>
+            </div>
+
+            <div class="flex gap-3 mt-6">
+              <button id="calc" class="inline-flex items-center justify-center rounded-lg h-11 px-4 bg-primary text-white text-sm font-bold">Calculate & Compare</button>
+              <button id="reset" class="inline-flex items-center justify-center rounded-lg h-11 px-4 bg-gray-200 dark:bg-[#243b47] text-text-dark dark:text-white text-sm font-bold">Reset</button>
+            </div>
+
+            <p class="text-text-light dark:text-[#93b6c8] text-xs leading-relaxed mt-2">Estimation uses federal standard deduction; applies entered credits and the Additional Medicare Tax. 401(k) is treated as pre‑tax (no cap enforced). Roth IRA is post‑tax (no cap enforced).</p>
+          </section>
+
+          <!-- Right: Results & Comparisons -->
+          <section class="lg:col-span-2 flex flex-col gap-6">
+            <!-- Results Card -->
+            <div class="bg-card-light dark:bg-background-dark rounded-xl p-6">
+              <div class="flex flex-col items-center mb-6">
+                <p class="text-text-light dark:text-[#93b6c8] text-lg">Annual Take‑Home Pay</p>
+                <p id="kNetA" class="text-primary text-5xl font-bold mt-2">$0</p>
+                <p class="text-xs text-text-light dark:text-[#93b6c8] mt-1">Primary State: <span id="lblPrimary" class="text-text-dark dark:text-white">—</span></p>
+                <!-- Info chips -->
+                <div class="mt-3 flex flex-wrap items-center justify-center gap-2">
+                  <div id="chipFed" class="inline-flex items-center gap-2 rounded-full bg-gray-100 dark:bg-[#243b47] px-3 py-1 text-xs text-text-dark dark:text-[#cde6f5] border border-gray-300 dark:border-gray-700"></div>
+                  <div id="chipMarg" class="inline-flex items-center gap-2 rounded-full bg-gray-100 dark:bg-[#243b47] px-3 py-1 text-xs text-text-dark dark:text-[#cde6f5] border border-gray-300 dark:border-gray-700"></div>
+                  <div id="chip401" class="inline-flex items-center gap-2 rounded-full bg-gray-100 dark:bg-[#243b47] px-3 py-1 text-xs text-text-dark dark:text-[#cde6f5] border border-gray-300 dark:border-gray-700"></div>
+                </div>
+              </div>
+
+              <!-- Tabs header (static visuals) -->
+              <div class="w-full">
+                <div class="border-b border-gray-200 dark:border-gray-700">
+                  <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+                    <button class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-base text-primary border-primary">Breakdown</button>
+                  </nav>
+                </div>
+
+                <!-- Breakdown grid -->
+                <div class="py-6">
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+                    <div class="flex justify-between items-center text-base">
+                      <span class="text-text-dark dark:text-white">
+                        Gross Income
+                        <span class="tooltip-container">
+                          <span class="material-symbols-outlined text-xs align-middle ml-1 cursor-help">info</span>
+                          <span class="tooltip-text">Total income before any deductions or taxes.</span>
+                        </span>
+                      </span>
+                      <span id="xGross" class="text-text-dark dark:text-[#EAEAEA] font-medium">$0</span>
+                    </div>
+                    <div class="flex justify-between items-center text-base">
+                      <span class="text-text-dark dark:text-white">
+                        Federal Tax
+                        <span class="tooltip-container">
+                          <span class="material-symbols-outlined text-xs align-middle ml-1 cursor-help">info</span>
+                          <span class="tooltip-text">Estimated federal income tax.</span>
+                        </span>
+                      </span>
+                      <span id="kFed" class="text-text-dark dark:text-[#EAEAEA] font-medium">$0</span>
+                    </div>
+                    <div class="flex justify-between items-center text-base">
+                      <span class="text-text-dark dark:text-white">
+                        Pre‑Tax 401(k)
+                        <span class="tooltip-container">
+                          <span class="material-symbols-outlined text-xs align-middle ml-1 cursor-help">info</span>
+                          <span class="tooltip-text">Total pre-tax 401(k) contributions.</span>
+                        </span>
+                      </span>
+                      <span id="k401" class="text-text-dark dark:text-[#EAEAEA] font-medium">$0</span>
+                    </div>
+                    <div class="flex justify-between items-center text-base">
+                      <span class="text-text-dark dark:text-white">
+                        State Tax
+                        <span class="tooltip-container">
+                          <span class="material-symbols-outlined text-xs align-middle ml-1 cursor-help">info</span>
+                          <span class="tooltip-text">Estimated state income tax.</span>
+                        </span>
+                      </span>
+                      <span id="kState" class="text-text-dark dark:text-[#EAEAEA] font-medium">$0</span>
+                    </div>
+                    <div class="flex justify-between items-center text-base">
+                      <span class="text-text-dark dark:text-white">
+                        FICA Tax
+                        <span class="tooltip-container">
+                          <span class="material-symbols-outlined text-xs align-middle ml-1 cursor-help">info</span>
+                          <span class="tooltip-text">Social Security and Medicare taxes.</span>
+                        </span>
+                      </span>
+                      <span id="kFica" class="text-text-dark dark:text-[#EAEAEA] font-medium">$0</span>
+                    </div>
+                    <div class="flex justify-between items-center text-base">
+                      <span class="text-text-dark dark:text-white">
+                        Local Tax
+                        <span class="tooltip-container">
+                          <span class="material-symbols-outlined text-xs align-middle ml-1 cursor-help">info</span>
+                          <span class="tooltip-text">Estimated local income tax.</span>
+                        </span>
+                      </span>
+                      <span id="kLocalTax" class="text-text-dark dark:text-[#EAEAEA] font-medium">$0</span>
+                    </div>
+                    <div class="flex justify-between items-center text-base">
+                      <span class="text-text-dark dark:text-white">
+                        Total Tax Paid
+                        <span class="tooltip-container">
+                          <span class="material-symbols-outlined text-xs align-middle ml-1 cursor-help">info</span>
+                          <span class="tooltip-text">Sum of estimated federal, state, FICA, and local taxes.</span>
+                        </span>
+                      </span>
+                      <span id="kTotalTax" class="text-text-dark dark:text-[#EAEAEA] font-medium">$0</span>
+                    </div>
+                    <div class="flex justify-between items-center text-base">
+                      <span class="text-text-dark dark:text-white">
+                        Taxable Income
+                        <span class="tooltip-container">
+                          <span class="material-symbols-outlined text-xs align-middle ml-1 cursor-help">info</span>
+                          <span class="tooltip-text">Income subject to federal income tax after deductions.</span>
+                        </span>
+                      </span>
+                      <span id="kTaxable" class="text-text-dark dark:text-[#EAEAEA] font-medium">$0</span>
+                    </div>
+                    <div class="flex justify-between items-center text-base">
+                      <span class="text-text-dark dark:text-white">
+                        Marginal Rate
+                        <span class="tooltip-container">
+                          <span class="material-symbols-outlined text-xs align-middle ml-1 cursor-help">info</span>
+                          <span class="tooltip-text">The tax rate on your last dollar of taxable income.</span>
+                        </span>
+                      </span>
+                      <span id="kMarg" class="text-text-dark dark:text-[#EAEAEA] font-medium">0%</span>
+                    </div>
+                    <div class="md:col-span-2 border-t border-gray-200 dark:border-gray-700 my-2"></div>
+                    <div class="flex justify-between items-center text-lg font-bold">
+                      <span class="text-primary">
+                        Take‑Home Pay
+                        <span class="tooltip-container">
+                          <span class="material-symbols-outlined text-xs align-middle ml-1 cursor-help">info</span>
+                          <span class="tooltip-text">Your net pay after all deductions and taxes.</span>
+                        </span>
+                      </span>
+                      <span id="kNetA_2" class="text-primary">$0</span>
+                    </div>
+                  </div>
+                  <div class="mt-6">
+                    <canvas id="taxBreakdownChart"></canvas>
+                  </div>
+                </div>
+
+                <!-- Per‑Period KPIs -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div class="bg-gray-100 dark:bg-[#243b47] rounded-lg p-4 text-center">
+                    <p class="text-text-light dark:text-[#93b6c8] text-sm">Monthly</p>
+                    <p id="kNetM" class="text-text-dark dark:text-white text-xl font-bold mt-1">$0</p>
+                  </div>
+                  <div class="bg-gray-100 dark:bg-[#243b47] rounded-lg p-4 text-center">
+                    <p class="text-text-light dark:text-[#93b6c8] text-sm">Biweekly</p>
+                    <p id="kNetB" class="text-text-dark dark:text-white text-xl font-bold mt-1">$0</p>
+                  </div>
+                  <div class="bg-gray-100 dark:bg-[#243b47] rounded-lg p-4 text-center">
+                    <p class="text-text-light dark:text-[#93b6c8] text-sm">Weekly</p>
+                    <p id="kNetW" class="text-text-dark dark:text-white text-xl font-bold mt-1">$0</p>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                  <div class="bg-gray-100 dark:bg-[#243b47] rounded-lg p-4 text-center">
+                    <p class="text-text-light dark:text-[#93b6c8] text-sm">
+                      Roth IRA (annual)
+                      <span class="tooltip-container">
+                        <span class="material-symbols-outlined text-xs align-middle ml-1 cursor-help">info</span>
+                        <span class="tooltip-text">Total post-tax Roth IRA contributions.</span>
+                      </span>
+                    </p>
+                    <p id="kRoth" class="text-text-dark dark:text-white text-xl font-bold mt-1">$0</p>
+                  </div>
+                  <div class="bg-gray-100 dark:bg-[#243b47] rounded-lg p-4 text-center">
+                    <p class="text-text-light dark:text-[#93b6c8] text-sm">
+                      Final Net (Annual)
+                      <span class="tooltip-container">
+                        <span class="material-symbols-outlined text-xs align-middle ml-1 cursor-help">info</span>
+                        <span class="tooltip-text">Your total take-home pay after all deductions and Roth contributions.</span>
+                      </span>
+                    </p>
+                    <p id="kNetFinalA" class="text-text-dark dark:text-white text-xl font-bold mt-1">$0</p>
+                  </div>
+                  <div class="bg-gray-100 dark:bg-[#243b47] rounded-lg p-4 text-center">
+                    <p class="text-text-light dark:text-[#93b6c8] text-sm">
+                      Final Net (Monthly)
+                      <span class="tooltip-container">
+                        <span class="material-symbols-outlined text-xs align-middle ml-1 cursor-help">info</span>
+                        <span class="tooltip-text">Your monthly take-home pay after all deductions and Roth contributions.</span>
+                      </span>
+                    </p>
+                    <p id="kNetFinalM" class="text-text-dark dark:text-white text-xl font-bold mt-1">$0</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Comparison Area -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="bg-card-light dark:bg-background-dark rounded-xl p-6">
+                <p class="text-text-light dark:text-[#93b6c8] text-base mb-2">Compare with…</p>
+                <select id="compare1" class="form-select w-full rounded-lg text-text-dark dark:text-white focus:outline-none focus:ring-2 focus:ring-primary border-none bg-gray-50 dark:bg-[#243b47] h-12 p-3 text-base"></select>
+              </div>
+              <div class="bg-card-light dark:bg-background-dark rounded-xl p-6">
+                <p class="text-text-light dark:text-[#93b6c8] text-base mb-2">And…</p>
+                <select id="compare2" class="form-select w-full rounded-lg text-text-dark dark:text-white focus:outline-none focus:ring-2 focus:ring-primary border-none bg-gray-50 dark:bg-[#243b47] h-12 p-3 text-base"></select>
+              </div>
+            </div>
+
+            <div class="bg-card-light dark:bg-background-dark rounded-xl p-6">
+              <div id="compareGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+              <p class="text-text-light dark:text-[#93b6c8] text-xs mt-4">Tip: Use the override box to force a single effective rate for state tax to compare apples‑to‑apples.</p>
+            </div>
+
+            <!-- What-If Scenarios -->
+            <details class="bg-card-light dark:bg-background-dark rounded-xl group">
+              <summary class="flex cursor-pointer items-center justify-between p-6">
+                <p class="text-text-dark dark:text-white text-lg font-medium">What-If Scenarios</p>
+                <span class="material-symbols-outlined text-text-light dark:text-white group-open:rotate-180 transition-transform">expand_more</span>
+              </summary>
+              <div class="px-6 pb-6 text-text-light dark:text-[#93b6c8] space-y-4 text-sm">
+                <div>
+                  <p class="text-text-dark dark:text-white text-base font-medium pb-2">Bonus Impact Calculator</p>
+                  <label class="flex flex-col">
+                    <p class="text-text-light dark:text-[#93b6c8] text-sm font-medium pb-2">Bonus Amount ($)</p>
+                    <input id="bonusAmount" type="number" min="0" step="100" class="form-input w-full rounded-lg text-text-dark dark:text-white focus:outline-0 focus:ring-0 border-none bg-white dark:bg-[#111c21] h-12 p-3 text-base" placeholder="e.g. 5000" />
+                  </label>
+                  <button id="calculateBonus" class="inline-flex items-center justify-center rounded-lg h-11 px-4 bg-primary text-white text-sm font-bold mt-4">Calculate Bonus Impact</button>
+                  <div id="bonusResult" class="mt-4 text-text-dark dark:text-white"></div>
+                </div>
+
+                <div class="border-t border-gray-200 dark:border-gray-700 my-4"></div>
+
+                <div>
+                  <p class="text-text-dark dark:text-white text-base font-medium pb-2">Job Offer Comparison</p>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="flex flex-col">
+                      <p class="text-text-light dark:text-[#93b6c8] text-sm font-medium pb-2">Offer 1 Annual Income ($)</p>
+                      <input id="offer1Income" type="number" min="0" step="100" class="form-input w-full rounded-lg text-text-dark dark:text-white focus:outline-0 focus:ring-0 border-none bg-white dark:bg-[#111c21] h-12 p-3 text-base" placeholder="e.g. 100000" />
+                    </div>
+                    <div class="flex flex-col">
+                      <p class="text-text-light dark:text-[#93b6c8] text-sm font-medium pb-2">Offer 2 Annual Income ($)</p>
+                      <input id="offer2Income" type="number" min="0" step="100" class="form-input w-full rounded-lg text-text-dark dark:text-white focus:outline-0 focus:ring-0 border-none bg-white dark:bg-[#111c21] h-12 p-3 text-base" placeholder="e.g. 110000" />
+                    </div>
+                  </div>
+                  <button id="compareOffers" class="inline-flex items-center justify-center rounded-lg h-11 px-4 bg-primary text-white text-sm font-bold mt-4">Compare Offers</button>
+                  <div id="offerComparisonResult" class="mt-4 text-text-dark dark:text-white grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                </div>
+              </div>
+            </details>
+
+            <!-- Explainer -->
+            <details class="bg-card-light dark:bg-background-dark rounded-xl group">
+              <summary class="flex cursor-pointer items-center justify-between p-6">
+                <p class="text-text-dark dark:text-white text-lg font-medium">How Your Take‑Home Pay is Calculated</p>
+                <span class="material-symbols-outlined text-text-light dark:text-white group-open:rotate-180 transition-transform">expand_more</span>
+              </summary>
+              <div class="px-6 pb-6 text-text-light dark:text-[#93b6c8] space-y-2 text-sm">
+                <div class="flex justify-between">
+                  <span>
+                    Gross income
+                    <span class="tooltip-container">
+                      <span class="material-symbols-outlined text-xs align-middle ml-1 cursor-help">info</span>
+                      <span class="tooltip-text">Total income before any deductions or taxes.</span>
+                    </span>
+                  </span>
+                  <span id="xGross_2">$0</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>
+                    Minus 401(k) (pre‑tax)
+                    <span class="tooltip-container">
+                      <span class="material-symbols-outlined text-xs align-middle ml-1 cursor-help">info</span>
+                      <span class="tooltip-text">Pre-tax contributions to your 401(k) retirement plan.</span>
+                    </span>
+                  </span>
+                  <span id="x401">$0</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>
+                    = Adjusted wages for tax
+                    <span class="tooltip-container">
+                      <span class="material-symbols-outlined text-xs align-middle ml-1 cursor-help">info</span>
+                      <span class="tooltip-text">Your income after pre-tax deductions, used for tax calculations.</span>
+                    </span>
+                  </span>
+                  <span id="xAdj">$0</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>
+                    Minus standard deduction
+                    <span class="tooltip-container">
+                      <span class="material-symbols-outlined text-xs align-middle ml-1 cursor-help">info</span>
+                      <span class="tooltip-text">A fixed dollar amount that reduces your taxable income.</span>
+                    </span>
+                  </span>
+                  <span id="xStd">$0</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>
+                    = Federal taxable income
+                    <span class="tooltip-container">
+                      <span class="material-symbols-outlined text-xs align-middle ml-1 cursor-help">info</span>
+                      <span class="tooltip-text">Income subject to federal income tax after deductions.</span>
+                    </span>
+                  </span>
+                  <span id="xTaxable">$0</span>
+                </div>
+                <div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
+                <div class="flex justify-between">
+                  <span>
+                    Estimated federal tax
+                    <span class="tooltip-container">
+                      <span class="material-symbols-outlined text-xs align-middle ml-1 cursor-help">info</span>
+                      <span class="tooltip-text">Your estimated federal income tax liability.</span>
+                    </span>
+                  </span>
+                  <span id="xFed">$0</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>
+                    Estimated state tax
+                    <span class="tooltip-container">
+                      <span class="material-symbols-outlined text-xs align-middle ml-1 cursor-help">info</span>
+                      <span class="tooltip-text">Your estimated state income tax liability.</span>
+                    </span>
+                  </span>
+                  <span id="xState">$0</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>
+                    Estimated FICA tax
+                    <span class="tooltip-container">
+                      <span class="material-symbols-outlined text-xs align-middle ml-1 cursor-help">info</span>
+                      <span class="tooltip-text">Your estimated Social Security and Medicare taxes.</span>
+                    </span>
+                  </span>
+                  <span id="xFica">$0</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>
+                    Estimated local tax
+                    <span class="tooltip-container">
+                      <span class="material-symbols-outlined text-xs align-middle ml-1 cursor-help">info</span>
+                      <span class="tooltip-text">Your estimated local income tax liability.</span>
+                    </span>
+                  </span>
+                  <span id="xLocalTax">$0</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>
+                    Net after taxes & 401(k)
+                    <span class="tooltip-container">
+                      <span class="material-symbols-outlined text-xs align-middle ml-1 cursor-help">info</span>
+                      <span class="tooltip-text">Your income after federal, state, FICA, and local taxes, and 401(k) contributions.</span>
+                    </span>
+                  </span>
+                  <span id="xNet">$0</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>
+                    Minus Roth IRA (post‑tax)
+                    <span class="tooltip-container">
+                      <span class="material-symbols-outlined text-xs align-middle ml-1 cursor-help">info</span>
+                      <span class="tooltip-text">Post-tax contributions to your Roth IRA retirement plan.</span>
+                    </span>
+                  </span>
+                  <span id="xRoth">$0</span>
+                </div>
+                <div class="flex justify-between font-semibold">
+                  <span>
+                    Final take‑home after Roth
+                    <span class="tooltip-container">
+                      <span class="material-symbols-outlined text-xs align-middle ml-1 cursor-help">info</span>
+                      <span class="tooltip-text">Your final take-home pay after all deductions, taxes, and Roth contributions.</span>
+                    </span>
+                  </span>
+                  <span id="xFinal">$0</span>
+                </div>
+              </div>
+            </details>
+
+          </section>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script type="module">
+// ===== Utilities (guarded DOM writers) =====
+const $ = s => document.querySelector(s);
+const byId = id => document.getElementById(id);
+const fmt = n => (isFinite(n)? n:0).toLocaleString(undefined,{style:'currency',currency:'USD',maximumFractionDigits:0});
+const setText = (id, value) => { const el = byId(id); if (el) el.textContent = value; };
+const setHTML = (id, html) => { const el = byId(id); if (el) el.innerHTML = html; };
+
+// ===== Data =====
+const STATES_LIST = ['AL','AK','AZ','AR','CA','CO','CT','DE','DC','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'];
+
+const FICA_LIMITS = {
+  2024: { ss_limit: 168600, ss_rate: 0.062, med_rate: 0.0145, add_med_threshold: { single: 200000, mfj: 250000, mfs: 125000 , hoh: 200000 } },
+  2025: { ss_limit: 174900, ss_rate: 0.062, med_rate: 0.0145, add_med_threshold: { single: 200000, mfj: 250000, mfs: 125000 , hoh: 200000 } }
+};
+
+const FED_STD = { 2024:{single:14600,mfj:29200,mfs:14600,hoh:21900}, 2025:{single:15000,mfj:30000,mfs:15000,hoh:22500} };
+const FED_BRACKETS = {
+  2024:{
+    single:[[11600,0.10],[47150,0.12],[100525,0.22],[191950,0.24],[243725,0.32],[609350,0.35],[Infinity,0.37]],
+    mfj:   [[23200,0.10],[94300,0.12],[201050,0.22],[383900,0.24],[487450,0.32],[731200,0.35],[Infinity,0.37]],
+    mfs:   [[11600,0.10],[47150,0.12],[100525,0.22],[191950,0.24],[243725,0.32],[365600,0.35],[Infinity,0.37]],
+    hoh:   [[16550,0.10],[63100,0.12],[100500,0.22],[191950,0.24],[243700,0.32],[609350,0.35],[Infinity,0.37]]
+  },
+  2025:{
+    single:[[11925,0.10],[48475,0.12],[103350,0.22],[197300,0.24],[250525,0.32],[626350,0.35],[Infinity,0.37]],
+    mfj:   [[23850,0.10],[96950,0.12],[206700,0.22],[394600,0.24],[501050,0.32],[751600,0.35],[Infinity,0.37]],
+    mfs:   [[11925,0.10],[48475,0.12],[103350,0.22],[197300,0.24],[250525,0.32],[313175,0.35],[Infinity,0.37]],
+    hoh:   [[17000,0.10],[64850,0.12],[103350,0.22],[197300,0.24],[250500,0.32],[626350,0.35],[Infinity,0.37]]
+  }
+};
+
+const STATE_MODELS = {
+  AL:{type:'progressive',brackets:[[500,0.02],[3000,0.04],[Infinity,0.05]]}, AK:{type:'flat',rate:0}, AZ:{type:'flat',rate:0.025},
+  AR:{type:'progressive',brackets:[[4400,0.02],[8800,0.04],[Infinity,0.049]]}, CA:{type:'progressive',brackets:[[10412,0.01],[24684,0.02],[38959,0.04],[54081,0.06],[68350,0.08],[349137,0.093],[418961,0.103],[698271,0.113],[Infinity,0.123]]}, CO:{type:'flat',rate:0.044},
+  CT:{type:'progressive',brackets:[[10000,0.03],[50000,0.05],[100000,0.055],[200000,0.06],[250000,0.065],[Infinity,0.0699]]}, DE:{type:'progressive',brackets:[[2000,0.022],[5000,0.039],[10000,0.048],[20000,0.052],[25000,0.0555],[60000,0.066],[Infinity,0.066]]}, DC:{type:'progressive',brackets:[[10000,0.04],[40000,0.06],[60000,0.065],[250000,0.085],[500000,0.0925],[1000000,0.10],[Infinity,0.1075]]},
+  FL:{type:'flat',rate:0}, GA:{type:'flat',rate:0.0549}, HI:{type:'progressive',brackets:[[2400,0.014],[4800,0.032],[9600,0.055],[14400,0.064],[19200,0.068],[36000,0.072],[48000,0.076],[150000,0.079],[175000,0.0825],[200000,0.09],[Infinity,0.11]]},
+  ID:{type:'flat',rate:0.058}, IL:{type:'flat',rate:0.0495}, IN:{type:'flat',rate:0.0315}, IA:{type:'flat',rate:0.044}, KS:{type:'progressive',brackets:[[15000,0.031],[30000,0.0525],[Infinity,0.057]]}, KY:{type:'flat',rate:0.04},
+  LA:{type:'progressive',brackets:[[12500,0.0185],[50000,0.035],[Infinity,0.0425]]}, ME:{type:'progressive',brackets:[[26000,0.058],[61550,0.0675],[Infinity,0.0715]]}, MD:{type:'progressive',brackets:[[1000,0.02],[2000,0.03],[3000,0.04],[100000,0.0475],[125000,0.05],[150000,0.0525],[250000,0.055],[Infinity,0.0575]]},
+  MA:{type:'flat',rate:0.05}, MI:{type:'flat',rate:0.0425}, MN:{type:'progressive',brackets:[[31190,0.0535],[103060,0.068],[171220,0.0785],[Infinity,0.0985]]}, MS:{type:'progressive',brackets:[[10000,0.04],[Infinity,0.05]]},
+  MO:{type:'progressive',brackets:[[1121,0],[2242,0.02],[4484,0.025],[8968,0.032],[13452,0.037],[17936,0.041],[22420,0.045],[24762,0.048],[Infinity,0.049]]}, MT:{type:'flat',rate:0.054}, NE:{type:'progressive',brackets:[[3700,0.0246],[22170,0.0351],[35630,0.0501],[Infinity,0.0664]]},
+  NV:{type:'flat',rate:0}, NH:{type:'flat',rate:0}, NJ:{type:'progressive',brackets:[[20000,0.014],[35000,0.0175],[40000,0.035],[75000,0.05525],[500000,0.0637],[1000000,0.1075],[Infinity,0.1075]]}, NM:{type:'progressive',brackets:[[5500,0.017],[11000,0.032],[16000,0.047],[21000,0.049],[Infinity,0.059]]},
+  NY:{type:'progressive',brackets:[[8500,0.04],[11700,0.045],[13900,0.0525],[80650,0.0585],[215400,0.0625],[1077550,0.0685],[Infinity,0.0882]]}, NC:{type:'flat',rate:0.0425}, ND:{type:'progressive',brackets:[[44725,0.0195],[225975,0.0241],[Infinity,0.025]]}, OH:{type:'progressive',brackets:[[26950,0.0275],[53800,0.0322],[107600,0.0367],[Infinity,0.0399]]},
+  OK:{type:'progressive',brackets:[[1000,0.0025],[2500,0.0075],[3750,0.0175],[4900,0.0275],[7200,0.0375],[Infinity,0.0475]]}, OR:{type:'progressive',brackets:[[4050,0.0475],[10200,0.0675],[125000,0.0875],[Infinity,0.099]]}, PA:{type:'flat',rate:0.0307}, RI:{type:'progressive',brackets:[[7550,0.0375],[85550,0.0475],[Infinity,0.0599]]},
+  SC:{type:'progressive',brackets:[[4040,0],[20200,0.03],[Infinity,0.065]]}, SD:{type:'flat',rate:0}, TN:{type:'flat',rate:0}, TX:{type:'flat',rate:0}, UT:{type:'flat',rate:0.0485},
+  VT:{type:'progressive',brackets:[[42150,0.0335],[102200,0.066],[214900,0.076],[Infinity,0.0875]]}, VA:{type:'progressive',brackets:[[3000,0.02],[5000,0.03],[17000,0.05],[Infinity,0.0575]]}, WA:{type:'flat',rate:0}, WV:{type:'progressive',brackets:[[10000,0.03],[25000,0.04],[40000,0.045],[60000,0.065],[Infinity,0.065]]}, WI:{type:'progressive',brackets:[[13230,0.0354],[52620,0.0465],[284570,0.0530],[Infinity,0.0765]]}, WY:{type:'flat',rate:0}
+};
+
+// ===== Tax Calcs =====
+function calcFederalTax(year, agi, status){
+  const std = (FED_STD[year]||FED_STD[2025])[status]||0;
+  const taxable = Math.max(0, agi - std);
+  const brackets = (FED_BRACKETS[year]||FED_BRACKETS[2025])[status] || (FED_BRACKETS[2025].single);
+  let tax=0, last=0, marginalRate=0;
+  for(const [upto, rate] of brackets){
+    const span = Math.min(taxable, upto) - last;
+    if(span>0){ tax += span*rate; last = upto; marginalRate = rate; }
+    if(taxable<=upto) break;
+  }
+  return {tax, taxable, marginalRate, std};
+}
+
+function calcStateTax(agi, state){
+  const m = STATE_MODELS[state];
+  if(!m){
+    const eff = Math.max(0, Math.min(0.05, (agi-40000)/400000));
+    return {tax: agi*eff, info:`Estimated ${Math.round(eff*1000)/10}%`, marginalRate: eff};
+  }
+  if (m.type==='flat') { return {tax: agi*(m.rate||0), info:`Flat ${(m.rate*100).toFixed(2)}%`, marginalRate: (m.rate||0)}; }
+  let tax=0, last=0, marginal=0; const taxable=agi-(m.std||0);
+  for(const [upto, rate] of m.brackets){
+    const span = Math.min(taxable, upto) - last;
+    if(span>0){ tax += span*rate; last=upto; marginal=rate; }
+    if(taxable<=upto) break;
+  }
+  return { tax, info:`Marginal ${(marginal*100).toFixed(2)}%`, marginalRate: marginal };
+}
+
+function calcFicaTax(year, income, status) {
+  const limits = FICA_LIMITS[year] || FICA_LIMITS[2025];
+  let socialSecurityTax = 0;
+  let medicareTax = 0;
+
+  // Social Security Tax
+  socialSecurityTax = Math.min(income, limits.ss_limit) * limits.ss_rate;
+
+  // Medicare Tax
+  medicareTax = income * limits.med_rate;
+  if (income > limits.add_med_threshold[status]) {
+    medicareTax += (income - limits.add_med_threshold[status]) * 0.009;
+  }
+  return socialSecurityTax + medicareTax;
+}
+
+// ===== Main run =====
+function run(){
+  const income1 = Number(byId('income')?.value) || 0;
+  const income2 = Number(byId('spouseIncome')?.value) || 0;
+  const income = income1 + income2;
+  if(!income){ alert('Enter income first'); return; }
+
+  const status = byId('status')?.value || 'single';
+  const year = Number(byId('year')?.value) || 2025;
+  const st = byId('state')?.value || '';
+  const override = byId('overrideStateRate')?.value ? Number(byId('overrideStateRate').value) / 100 : null;
+
+  const k401Pct1 = Number(byId('k401pct')?.value) || 0;
+  const k401_1 = Math.max(0, income1 * (k401Pct1 / 100));
+  const k401Pct2 = Number(byId('spouseK401pct')?.value) || 0;
+  const k401_2 = Math.max(0, income2 * (k401Pct2 / 100));
+  const k401 = k401_1 + k401_2;
+
+  const health = Number(byId('healthInsurance')?.value) || 0;
+  const hsa = Number(byId('hsa')?.value) || 0;
+  const traditionalIra = Number(byId('traditionalIra')?.value) || 0;
+  const studentLoanInterest = Number(byId('studentLoanInterest')?.value) || 0;
+  const fsaContribution = Number(byId('fsaContribution')?.value) || 0;
+  const otherPreTaxDeductions = Number(byId('otherPreTaxDeductions')?.value) || 0;
+
+  const preTaxDeductions = k401 + health + hsa + traditionalIra + studentLoanInterest + fsaContribution + otherPreTaxDeductions;
+
+  const adjIncome = Math.max(0, income - preTaxDeductions);
+
+  const roth1 = Number(byId('rothAmt')?.value) || 0;
+  const roth2 = Number(byId('spouseRothAmt')?.value) || 0;
+  const roth = roth1 + roth2;
+
+  const childCredit = Number(byId('childTaxCredit')?.value) || 0;
+  const dependentCareCredit = Number(byId('dependentCareCredit')?.value) || 0;
+  const childDependentCareExpenses = Number(byId('childDependentCareExpenses')?.value) || 0;
+
+  const fedResult = calcFederalTax(year, adjIncome, status);
+  const fed = { ...fedResult, tax: Math.max(0, fedResult.tax - childCredit - dependentCareCredit ) };
+
+  let stateTax, stateInfo, stateMarginalRate = 0;
+  if (override !== null) {
+    stateTax = adjIncome * override;
+    stateInfo = `Override ${(override * 100).toFixed(2)}%`; stateMarginalRate = override;
+  } else {
+    const r = calcStateTax(adjIncome, st); stateTax = r.tax; stateInfo = r.info; stateMarginalRate = r.marginalRate || 0;
+  }
+
+  const ficaTax = calcFicaTax(year, income, status);
+  const localTaxRate = Number(byId('localTaxRate')?.value) || 0;
+  const localTax = adjIncome * (localTaxRate / 100);
+
+  const totalTax = fed.tax + stateTax + ficaTax + localTax;
+  const net = income - totalTax - preTaxDeductions;
+  const finalNet = Math.max(0, net - roth);
+
+  // Primary breakdown (guarded writes)
+  setText('lblPrimary', st || '—');
+  setText('kFed', fmt(fed.tax));
+  setText('kState', fmt(stateTax));
+  setText('kFica', fmt(ficaTax)); // New FICA display
+  setText('kLocalTax', fmt(localTax)); // New Local Tax display
+  setText('kTotalTax', fmt(totalTax));
+  setHTML('chipFed', `
+    <span class="tooltip-container">
+      Std Deduction
+      <span class="material-symbols-outlined text-xs align-middle ml-1 cursor-help">info</span>
+      <span class="tooltip-text">A fixed dollar amount that reduces your taxable income.</span>
+    </span>
+    ${fmt(fed.std)} • Taxable ${fmt(fed.taxable)}
+  `);
+  setHTML('chipMarg', `
+  <span class="tooltip-container">
+    Federal Marginal
+    <span class="material-symbols-outlined text-xs align-middle ml-1 cursor-help">info</span>
+    <span class="tooltip-text">The tax rate on your last dollar of <b>federal</b> taxable income.</span>
+  </span>
+  ${(fed.marginalRate*100).toFixed(2)}%
+`);
+  setHTML('chip401', `
+    <span class="tooltip-container">
+      401(k) per paycheck
+      <span class="material-symbols-outlined text-xs align-middle ml-1 cursor-help">info</span>
+      <span class="tooltip-text">Estimated 401(k) contribution per paycheck.</span>
+    </span>
+    ${fmt(k401/26)}
+  `);
+  
+  
+// --- State marginal rate chip ---
+try {
+  byId('chipMargState')?.remove();
+  const chipStateMarg = document.createElement('div');
+  chipStateMarg.id = 'chipMargState';
+  chipStateMarg.className = "inline-flex items-center gap-2 rounded-full bg-gray-100 dark:bg-[#243b47] px-3 py-1 text-xs text-text-dark dark:text-[#cde6f5] border border-gray-300 dark:border-gray-700";
+  chipStateMarg.innerHTML = `
+    <span class="tooltip-container">
+      State Marginal
+      <span class="material-symbols-outlined text-xs align-middle ml-1 cursor-help" aria-hidden="true">info</span>
+      <span class="tooltip-text">The tax rate on your last dollar of <b>state</b> taxable income.</span>
+    </span>
+    ${(stateMarginalRate*100).toFixed(2)}%
+  `;
+  const chipBar = byId('chipMarg')?.parentElement;
+  if (chipBar) chipBar.appendChild(chipStateMarg);
+} catch(e){ /* no-op */ }
+// --- end state marginal chip ---
+// --- State info chip (appended to the chip bar) ---
+  try {
+    const existingStateChip = byId('chipStateInfo');
+    if (existingStateChip) existingStateChip.remove();
+    const chipState = document.createElement('div');
+    chipState.id = 'chipStateInfo';
+    chipState.className = "inline-flex items-center gap-2 rounded-full bg-gray-100 dark:bg-[#243b47] px-3 py-1 text-xs text-text-dark dark:text-[#cde6f5] border border-gray-300 dark:border-gray-700";
+    chipState.textContent = stateInfo || '';
+    const chipBar = byId('chipMarg')?.parentElement;
+    if (chipBar) chipBar.appendChild(chipState);
+  } catch (e) { /* no-op */ }
+  // --- end state info chip ---
+setText('kFed', fmt(fed.tax));
+  setText('kNetA', fmt(net));
+  setText('kNetA_2', fmt(net));
+  setText('kNetB', fmt(net/26));
+  setText('kNetM', fmt(net/12));
+  setText('kNetW', fmt(net/52));
+  setText('k401', fmt(k401));
+  setText('kTaxable', fmt(fed.taxable));
+  setText('kMarg', `${(fed.marginalRate*100).toFixed(2)}%`);
+  setText('kRoth', fmt(roth));
+  setText('kNetFinalA', fmt(finalNet));
+  setText('kNetFinalM', fmt(finalNet/12));
+  const primary = true; // primary area is always visible in this layout
+
+  // Explain block values
+  setText('xGross', fmt(income));
+  const xg2 = byId('xGross_2'); if(xg2) xg2.textContent = fmt(income);
+  setText('x401', fmt(k401));
+  setText('xAdj', fmt(adjIncome));
+  setText('xStd', fmt(fed.std));
+  setText('xTaxable', fmt(fed.taxable));
+  setText('xFed', fmt(fed.tax));
+  setText('xState', fmt(stateTax));
+  setText('xFica', fmt(ficaTax)); // New FICA display in explainer
+  setText('xLocalTax', fmt(localTax)); // New Local Tax display in explainer
+  setText('xNet', fmt(net));
+  setText('xRoth', fmt(roth));
+  setText('xFinal', fmt(finalNet));
+
+  // Compare cards (up to 2)
+  const c1 = byId('compare1')?.value; const c2 = byId('compare2')?.value;
+  const states = [c1,c2].filter(Boolean);
+  const fedTaxSame = fed.tax;
+  const ficaTaxSame = calcFicaTax(year, income, status); // FICA tax is the same for comparisons
+  const localTaxSame = localTax; // Local tax is the same for comparisons
+  const cards = states.map(code => {
+    const stRes = override !== null ? { tax: adjIncome * override, info: `Override ${(override * 100).toFixed(2)}%` } : calcStateTax(adjIncome, code);
+    const netS = income - fedTaxSame - stRes.tax - ficaTaxSame - localTaxSame - k401;
+    const finalS = Math.max(0, netS - roth);
+    return `<div class="rounded-lg border border-gray-300 dark:border-gray-700 p-4 bg-white dark:bg-[#111c21]">
+      <h3 class="font-semibold mb-2 text-text-dark dark:text-white">${code}</h3>
+      <div class="flex justify-between text-sm"><span class="text-[#93b6c8]">State tax</span><strong>${fmt(stRes.tax)}</strong></div>
+      <div class="flex justify-between text-sm"><span class="text-[#93b6c8]">Net (annual)</span><strong>${fmt(netS)}</strong></div>
+      <div class="flex justify-between text-sm"><span class="text-[#93b6c8]">After Roth (annual)</span><strong>${fmt(finalS)}</strong></div>
+      <div class="flex justify-between text-sm"><span class="text-[#93b6c8]">Monthly</span><strong>${fmt(finalS/12)}</strong></div>
+      <div class="flex justify-between text-sm"><span class="text-[#93b6c8]">Biweekly</span><strong>${fmt(finalS/26)}</strong></div>
+      <div class="flex justify-between text-sm"><span class="text-[#93b6c8]">Weekly</span><strong>${fmt(finalS/52)}</strong></div>
+      <p class="text-xs text-[#93b6c8] mt-2">${stRes.info||''}</p>
+    </div>`;
+  }).join('');
+  setHTML('compareGrid', cards || '<p class="text-[#93b6c8] text-sm">Pick up to two states to compare.</p>');
+
+  // What-If Scenarios Logic
+  const calculateBonus = () => {
+    const bonusAmount = Number(byId('bonusAmount')?.value) || 0;
+    if (!bonusAmount) {
+      setHTML('bonusResult', '<p class="text-red-500">Please enter a bonus amount.</p>');
+      return;
+    }
+
+    const totalIncomeWithBonus = income + bonusAmount;
+    const adjIncomeWithBonus = Math.max(0, totalIncomeWithBonus - preTaxDeductions);
+    const fedResultWithBonus = calcFederalTax(year, adjIncomeWithBonus, status);
+    const fedTaxWithBonus = Math.max(0, fedResultWithBonus.tax - childCredit - dependentCareCredit);
+    const stateTaxWithBonus = override !== null ? adjIncomeWithBonus * override : calcStateTax(adjIncomeWithBonus, st).tax;
+    const ficaTaxWithBonus = calcFicaTax(year, totalIncomeWithBonus, status);
+    const localTaxWithBonus = adjIncomeWithBonus * (localTaxRate / 100);
+    const totalTaxWithBonus = fedTaxWithBonus + stateTaxWithBonus + ficaTaxWithBonus + localTaxWithBonus;
+    const netWithBonus = totalIncomeWithBonus - totalTaxWithBonus - preTaxDeductions;
+    const finalNetWithBonus = Math.max(0, netWithBonus - roth);
+
+    const bonusTakeHome = finalNetWithBonus - finalNet;
+    setHTML('bonusResult', `
+      <p>Original Annual Net: ${fmt(finalNet)}</p>
+      <p>New Annual Net (with bonus): ${fmt(finalNetWithBonus)}</p>
+      <p>Bonus Take-Home: ${fmt(bonusTakeHome)}</p>
+    `);
+  };
+
+  const compareOffers = () => {
+    const offer1Income = Number(byId('offer1Income')?.value) || 0;
+    const offer2Income = Number(byId('offer2Income')?.value) || 0;
+
+    if (!offer1Income || !offer2Income) {
+      setHTML('offerComparisonResult', '<p class="text-red-500">Please enter both offer incomes.</p>');
+      return;
+    }
+
+    const calculateOfferNet = (offerIncome) => {
+      const offerAdjIncome = Math.max(0, offerIncome - preTaxDeductions);
+      const offerFedResult = calcFederalTax(year, offerAdjIncome, status);
+      const offerFedTax = Math.max(0, offerFedResult.tax - childCredit - dependentCareCredit);
+      const offerStateTax = override !== null ? offerAdjIncome * override : calcStateTax(offerAdjIncome, st).tax;
+      const offerFicaTax = calcFicaTax(year, offerIncome, status);
+      const offerLocalTax = offerAdjIncome * (localTaxRate / 100);
+      const offerTotalTax = offerFedTax + offerStateTax + offerFicaTax + offerLocalTax;
+      const offerNet = offerIncome - offerTotalTax - preTaxDeductions;
+      return Math.max(0, offerNet - roth);
+    };
+
+    const offer1Net = calculateOfferNet(offer1Income);
+    const offer2Net = calculateOfferNet(offer2Income);
+
+    setHTML('offerComparisonResult', `
+      <div class="rounded-lg border border-gray-300 dark:border-gray-700 p-4 bg-white dark:bg-[#111c21]">
+        <h3 class="font-semibold mb-2 text-text-dark dark:text-white">Offer 1</h3>
+        <div class="flex justify-between text-sm"><span class="text-[#93b6c8]">Annual Income</span><strong>${fmt(offer1Income)}</strong></div>
+        <div class="flex justify-between text-sm"><span class="text-[#93b6c8]">Annual Net</span><strong>${fmt(offer1Net)}</strong></div>
+        <div class="flex justify-between text-sm"><span class="text-[#93b6c8]">Monthly Net</span><strong>${fmt(offer1Net/12)}</strong></div>
+      </div>
+      <div class="rounded-lg border border-gray-300 dark:border-gray-700 p-4 bg-white dark:bg-[#111c21]">
+        <h3 class="font-semibold mb-2 text-text-dark dark:text-white">Offer 2</h3>
+        <div class="flex justify-between text-sm"><span class="text-[#93b6c8]">Annual Income</span><strong>${fmt(offer2Income)}</strong></div>
+        <div class="flex justify-between text-sm"><span class="text-[#93b6c8]">Annual Net</span><strong>${fmt(offer2Net)}</strong></div>
+        <div class="flex justify-between text-sm"><span class="text-[#93b6c8]">Monthly Net</span><strong>${fmt(offer2Net/12)}</strong></div>
+      </div>
+    `);
+  };
+
+  byId('calculateBonus')?.addEventListener('click', calculateBonus);
+  byId('compareOffers')?.addEventListener('click', compareOffers);
+}
+
+// ===== Init + Tests =====
+function init() {
+  ['state', 'compare1', 'compare2'].forEach(id => {
+    const el = byId(id); if (!el) return;
+    el.innerHTML = '<option value="">— Select —</option>' + STATES_LIST.map(s => `<option value='${s}'>${s}</option>`).join('');
+  });
+
+  byId('advanced-toggle').addEventListener('change', (e) => {
+    byId('advanced-options').classList.toggle('hidden', !e.target.checked);
+    byId('advanced-options').classList.toggle('flex', e.target.checked);
+  });
+
+  byId('calc')?.addEventListener('click', run);
+  byId('reset')?.addEventListener('click', () => {
+    ['income', 'spouseIncome', 'state', 'compare1', 'compare2', 'overrideStateRate', 'k401pct', 'spouseK401pct', 'rothAmt', 'spouseRothAmt', 'healthInsurance', 'hsa', 'childTaxCredit', 'traditionalIra', 'studentLoanInterest', 'dependentCareCredit', 'childDependentCareExpenses', 'fsaContribution', 'otherPreTaxDeductions', 'localTaxRate', 'bonusAmount', 'offer1Income', 'offer2Income'].forEach(id => { const el = byId(id); if (el) el.value = ''; });
+    setHTML('compareGrid', '');
+    setHTML('bonusResult', '');
+    setHTML('offerComparisonResult', '');
+    ['kNetA','kNetA_2','kNetB','kNetM','kNetW','kFed','kState','k401','kTaxable','kMarg','kRoth','kNetFinalA','kNetFinalM','kTotalTax','lblPrimary','chipFed','chipMarg','chip401','kFica','kLocalTax'].forEach(id=>setText(id,'$0'));
+    setText('lblPrimary','—');
+    // clear explainer
+    ['xGross','x401','xAdj','xStd','xTaxable','xFed','xState','xNet','xRoth','xFinal','xGross_2','xFica','xLocalTax'].forEach(id=>setText(id,'$0'));
+    if (window.taxBreakdownChartInstance) {
+      window.taxBreakdownChartInstance.destroy();
+    }
+  });
+
+  // Theme toggle functionality
+  const themeToggleBtn = byId('theme-toggle');
+  const htmlElement = document.documentElement;
+
+  function updateThemeIcon() {
+    const iconSpan = themeToggleBtn.querySelector('.material-symbols-outlined');
+    if (htmlElement.classList.contains('dark')) {
+      iconSpan.textContent = 'light_mode';
+      iconSpan.classList.remove('text-text-dark');
+      iconSpan.classList.add('text-white');
+    } else {
+      iconSpan.textContent = 'dark_mode';
+      iconSpan.classList.remove('text-white');
+      iconSpan.classList.add('text-text-dark');
+    }
+  }
+
+  themeToggleBtn?.addEventListener('click', () => {
+    htmlElement.classList.toggle('dark');
+    updateThemeIcon();
+  });
+
+  // Set initial icon based on current theme
+  updateThemeIcon();
+}
+
+let taxBreakdownChartInstance = null; // Global variable to hold the chart instance
+
+function renderChart(federalTax, stateTax, ficaTax, localTax, preTaxDeductions, rothContributions, netPay) {
+  const ctx = byId('taxBreakdownChart');
+  if (!ctx) return;
+
+  if (window.taxBreakdownChartInstance) {
+    window.taxBreakdownChartInstance.destroy();
+  }
+
+  const data = {
+    labels: ['Federal Tax', 'State Tax', 'FICA Tax', 'Local Tax', 'Pre-Tax Deductions', 'Roth Contributions', 'Net Pay'],
+    datasets: [{
+      data: [federalTax, stateTax, ficaTax, localTax, preTaxDeductions, rothContributions, netPay],
+      backgroundColor: [
+        '#FF6384', // Federal Tax
+        '#36A2EB', // State Tax
+        '#FFCE56', // FICA Tax
+        '#4BC0C0', // Local Tax
+        '#9966FF', // Pre-Tax Deductions
+        '#FF9F40', // Roth Contributions
+        '#4CAF50'  // Net Pay
+      ],
+      hoverOffset: 4
+    }]
+  };
+
+  window.taxBreakdownChartInstance = new Chart(ctx, {
+    type: 'pie',
+    data: data,
+    options: {
+      responsive: true,
+      maintainAspectRatio: false, // Allow chart to resize freely
+      plugins: {
+        legend: {
+          position: 'right', // Move legend to the right for a more compact look
+            labels: {
+              color: document.documentElement.classList.contains('dark') ? '#FFFFFF' : '#374151',
+              font: {
+                size: 12 // Smaller font size for legend
+              }
+            }
+          },
+          title: {
+            display: true,
+            text: 'Income Allocation Breakdown',
+            color: document.documentElement.classList.contains('dark') ? '#FFFFFF' : '#374151',
+            font: {
+              size: 14 // Smaller font size for title
+            }
+          },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              let label = context.label || '';
+              if (label) {
+                label += ': ';
+              }
+              if (context.parsed !== null) {
+                label += fmt(context.parsed); // Format tooltip values as currency
+              }
+              return label;
+            }
+          }
+        }
+      },
+      layout: {
+        padding: {
+          left: 10,
+          right: 10,
+          top: 10,
+          bottom: 10
+        }
+      }
+    }
+  });
+}
+
+// Modify the run function to call renderChart
+const originalRun = run;
+run = () => {
+  originalRun();
+  const income1 = Number(byId('income')?.value) || 0;
+  const income2 = Number(byId('spouseIncome')?.value) || 0;
+  const income = income1 + income2;
+  if(!income){ return; }
+
+  const status = byId('status')?.value || 'single';
+  const year = Number(byId('year')?.value) || 2025;
+  const st = byId('state')?.value || '';
+  const override = byId('overrideStateRate')?.value ? Number(byId('overrideStateRate').value) / 100 : null;
+
+  const k401Pct1 = Number(byId('k401pct')?.value) || 0;
+  const k401_1 = Math.max(0, income1 * (k401Pct1 / 100));
+  const k401Pct2 = Number(byId('spouseK401pct')?.value) || 0;
+  const k401_2 = Math.max(0, income2 * (k401Pct2 / 100));
+  const k401 = k401_1 + k401_2;
+
+  const health = Number(byId('healthInsurance')?.value) || 0;
+  const hsa = Number(byId('hsa')?.value) || 0;
