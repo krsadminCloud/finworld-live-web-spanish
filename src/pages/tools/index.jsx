@@ -72,17 +72,19 @@ export default function FinancialCalculators() {
 
   // === Personal Finance Calculators (Warm Pastel Palette) ===
   const personalFinanceCalculators = [
+    // Active calculators in requested order
+    { title: "Compounding Calculator", icon: <TrendingUpIcon sx={{ color: "#FCD34D" }} fontSize="large" />, to: "/tools/compounding_calculator", disabled: false, cat: "Personal Finance" },
+    { title: "Retirement Saving", icon: <SavingsIcon sx={{ color: "#93C5FD" }} fontSize="large" />, to: "/tools/retirement_calculator", disabled: false, cat: "Personal Finance" },
     { title: "Take Home Pay", icon: <AttachMoneyIcon sx={{ color: "#F9A8D4" }} fontSize="large" />, to: "/tools/take_home_pay", disabled: false, cat: "Personal Finance" },
+    { title: "Car Loan", icon: <DirectionsCarIcon sx={{ color: "#A5F3FC" }} fontSize="large" />, to: "/tools/auto_loan_calculator", disabled: false, cat: "Personal Finance" },
+    { title: "Buy vs Lease", icon: <DirectionsCarIcon sx={{ color: "#86EFAC" }} fontSize="large" />, to: "/tools/buy_vs_lease_auto", disabled: false, cat: "Personal Finance" },
+    // Remaining (coming soon) items
     { title: "Budget Planner", icon: <CalculateIcon sx={{ color: "#FDE68A" }} fontSize="large" />, disabled: true, cat: "Personal Finance" },
     { title: "Net Worth", icon: <AccountBalanceIcon sx={{ color: "#A7F3D0" }} fontSize="large" />, disabled: true, cat: "Personal Finance" },
     { title: "Debt Payoff", icon: <MoneyOffIcon sx={{ color: "#FCA5A5" }} fontSize="large" />, disabled: true, cat: "Personal Finance" },
-    { title: "Retirement Saving", icon: <SavingsIcon sx={{ color: "#93C5FD" }} fontSize="large" />, to: "/tools/retirement_calculator", disabled: false, cat: "Personal Finance" },
     { title: "Home Affordability", icon: <HomeIcon sx={{ color: "#FDBA74" }} fontSize="large" />, disabled: true, cat: "Personal Finance" },
     { title: "Savings Goal", icon: <SavingsIcon sx={{ color: "#86EFAC" }} fontSize="large" />, disabled: true, cat: "Personal Finance" },
-    { title: "Compounding Calculator", icon: <TrendingUpIcon sx={{ color: "#FCD34D" }} fontSize="large" />, to: "/tools/compounding_calculator", disabled: false, cat: "Personal Finance" },
     { title: "Credit Card Payoff", icon: <CreditCardIcon sx={{ color: "#FBBF24" }} fontSize="large" />, disabled: true, cat: "Personal Finance" },
-{ title: "Car Loan", icon: <DirectionsCarIcon sx={{ color: "#A5F3FC" }} fontSize="large" />, disabled: false, to: "/tools/auto_loan_calculator", cat: "Personal Finance" },
-{ title: "Buy vs Lease", icon: <DirectionsCarIcon sx={{ color: "#86EFAC" }} fontSize="large" />, disabled: false, to: "/tools/buy_vs_lease_auto", cat: "Personal Finance" },
     { title: "Emergency Fund", icon: <HealthAndSafetyIcon sx={{ color: "#FBCFE8" }} fontSize="large" />, disabled: true, cat: "Personal Finance" },
     { title: "College Savings", icon: <SchoolIcon sx={{ color: "#C7D2FE" }} fontSize="large" />, disabled: true, cat: "Personal Finance" },
   ];
