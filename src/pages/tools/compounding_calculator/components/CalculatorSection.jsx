@@ -9,6 +9,8 @@ const labelCls = 'block text-sm font-medium text-neutral-700 mb-1';
 export default function CalculatorSection({ inputs, onChange, onReset, results, granularity, setGranularity }) {
   if (!results) return null;
   const { outputs } = results;
+  // Ensure "0" shows in numeric inputs rather than blank
+  const showVal = (v) => (v === '' || v === null || v === undefined ? 0 : v);
 
   // Insights calculations
   const baselineRate = 0.03; // 3% typical savings baseline
@@ -50,13 +52,15 @@ export default function CalculatorSection({ inputs, onChange, onReset, results, 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className={labelCls}>Initial Investment ($)</label>
-            <input type="number" className={inputCls} value={inputs.initialInvestment}
-              onChange={(e)=>onChange('initialInvestment', e.target.value === '' ? '' : Number(e.target.value))} min="0" />
+            <CurrencyInput
+              value={inputs.initialInvestment === '' ? '' : Number(inputs.initialInvestment || 0)}
+              onValueChange={(val)=>onChange('initialInvestment', val)}
+            />
           </div>
           <div className="grid grid-cols-2 gap-2">
             <div>
               <label className={labelCls}>Interest Rate (%)</label>
-              <input type="number" className={inputCls} step="0.01" value={inputs.ratePercent}
+              <input type="number" className={inputCls} step="0.01" value={showVal(inputs.ratePercent)}
                 onChange={(e)=>onChange('ratePercent', e.target.value === '' ? '' : Number(e.target.value))} min="0" />
             </div>
             <div>
@@ -83,20 +87,22 @@ export default function CalculatorSection({ inputs, onChange, onReset, results, 
           <div className="grid grid-cols-2 gap-2">
             <div>
               <label className={labelCls}>Years</label>
-              <input type="number" className={inputCls} value={inputs.years}
+              <input type="number" className={inputCls} value={showVal(inputs.years)}
                 onChange={(e)=>onChange('years', e.target.value === '' ? '' : Number(e.target.value))} min="0" />
             </div>
             <div>
               <label className={labelCls}>Months</label>
-              <input type="number" className={inputCls} value={inputs.months}
+              <input type="number" className={inputCls} value={showVal(inputs.months)}
                 onChange={(e)=>onChange('months', e.target.value === '' ? '' : Number(e.target.value))} min="0" max="11" />
             </div>
           </div>
 
           <div>
             <label className={labelCls}>Regular Contribution ($)</label>
-            <input type="number" className={inputCls} value={inputs.contribution}
-              onChange={(e)=>onChange('contribution', e.target.value === '' ? '' : Number(e.target.value))} min="0" />
+            <CurrencyInput
+              value={inputs.contribution === '' ? '' : Number(inputs.contribution || 0)}
+              onValueChange={(val)=>onChange('contribution', val)}
+            />
           </div>
           <div className="grid grid-cols-2 gap-2">
             <div>
@@ -129,10 +135,6 @@ export default function CalculatorSection({ inputs, onChange, onReset, results, 
       <div className="bg-bg-surface rounded-lg boxShadow-md p-6">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-xl font-semibold">Analytics & Insights</h3>
-          <div className="flex gap-2 text-sm">
-            <button onClick={() => setGranularity('yearly')} className={`px-3 py-1 rounded-md ${granularity==='yearly'?'bg-neutral-900 text-white':'bg-neutral-100'}`}>Yearly</button>
-            <button onClick={() => setGranularity('monthly')} className={`px-3 py-1 rounded-md ${granularity==='monthly'?'bg-neutral-900 text-white':'bg-neutral-100'}`}>Monthly</button>
-          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
@@ -144,6 +146,55 @@ export default function CalculatorSection({ inputs, onChange, onReset, results, 
         <div className="text-neutral-500 text-sm">Contributions are treated as {results.inputs.timing==='begin'?'beginning-of-period (annuity due)':'end-of-period (ordinary annuity)'}.</div>
       </div>
     </motion.div>
+  );
+}
+
+// Currency input that shows "$1,234" when blurred and raw number while editing
+function CurrencyInput({ value, onValueChange, placeholder = '' }) {
+  const inputRef = React.useRef(null);
+  const [text, setText] = React.useState('');
+
+  // Sync external numeric value to formatted text
+  React.useEffect(() => {
+    if (value === '' || value === null || value === undefined) {
+      setText('');
+    } else {
+      const num = Number(value) || 0;
+      setText(formatCurrency(num, 'USD', 0));
+    }
+  }, [value]);
+
+  const handleChange = (e) => {
+    const el = inputRef.current;
+    const raw = e.target.value;
+    // Keep digits only; treat as integer dollars for input
+    const cleaned = raw.replace(/[^0-9]/g, '');
+    if (cleaned === '') {
+      setText('');
+      onValueChange('');
+      return;
+    }
+    const num = parseInt(cleaned, 10);
+    if (isNaN(num)) return;
+    const formatted = formatCurrency(num, 'USD', 0);
+    setText(formatted);
+    onValueChange(num);
+    // Move caret to end to avoid jumpiness with commas and $ symbol
+    requestAnimationFrame(() => {
+      try { el.setSelectionRange(formatted.length, formatted.length); } catch {}
+    });
+  };
+
+  return (
+    <input
+      ref={inputRef}
+      type="text"
+      inputMode="numeric"
+      className={inputCls}
+      value={text}
+      onChange={handleChange}
+      placeholder={placeholder}
+    />
   );
 }
 

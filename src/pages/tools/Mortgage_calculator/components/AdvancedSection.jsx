@@ -204,7 +204,7 @@ export default function AdvancedSection() {
 
   return (
     <Paper sx={{ p: 3, borderRadius: 2, overflow: 'hidden', ...(OPTION_A_TEAL && { bgcolor: '#E9F9F8' }) }}>
-      <Box sx={{ bgcolor: '#14b8a6', color: '#ffffff', mx: -3, mt: -3, px: 3, py: 1.5 }}>
+      <Box sx={{ bgcolor: '#1976d2', color: '#ffffff', mx: -3, mt: -3, px: 3, py: 1.5 }}>
         <Typography variant="h6" sx={{ fontWeight: 700, color: '#ffffff' }}>
           Advance Features (Click Dropdown)
         </Typography>
@@ -214,14 +214,39 @@ export default function AdvancedSection() {
         <Accordion sx={{ borderRadius: 2, boxShadow: 'none', ...(OPTION_A_TEAL && { bgcolor: '#E9F9F8' }) }}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
-            sx={{ borderRadius: 2, '& .MuiAccordionSummary-content': { m: 0 }, ...(OPTION_A_TEAL && { bgcolor: '#E9F9F8' }) }}
+            sx={{
+              borderRadius: 2,
+              pr: 1,
+              '& .MuiAccordionSummary-content': { m: 0 },
+              // Make the expand button stand out
+              '& .MuiAccordionSummary-expandIconWrapper': {
+                width: 36,
+                height: 36,
+                borderRadius: '9999px',
+                bgcolor: '#1976d2',
+                color: '#fff',
+                border: '2px solid #1565c0',
+                boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'all .2s ease',
+              },
+              '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
+                bgcolor: '#1565c0',
+                borderColor: '#0d47a1',
+              },
+              '& .MuiAccordionSummary-expandIconWrapper:hover': {
+                filter: 'brightness(1.05)',
+              },
+              '& .MuiSvgIcon-root': { fontSize: '1.25rem' },
+              ...(OPTION_A_TEAL && { bgcolor: '#E9F9F8' }),
+            }}
           >
-            <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1, whiteSpace: 'nowrap' }}>
-              <Typography sx={{ fontWeight: 700, textTransform: 'uppercase' }}>
-                "What-If"
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, whiteSpace: 'nowrap' }}>
+              <Typography sx={{ fontWeight: 800, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+                Compare Two Loans
               </Typography>
-              <Typography sx={{ fontWeight: 700 }}>Scenarios</Typography>
-              <Typography sx={{ fontWeight: 700 }}>Compare two loan options side by side.</Typography>
             </Box>
           </AccordionSummary>
           <AccordionDetails sx={{ borderRadius: 2, ...(OPTION_A_TEAL && { bgcolor: '#E9F9F8' }) }}>
@@ -237,8 +262,9 @@ export default function AdvancedSection() {
                 borderRadius: 3,
                 borderWidth: 2,
                 borderStyle: 'solid',
-                borderColor: '#E5E7EB', // neutral-200
-                bgcolor: (theme) => (theme.palette.mode === 'dark' ? 'background.paper' : '#F9FAFB'), // neutral-50
+                // Loan 1 uses a teal scheme
+                borderColor: '#14b8a6',
+                bgcolor: (theme) => (theme.palette.mode === 'dark' ? 'rgba(20,184,166,0.08)' : '#ccfbf1'),
               }}
             >
               <Typography sx={{ fontWeight: 700, mb: 2 }}>Loan 1</Typography>
@@ -302,8 +328,8 @@ export default function AdvancedSection() {
                 borderRadius: 3,
                 borderWidth: 2,
                 borderStyle: 'solid',
-                borderColor: '#14b8a6', // teal-500
-                bgcolor: (theme) => (theme.palette.mode === 'dark' ? 'rgba(20,184,166,0.08)' : '#ccfbf1'), // teal-100
+                borderColor: '#1976d2', // teal-500
+                bgcolor: (theme) => (theme.palette.mode === 'dark' ? 'rgba(20,184,166,0.08)' : '#e3f2fd'), // teal-100
               }}
             >
               <Typography sx={{ fontWeight: 700, mb: 2 }}>Loan 2</Typography>
@@ -348,11 +374,11 @@ export default function AdvancedSection() {
                 <Box sx={{ display: 'flex', gap: 3, flexWrap: 'wrap' }}>
                   <Box>
                     <Typography variant="body2" sx={{ color: "text.secondary" }}>Total interest</Typography>
-                    <Typography sx={{ fontWeight: 700, color: '#14b8a6' }}>{formatCurrency(resultB.totalInterest)}</Typography>
+                    <Typography sx={{ fontWeight: 700, color: '#1976d2' }}>{formatCurrency(resultB.totalInterest)}</Typography>
                   </Box>
                   <Box>
                     <Typography variant="body2" sx={{ color: "text.secondary" }}>Total paid</Typography>
-                    <Typography sx={{ fontWeight: 700, color: '#14b8a6' }}>{formatCurrency(resultB.totalPaid)}</Typography>
+                    <Typography sx={{ fontWeight: 700, color: '#1976d2' }}>{formatCurrency(resultB.totalPaid)}</Typography>
                   </Box>
                 </Box>
               </Stack>
@@ -370,7 +396,7 @@ export default function AdvancedSection() {
                   display: 'flex',
                   gap: 6,
                   flexWrap: 'wrap',
-                  bgcolor: '#14b8a6', // teal-500
+                  bgcolor: '#1976d2', // teal-500
                   color: '#ffffff',
                   p: 2.5,
                   borderRadius: 2,
@@ -404,10 +430,36 @@ export default function AdvancedSection() {
         <Accordion sx={{ borderRadius: 2, boxShadow: 'none', mt: 2, ...(OPTION_A_TEAL && { bgcolor: '#E9F9F8' }) }}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
-            sx={{ borderRadius: 2, '& .MuiAccordionSummary-content': { m: 0 }, ...(OPTION_A_TEAL && { bgcolor: '#E9F9F8' }) }}
+            sx={{
+              borderRadius: 2,
+              pr: 1,
+              '& .MuiAccordionSummary-content': { m: 0 },
+              '& .MuiAccordionSummary-expandIconWrapper': {
+                width: 36,
+                height: 36,
+                borderRadius: '9999px',
+                bgcolor: '#1976d2',
+                color: '#fff',
+                border: '2px solid #1565c0',
+                boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'all .2s ease',
+              },
+              '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
+                bgcolor: '#1565c0',
+                borderColor: '#0d47a1',
+              },
+              '& .MuiAccordionSummary-expandIconWrapper:hover': {
+                filter: 'brightness(1.05)',
+              },
+              '& .MuiSvgIcon-root': { fontSize: '1.25rem' },
+              ...(OPTION_A_TEAL && { bgcolor: '#E9F9F8' }),
+            }}
           >
             <Typography sx={{ fontWeight: 700 }}>
-              Income-Based Maximum Purchase Price
+              How Much Home You Can Afford
             </Typography>
           </AccordionSummary>
           <AccordionDetails sx={{ borderRadius: 2, ...(OPTION_A_TEAL && { bgcolor: '#E9F9F8' }) }}>
@@ -416,16 +468,19 @@ export default function AdvancedSection() {
                 display: 'flex',
                 gap: 3,
                 alignItems: 'flex-start',
-                flexWrap: { xs: 'wrap', md: 'nowrap' },
+                // Allow wrapping until large screens to avoid overflow on mid widths
+                flexWrap: { xs: 'wrap', lg: 'nowrap' },
               }}
             >
               <Box
                 sx={{
-                  flex: '0 1 480px',
-                  maxWidth: { md: 480 },
-                  minWidth: 360,
+                  // Inputs take full width on small/medium, constrain on large
+                  flex: { xs: '1 1 100%', lg: '1 1 500px' },
+                  width: { xs: '100%', lg: 'auto' },
+                  maxWidth: { lg: 560 },
+                  minWidth: { sm: 280, lg: 360 },
                   display: 'grid',
-                  gridTemplateColumns: { xs: '1fr', md: 'repeat(2, minmax(160px, 1fr))' },
+                  gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, minmax(140px, 1fr))' },
                   columnGap: 2,
                   rowGap: 2,
                 }}
@@ -494,7 +549,19 @@ export default function AdvancedSection() {
                 />
               </Box>
 
-              <Box sx={{ flex: '0 0 360px', minWidth: 320, maxWidth: 360, alignSelf: 'flex-start' }}>
+              <Box
+                sx={{
+                  // Summary card spans full width when wrapped; fixed column on large screens
+                  flex: { xs: '1 1 100%', lg: '0 0 360px' },
+                  width: { xs: '100%', lg: 360 },
+                  minWidth: { lg: 320 },
+                  maxWidth: { lg: 360 },
+                  alignSelf: 'flex-start',
+                  // Keep visible while scrolling on large screens
+                  position: { lg: 'sticky' },
+                  top: { lg: 16 },
+                }}
+              >
                 <Paper
                   variant="outlined"
                   sx={{
@@ -507,7 +574,7 @@ export default function AdvancedSection() {
                     overflow: 'hidden',
                   }}
                 >
-                  <Box sx={{ bgcolor: '#14b8a6', color: '#fff', mx: -2, mt: -2, px: 2, py: 1.5 }}>
+                  <Box sx={{ bgcolor: '#1976d2', color: '#fff', mx: -2, mt: -2, px: 2, py: 1.5 }}>
                     <Typography sx={{ fontWeight: 700, color: '#fff', mb: 0.5 }}>Maximum Purchase Price</Typography>
                     <Typography variant="h4" sx={{ fontWeight: 800, color: '#fff', mb: 0 }}>
                       {formatCurrency(affordability.homePrice)}

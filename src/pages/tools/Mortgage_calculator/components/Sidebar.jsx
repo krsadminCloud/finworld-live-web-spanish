@@ -54,7 +54,21 @@ export default function Sidebar({
   const loanTermOptions = ["30", "20", "15", "10"];
 
   const content = (
-    <Box sx={{ p: 2.5 }}>
+    <Box
+      sx={{
+        p: 2.5,
+        // Force inputs to keep a neutral background (remove light blue tint)
+        '& .MuiOutlinedInput-root': {
+          bgcolor: 'background.paper',
+        },
+        '& .MuiOutlinedInput-root.Mui-focused': {
+          bgcolor: 'background.paper',
+        },
+        '& .MuiInputBase-root': {
+          bgcolor: 'background.paper',
+        },
+      }}
+    >
       <Typography variant="h6" sx={{ mb: 2, fontWeight: 700 }}>
         Mortgage Calculator
       </Typography>

@@ -7,11 +7,11 @@ import { calculateAll } from './utils/calc';
 import { useSearchParams } from 'react-router-dom';
 
 const DEFAULTS = {
-  initialInvestment: 5000,
-  ratePercent: 5,
+  initialInvestment: 0,
+  ratePercent: 0,
   rateUnit: 'annual',
   compoundingFrequency: 'monthly',
-  years: 5,
+  years: 0,
   months: 0,
   contribution: 0,
   contributionFrequency: 'monthly',
@@ -75,14 +75,6 @@ export default function CompoundingCalculator() {
             Calculate compound growth with flexible compounding and contribution schedules. Share results with a link, export tables, and visualize your growth.
           </p>
           <div className="mt-6 w-24 h-1 bg-primary-500 mx-auto rounded-full" />
-          <div className="mt-4 flex items-center justify-center gap-2 text-sm">
-            <label className="text-neutral-600">Color palette:</label>
-            <select value={palette} onChange={(e)=>setPalette(e.target.value)} className="px-2 py-1 border rounded-md bg-white">
-              <option value="A">Option A — Teal & Sky</option>
-              <option value="B">Option B — Emerald & Indigo</option>
-              <option value="C">Option C — Blue & Purple</option>
-            </select>
-          </div>
         </motion.section>
 
         <motion.section
@@ -103,11 +95,11 @@ function readParams(sp) {
   if (!sp || sp.size === 0) return null;
   const val = (k, d, parse=Number) => sp.get(k) !== null ? (parse === Number ? Number(sp.get(k)) : sp.get(k)) : d;
   return {
-    initialInvestment: val('initialInvestment', 5000),
-    ratePercent: val('ratePercent', 5),
+    initialInvestment: val('initialInvestment', 0),
+    ratePercent: val('ratePercent', 0),
     rateUnit: val('rateUnit', 'annual', String),
     compoundingFrequency: val('compoundingFrequency', 'monthly', String),
-    years: val('years', 5),
+    years: val('years', 0),
     months: val('months', 0),
     contribution: val('contribution', 0),
     contributionFrequency: val('contributionFrequency', 'monthly', String),

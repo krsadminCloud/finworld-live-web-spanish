@@ -1,7 +1,7 @@
 import React from 'react';
 import formatCurrency from '../../../../utils/formatCurrency';
 
-export default function ScheduleTable({ schedule, onExportPdf, onExportPng, granularity }) {
+export default function ScheduleTable({ schedule, onExportPdf, granularity }) {
   const rows = schedule?.rows || [];
   const capped = schedule?.meta?.capped;
   const requested = schedule?.meta?.stepsRequested;
@@ -23,9 +23,8 @@ export default function ScheduleTable({ schedule, onExportPdf, onExportPng, gran
       <div className="flex items-center justify-between mb-2">
         <h2 className="text-2xl font-bold text-neutral-900">{granularity === 'monthly' ? 'Monthly' : 'Yearly'} Breakdown</h2>
         <div className="flex items-center gap-2">
-          <button onClick={onExportPdf} className="px-3 py-2 bg-neutral-900 text-white rounded-md text-sm">Export PDF</button>
-          <button onClick={onExportPng} className="px-3 py-2 bg-primary-500 text-white rounded-md text-sm">Export PNG</button>
-          <button onClick={exportCsv} className="px-3 py-2 bg-neutral-100 rounded-md text-sm">CSV</button>
+          <button onClick={onExportPdf} className="px-4 py-1.5 text-sm rounded-full border-2 border-teal-400 text-teal-500 hover:bg-teal-50 transition-colors">Export PDF</button>
+          <button onClick={exportCsv} className="px-4 py-1.5 text-sm rounded-full border-2 border-teal-400 text-teal-500 hover:bg-teal-50 transition-colors">Export CSV</button>
         </div>
       </div>
       {capped && (

@@ -10,7 +10,7 @@ import { Box } from "@mui/material";
 const initialInputs = {
   homePrice: "",
   downPayment: "",
-  downPaymentMode: "amount", // 'amount' | 'percent'
+  downPaymentMode: "percent", // 'amount' | 'percent'
   downPaymentPercent: "",
   loanTerm: "30",
   interestRate: "",
@@ -77,8 +77,10 @@ export default function MortgageCalculator() {
       <Layout inputs={inputs} setInputs={setInputs} onCalculate={handleCalculate} onReset={handleReset}>
         <Box
           sx={{
-            maxWidth: { xs: "100%", md: "70%" },
             width: "100%",
+            // Shrink default content width ~30% on medium+ screens
+            // Shrink a further ~15% on md+ screens (now ~55% of page width)
+            maxWidth: { xs: '100%', md: '55%' },
             mx: "auto",
             display: "flex",
             flexDirection: "column",

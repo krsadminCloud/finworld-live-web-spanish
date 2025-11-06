@@ -46,7 +46,8 @@ export default function Layout({ inputs, setInputs, onCalculate, onReset, childr
             p: { xs: 2, sm: 3, md: 4 },
             overflowX: "hidden",
             ml: { xs: 0, md: "340px" },
-            maxWidth: { md: "calc((100% - 340px) * 0.588)" }, // 5% larger than previous size (now 58.8% of original available space)
+            // Allow main content to use the full remaining width for better responsiveness
+            maxWidth: { md: 'none' },
           }}
         >
           <Toolbar />

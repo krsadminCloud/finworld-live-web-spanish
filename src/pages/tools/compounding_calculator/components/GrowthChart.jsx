@@ -22,7 +22,7 @@ export default function GrowthChart({ data = [], granularity = 'yearly', palette
   });
 
   const CustomLegend = () => (
-    <div className="flex flex-wrap gap-3 text-xs">
+    <div className="flex flex-wrap gap-4 text-sm mt-2">
       <LegendItem color={palette.primary} active={show.balance} label="Balance" onClick={() => toggle('balance')} />
       <LegendItem color={palette.secondary1} active={show.contrib} label="Contributions" onClick={() => toggle('contrib')} />
       <LegendItem color={palette.secondary2} active={show.interest} label="Interest" onClick={() => toggle('interest')} />
@@ -34,9 +34,27 @@ export default function GrowthChart({ data = [], granularity = 'yearly', palette
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-2xl font-bold text-neutral-900">Growth Chart</h2>
         <div className="flex gap-2 text-xs">
-          <button onClick={() => toggle('balance')} className={`px-2 py-1 rounded-md border ${show.balance? 'bg-neutral-900 text-white border-neutral-900':'bg-neutral-100'}`}>Balance</button>
-          <button onClick={() => toggle('contrib')} className={`px-2 py-1 rounded-md border ${show.contrib? 'bg-neutral-900 text-white border-neutral-900':'bg-neutral-100'}`}>Contrib</button>
-          <button onClick={() => toggle('interest')} className={`px-2 py-1 rounded-md border ${show.interest? 'bg-neutral-900 text-white border-neutral-900':'bg-neutral-100'}`}>Interest</button>
+          <button
+            onClick={() => toggle('balance')}
+            className={`px-3 py-1.5 rounded-full border-2 transition-colors ${show.balance ? 'text-white' : 'text-teal-600'} `}
+            style={{ borderColor: palette.primary, backgroundColor: show.balance ? palette.primary : 'transparent' }}
+          >
+            Balance
+          </button>
+          <button
+            onClick={() => toggle('contrib')}
+            className={`px-3 py-1.5 rounded-full border-2 transition-colors ${show.contrib ? 'text-white' : 'text-sky-600'}`}
+            style={{ borderColor: palette.secondary1, backgroundColor: show.contrib ? palette.secondary1 : 'transparent' }}
+          >
+            Contrib
+          </button>
+          <button
+            onClick={() => toggle('interest')}
+            className={`px-3 py-1.5 rounded-full border-2 transition-colors ${show.interest ? 'text-white' : 'text-amber-600'}`}
+            style={{ borderColor: palette.secondary2, backgroundColor: show.interest ? palette.secondary2 : 'transparent' }}
+          >
+            Interest
+          </button>
         </div>
       </div>
       <div className="w-full h-80">
@@ -59,9 +77,9 @@ export default function GrowthChart({ data = [], granularity = 'yearly', palette
 
 function LegendItem({ color, active, label, onClick }) {
   return (
-    <button onClick={onClick} className={`inline-flex items-center gap-1 px-2 py-1 rounded border ${active? 'bg-neutral-900 text-white border-neutral-900':'bg-neutral-100'}`}>
-      <span className="w-3 h-3 rounded-sm" style={{ backgroundColor: color }} />
-      {label}
+    <button onClick={onClick} className="inline-flex items-center gap-2 focus:outline-none" style={{ color, opacity: active ? 1 : 0.5 }}>
+      <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: color }} />
+      <span className="underline decoration-current decoration-2 underline-offset-4">{label}</span>
     </button>
   );
 }
