@@ -75,6 +75,17 @@
   .slider::-moz-range-thumb:hover {
     @apply scale-110 shadow-lg;
   }
+
+  /* Hide arrows from number inputs */
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type=number] {
+    -moz-appearance: textfield;
+  }
 }
 
 @layer utilities {

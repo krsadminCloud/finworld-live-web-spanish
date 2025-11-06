@@ -4,16 +4,23 @@ import AdvancedSection from './AdvancedSection';
 
 export default function AdvancedFeatures() {
   const [bgTheme, setBgTheme] = useState('#F5F7FA'); // default Option 1 – Light Cool Gray
+  const bgColor = bgTheme;
 
   const handleThemeChange = (event) => setBgTheme(event.target.value);
 
   return (
     <Box
+      id="advanced-features-container"
       sx={{
-        backgroundColor: bgTheme,
-        borderRadius: 3,
-        p: 3,
-        transition: 'background-color 0.3s ease',
+        '--af-bg': bgColor,
+        backgroundColor: 'var(--af-bg)',
+        borderRadius: 4,
+        p: { xs: 2, md: 3 },
+        mb: { xs: 12, md: 24 },
+        transition: 'background-color 0.25s ease',
+        '&, & *': {
+          backgroundImage: 'none',
+        },
       }}
     >
       {/* Dropdown Theme Selector */}
@@ -43,4 +50,3 @@ export default function AdvancedFeatures() {
     </Box>
   );
 }
-

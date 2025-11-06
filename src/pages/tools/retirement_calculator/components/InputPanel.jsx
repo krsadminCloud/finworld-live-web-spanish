@@ -111,7 +111,11 @@ export default function InputPanel({ inputs, onChange, onReset }) {
         </div>
 
         <div className="pt-2">
-          <button onClick={handleReset} className="text-sm text-neutral-500 hover:text-neutral-900 underline">
+          <button
+            onClick={handleReset}
+            className="inline-flex items-center rounded-md bg-teal-600 text-white text-sm font-medium px-3 py-2 shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
+            aria-label="Reset to defaults"
+          >
             Reset to defaults
           </button>
         </div>

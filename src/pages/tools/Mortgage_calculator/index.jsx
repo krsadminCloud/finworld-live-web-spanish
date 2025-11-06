@@ -82,7 +82,7 @@ export default function MortgageCalculator() {
             mx: "auto",
             display: "flex",
             flexDirection: "column",
-            gap: 3,
+            gap: { xs: 3, sm: 4, md: 6 },
           }}
         >
           <PaymentBreakdown results={results} />
