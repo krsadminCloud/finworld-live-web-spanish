@@ -8,11 +8,15 @@ export default function TakeHomePayCalculator() {
   const [inputs, setInputs] = useState({
     income: '',
     spouseIncome: '',
+    yourBonus: '',
+    spouseBonus: '',
     year: 2025,
     state: '',
     status: 'single',
     k401Percent: '',
     spouseK401Percent: '',
+    k401BaseSelf: 'salary_plus_bonus',
+    k401BaseSpouse: 'salary_plus_bonus',
     rothAmount: '',
     spouseRothAmount: '',
     healthInsurance: '',
@@ -28,17 +32,24 @@ export default function TakeHomePayCalculator() {
   });
 
   const [compareStates, setCompareStates] = useState(['', '']);
-  const [bonusAmount, setBonusAmount] = useState('');
   const [offer1Income, setOffer1Income] = useState('');
   const [offer2Income, setOffer2Income] = useState('');
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [showPreTaxDetails, setShowPreTaxDetails] = useState(false);
+  const [showIncomeDetails, setShowIncomeDetails] = useState(false);
 
   const result = useMemo(() => {
-    const totalIncome = (Number(inputs.income) || 0) + (Number(inputs.spouseIncome) || 0);
+    const baseSelf = Number(inputs.income) || 0;
+    const baseSpouse = Number(inputs.spouseIncome) || 0;
+    const bonusSelf = Number(inputs.yourBonus) || 0;
+    const bonusSpouse = Number(inputs.spouseBonus) || 0;
+    const totalIncome = baseSelf + baseSpouse + bonusSelf + bonusSpouse;
     if (!totalIncome) return null;
 
-    const k401_1 = Math.max(0, (Number(inputs.income) || 0) * ((Number(inputs.k401Percent) || 0) / 100));
-    const k401_2 = Math.max(0, (Number(inputs.spouseIncome) || 0) * ((Number(inputs.spouseK401Percent) || 0) / 100));
+    const your401Base = baseSelf + ((inputs.k401BaseSelf === 'salary_plus_bonus') ? bonusSelf : 0);
+    const spouse401Base = baseSpouse + ((inputs.k401BaseSpouse === 'salary_plus_bonus') ? bonusSpouse : 0);
+    const k401_1 = Math.max(0, your401Base * ((Number(inputs.k401Percent) || 0) / 100));
+    const k401_2 = Math.max(0, spouse401Base * ((Number(inputs.spouseK401Percent) || 0) / 100));
     const k401Total = k401_1 + k401_2;
 
     const preTaxDeductions =
@@ -77,6 +88,10 @@ export default function TakeHomePayCalculator() {
 
     return {
       grossIncome: totalIncome,
+      yourBaseIncome: baseSelf,
+      spouseBaseIncome: baseSpouse,
+      yourBonus: bonusSelf,
+      spouseBonus: bonusSpouse,
       preTaxDeductions,
       adjustedIncome,
       federalTax,
@@ -93,6 +108,18 @@ export default function TakeHomePayCalculator() {
       stateMarginalRate,
       stateInfo,
       k401Total,
+      k401Your: k401_1,
+      k401Spouse: k401_2,
+      preTaxItems: {
+        k401Your: k401_1,
+        k401Spouse: k401_2,
+        healthInsurance: Number(inputs.healthInsurance) || 0,
+        hsa: Number(inputs.hsa) || 0,
+        traditionalIra: Number(inputs.traditionalIra) || 0,
+        studentLoanInterest: Number(inputs.studentLoanInterest) || 0,
+        fsaContribution: Number(inputs.fsaContribution) || 0,
+        otherPreTaxDeductions: Number(inputs.otherPreTaxDeductions) || 0,
+      },
       netMonthly: netPay / 12,
       netBiweekly: netPay / 26,
       netWeekly: netPay / 52,
@@ -106,11 +133,15 @@ export default function TakeHomePayCalculator() {
     setInputs({
       income: '',
       spouseIncome: '',
+      yourBonus: '',
+      spouseBonus: '',
       year: 2025,
       state: '',
       status: 'single',
       k401Percent: '',
       spouseK401Percent: '',
+      k401BaseSelf: 'salary_plus_bonus',
+      k401BaseSpouse: 'salary_plus_bonus',
       rothAmount: '',
       spouseRothAmount: '',
       healthInsurance: '',
@@ -125,7 +156,6 @@ export default function TakeHomePayCalculator() {
       overrideStateRate: undefined,
     });
     setCompareStates(['', '']);
-    setBonusAmount('');
     setOffer1Income('');
     setOffer2Income('');
   };
@@ -144,23 +174,6 @@ export default function TakeHomePayCalculator() {
       });
   }, [compareStates, inputs.overrideStateRate, result]);
 
-  const bonusSummary = useMemo(() => {
-    if (!result || !bonusAmount) return '';
-    const totalIncomeWithBonus = result.grossIncome + Number(bonusAmount || 0);
-    const adjIncomeWithBonus = Math.max(0, totalIncomeWithBonus - result.preTaxDeductions);
-    const fedResultWithBonus = calcFederalTax(inputs.year, adjIncomeWithBonus, inputs.status);
-    const fedTaxWithBonus = Math.max(0, fedResultWithBonus.tax - (Number(inputs.childTaxCredit)||0) - (Number(inputs.dependentCareCredit)||0));
-    const stateTaxWithBonus = (inputs.overrideStateRate !== undefined && inputs.overrideStateRate !== null && inputs.overrideStateRate !== '')
-      ? adjIncomeWithBonus * (Number(inputs.overrideStateRate)/100)
-      : calcStateTax(adjIncomeWithBonus, inputs.state).tax;
-    const ficaTaxWithBonus = calcFicaTax(inputs.year, totalIncomeWithBonus, inputs.status);
-    const localTaxWithBonus = adjIncomeWithBonus * ((Number(inputs.localTaxRate)||0)/100);
-    const totalTaxWithBonus = fedTaxWithBonus + stateTaxWithBonus + ficaTaxWithBonus + localTaxWithBonus;
-    const netWithBonus = totalIncomeWithBonus - totalTaxWithBonus - result.preTaxDeductions;
-    const finalNetWithBonus = Math.max(0, netWithBonus - result.rothContributions);
-    const bonusTakeHome = finalNetWithBonus - result.finalNet;
-    return `Original Annual Net: ${formatCurrency(result.finalNet)} | New Annual Net (with bonus): ${formatCurrency(finalNetWithBonus)} | Bonus Take-Home: ${formatCurrency(bonusTakeHome)}`;
-  }, [result, bonusAmount, inputs]);
 
   const offerComparison = useMemo(() => {
     if (!result || !offer1Income || !offer2Income) return '';
@@ -212,6 +225,19 @@ export default function TakeHomePayCalculator() {
                 <input type="number" min="0" step="100" value={inputs.spouseIncome}
                   onChange={(e)=>{ const val = e.target.value; setInputs(v=>({...v,spouseIncome: val === '' ? '' : Number(val)})); }}
                   className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 input-focus" placeholder="e.g. 75000" />
+              </div>
+              
+              <div>
+                <label className="block text-sm text-neutral-600 mb-1">Your Annual Bonus</label>
+                <input type="number" min="0" step="100" value={inputs.yourBonus ?? ''}
+                  onChange={(e)=>{ const val = e.target.value; setInputs(v=>({...v,yourBonus: val === '' ? '' : Number(val)})); }}
+                  className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 input-focus" placeholder="e.g. 10000" />
+              </div>
+              <div>
+                <label className="block text-sm text-neutral-600 mb-1">Spouse's Annual Bonus</label>
+                <input type="number" min="0" step="100" value={inputs.spouseBonus ?? ''}
+                  onChange={(e)=>{ const val = e.target.value; setInputs(v=>({...v,spouseBonus: val === '' ? '' : Number(val)})); }}
+                  className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 input-focus" placeholder="e.g. 5000" />
               </div>
               
               <div>
@@ -292,6 +318,18 @@ export default function TakeHomePayCalculator() {
                   />
                 </div>
 
+                <div className="mt-1">
+                  <label className="block text-xs text-neutral-500 mb-1">Apply 401(k) to</label>
+                  <select
+                    value={inputs.k401BaseSelf || 'salary_plus_bonus'}
+                    onChange={(e)=> setInputs(v=>({...v,k401BaseSelf: e.target.value}))}
+                    className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 input-focus"
+                  >
+                    <option value="salary">Salary only</option>
+                    <option value="salary_plus_bonus">Salary + Bonus</option>
+                  </select>
+                </div>
+
                 {/* Spouse 401(k) second */}
                 <div className="flex items-center gap-2 mb-1 mt-4">
                   <label className="block text-sm font-medium text-neutral-700">Spouse's 401(k) Contributions</label>
@@ -317,6 +355,17 @@ export default function TakeHomePayCalculator() {
                     placeholder="Percent of income"
                     data-has-value={inputs.spouseK401Percent ? 'true' : 'false'}
                   />
+                </div>
+                <div className="mt-1">
+                  <label className="block text-xs text-neutral-500 mb-1">Apply 401(k) to</label>
+                  <select
+                    value={inputs.k401BaseSpouse || 'salary_plus_bonus'}
+                    onChange={(e)=> setInputs(v=>({...v,k401BaseSpouse: e.target.value}))}
+                    className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 input-focus"
+                  >
+                    <option value="salary">Salary only</option>
+                    <option value="salary_plus_bonus">Salary + Bonus</option>
+                  </select>
                 </div>
               </div>
               {/* Advanced options toggle */}
@@ -583,12 +632,55 @@ export default function TakeHomePayCalculator() {
                 <p className="text-lg font-semibold mb-2">Breakdown</p>
                 <div className="rounded-xl border border-neutral-200 divide-y divide-neutral-200 overflow-hidden">
                   <div className="flex items-center justify-between px-3 py-2 text-sm bg-neutral-50">
-                    <span className="text-neutral-500">Gross Income</span>
+                    <span className="text-neutral-500">
+                      Gross Income
+                      <button
+                        type="button"
+                        onClick={() => setShowIncomeDetails(v=>!v)}
+                        className="ml-2 text-teal-700 hover:text-teal-800 text-xs underline"
+                      >
+                        {showIncomeDetails ? 'Hide details' : 'Income details'}
+                      </button>
+                    </span>
                     <span className="font-semibold tabular-nums font-mono">{result ? formatCurrency(result.grossIncome) : '$0'}</span>
                   </div>
+                  {result && showIncomeDetails && (
+                    <div className="px-3 py-2 text-xs bg-white">
+                      {(() => {
+                        const items = [
+                          { key: 'baseSelf', label: 'Your Base Income', val: result.yourBaseIncome },
+                          { key: 'bonusSelf', label: 'Your Annual Bonus', val: result.yourBonus },
+                          { key: 'baseSpouse', label: "Spouse Base Income", val: result.spouseBaseIncome },
+                          { key: 'bonusSpouse', label: "Spouse's Annual Bonus", val: result.spouseBonus },
+                        ];
+                        return items
+                          .filter(i => (Number(i.val) || 0) > 0)
+                          .map(i => (
+                            <div key={i.key} className="flex items-center justify-between pl-4 py-1">
+                              <span className="text-neutral-500">{i.label}</span>
+                              <span className="flex items-center gap-2 font-medium tabular-nums font-mono text-neutral-800">
+                                <span className="text-[10px] text-neutral-700/80 bg-neutral-50 border border-neutral-200 rounded-full px-1.5 py-0.5">
+                                  {((i.val / result.grossIncome) * 100).toFixed(1)}%
+                                </span>
+                                <span>{formatCurrency(i.val)}</span>
+                              </span>
+                            </div>
+                          ));
+                      })()}
+                    </div>
+                  )}
 
                   <div className="flex items-center justify-between px-3 py-2 text-sm bg-white">
-                    <span className="text-neutral-500">Pre-Tax Deductions</span>
+                    <span className="text-neutral-500">
+                      Total Pre-Tax Deductions
+                      <button
+                        type="button"
+                        onClick={() => setShowPreTaxDetails(v => !v)}
+                        className="ml-2 text-teal-700 hover:text-teal-800 text-xs underline"
+                      >
+                        {showPreTaxDetails ? 'Hide details' : 'Show details'}
+                      </button>
+                    </span>
                     <span className="flex items-center gap-2 font-semibold tabular-nums font-mono text-rose-700">
                       {result && result.grossIncome ? (
                         <span className="text-[11px] text-rose-700/80 bg-rose-50 border border-rose-100 rounded-full px-2 py-0.5">
@@ -598,6 +690,36 @@ export default function TakeHomePayCalculator() {
                       <span>-{result ? formatCurrency(result.preTaxDeductions) : '$0'}</span>
                     </span>
                   </div>
+
+                  {result && showPreTaxDetails && (
+                    <div className="px-3 py-2 text-xs bg-neutral-50">
+                      {(() => {
+                        const items = [
+                          { key: 'k401Your', label: "Your 401(k)", val: result.preTaxItems.k401Your },
+                          { key: 'k401Spouse', label: "Spouse's 401(k)", val: result.preTaxItems.k401Spouse },
+                          { key: 'healthInsurance', label: 'Health Insurance', val: result.preTaxItems.healthInsurance },
+                          { key: 'hsa', label: 'HSA', val: result.preTaxItems.hsa },
+                          { key: 'traditionalIra', label: 'Traditional IRA', val: result.preTaxItems.traditionalIra },
+                          { key: 'studentLoanInterest', label: 'Student Loan Interest', val: result.preTaxItems.studentLoanInterest },
+                          { key: 'fsaContribution', label: 'FSA', val: result.preTaxItems.fsaContribution },
+                          { key: 'otherPreTaxDeductions', label: 'Other Pre-Tax Deductions', val: result.preTaxItems.otherPreTaxDeductions },
+                        ];
+                        return items
+                          .filter(i => (Number(i.val) || 0) > 0)
+                          .map(i => (
+                            <div key={i.key} className="flex items-center justify-between pl-4 py-1">
+                              <span className="text-neutral-500">{i.label}</span>
+                              <span className="flex items-center gap-2 font-medium tabular-nums font-mono text-rose-700">
+                                <span className="text-[10px] text-rose-700/80 bg-rose-50 border border-rose-100 rounded-full px-1.5 py-0.5">
+                                  {((i.val / result.grossIncome) * 100).toFixed(1)}%
+                                </span>
+                                <span>-{formatCurrency(i.val)}</span>
+                              </span>
+                            </div>
+                          ));
+                      })()}
+                    </div>
+                  )}
 
                   <div className="flex items-center justify-between px-3 py-2 text-sm bg-neutral-50">
                     <span className="text-neutral-500">Adjusted Income</span>
@@ -747,38 +869,7 @@ export default function TakeHomePayCalculator() {
               </div>
             </div>
 
-            {/* What-If Scenarios */}
-            <div className="bg-bg-surface shadow-card rounded-2xl p-6">
-              <p className="text-lg font-semibold mb-3">What-If Scenarios</p>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 items-end">
-                <div>
-                  <label className="block text-sm text-neutral-400 mb-1">Bonus Amount</label>
-                  <input type="number" min="0" step="100" value={bonusAmount}
-                    onChange={(e)=>{ const val = e.target.value; setBonusAmount(val === '' ? '' : Number(val)); }}
-                    className="form-input w-full rounded-lg border border-neutral-200 focus:border-primary-500 focus:ring-primary-500" />
-                </div>
-                <div className="md:col-span-2 text-sm text-neutral-600">
-                  {bonusSummary ? (<p>{bonusSummary}</p>) : (<p className="text-neutral-400">Enter a bonus amount to see the impact.</p>)}
-                </div>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 mt-4 gap-3 items-end">
-                <div>
-                  <label className="block text-sm text-neutral-400 mb-1">Offer 1 Income</label>
-                  <input type="number" min="0" step="100" value={offer1Income}
-                    onChange={(e)=>{ const val = e.target.value; setOffer1Income(val === '' ? '' : Number(val)); }}
-                    className="form-input w-full rounded-lg border border-neutral-200 focus:border-primary-500 focus:ring-primary-500" />
-                </div>
-                <div>
-                  <label className="block text-sm text-neutral-400 mb-1">Offer 2 Income</label>
-                  <input type="number" min="0" step="100" value={offer2Income}
-                    onChange={(e)=>{ const val = e.target.value; setOffer2Income(val === '' ? '' : Number(val)); }}
-                    className="form-input w-full rounded-lg border border-neutral-200 focus:border-primary-500 focus:ring-primary-500" />
-                </div>
-                <div className="text-sm text-neutral-600 md:col-span-1">
-                  {offerComparison ? (<p>{offerComparison}</p>) : (<p className="text-neutral-400">Enter both offers to compare.</p>)}
-                </div>
-              </div>
-            </div>
+            {/* What-If Scenarios removed */}
           </section>
         </div>
       </main>
