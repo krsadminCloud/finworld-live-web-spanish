@@ -14,6 +14,7 @@ import RetirementCalculator from "./pages/tools/retirement_calculator";
 import AllRates from "./pages/tools/Mortgage_calculator/allrates";
 import HomeAffordabilityCalculator from "./pages/tools/home_affordability";
 import CompoundingCalculator from "./pages/tools/compounding_calculator";
+import BuyVsLeaseAuto from "./pages/tools/buy_vs_lease_auto";
 
 export default function App() {
   return (
@@ -46,6 +47,8 @@ export default function App() {
           <Route path="/tools/mortgage_calculator/allrates" element={<AllRates />} />
           {/* ?? Compounding Calculator */}
           <Route path="/tools/compounding_calculator" element={<CompoundingCalculator />} />
+          {/* Buy vs Lease Auto */}
+          <Route path="/tools/buy_vs_lease_auto" element={<BuyVsLeaseAuto />} />
         </Routes>
       </div>
     </Router>

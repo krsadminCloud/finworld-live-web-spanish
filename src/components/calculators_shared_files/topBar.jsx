@@ -116,6 +116,7 @@ export default function TopBar() {
 >
   Calculator
 </Button>
+          {/* Buy vs Lease link removed per request */}
           {/* Retirement Calculator button removed per request */}
         </Box>
 

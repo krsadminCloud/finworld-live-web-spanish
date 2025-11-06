@@ -7,9 +7,8 @@ export const useMode = () => {
     try {
       const saved = localStorage.getItem("themeMode");
       if (saved === "light" || saved === "dark") return saved;
-      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-        ? "dark"
-        : "light";
+      // Default to light regardless of OS preference
+      return "light";
     } catch (_) {
       return "light";
     }
