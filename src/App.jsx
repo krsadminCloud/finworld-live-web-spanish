@@ -15,6 +15,7 @@ const AllRates = lazy(() => import("./pages/tools/Mortgage_calculator/allrates")
 const HomeAffordabilityCalculator = lazy(() => import("./pages/tools/home_affordability"));
 const CompoundingCalculator = lazy(() => import("./pages/tools/compounding_calculator"));
 const BuyVsLeaseAuto = lazy(() => import("./pages/tools/buy_vs_lease_auto"));
+const RentalPropertyCalculator = lazy(() => import("./pages/tools/rental_property_calculator"));
 
 export default function App() {
   return (
@@ -51,6 +52,7 @@ export default function App() {
             <Route path="/tools/mortgage_calculator/allrates" element={<AllRates />} />
             <Route path="/tools/compounding_calculator" element={<CompoundingCalculator />} />
             <Route path="/tools/buy_vs_lease_auto" element={<BuyVsLeaseAuto />} />
+            <Route path="/tools/rental_property_calculator" element={<RentalPropertyCalculator />} />
           </Routes>
         </Suspense>
       </div>

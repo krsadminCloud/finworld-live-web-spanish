@@ -68,6 +68,7 @@ export default function FinancialCalculators() {
     { title: "Home Equity Loan Calculator", icon: <HouseIcon sx={{ color: "#A7F3D0" }} fontSize="large" />, disabled: true, cat: "Mortgage" },
     { title: "Mortgage Comparison Calculator", icon: <CompareArrowsIcon sx={{ color: "#C7D2FE" }} fontSize="large" />, disabled: true, cat: "Mortgage" },
     { title: "Rent vs. Buy Calculator", icon: <ApartmentIcon sx={{ color: "#BAE6FD" }} fontSize="large" />, disabled: true, cat: "Mortgage" },
+    { title: "Rental Property Calculator", icon: <RealEstateAgentIcon sx={{ color: "#00C1B0" }} fontSize="large" />, to: "/tools/rental_property_calculator", disabled: false, cat: "Mortgage" },
   ];
 
   // === Personal Finance Calculators (Warm Pastel Palette) ===
@@ -89,8 +90,13 @@ export default function FinancialCalculators() {
     { title: "College Savings", icon: <SchoolIcon sx={{ color: "#C7D2FE" }} fontSize="large" />, disabled: true, cat: "Personal Finance" },
   ];
 
+  // === Investment Calculators ===
+  const investmentCalculators = [
+    { title: "Rental Property Calculator", icon: <RealEstateAgentIcon sx={{ color: "#00C1B0" }} fontSize="large" />, to: "/tools/rental_property_calculator", disabled: false, cat: "Investment" },
+  ];
+
   // === Combine Categories ===
-  const calculators = [...mortgageCalculators, ...personalFinanceCalculators];
+  const calculators = [...mortgageCalculators, ...personalFinanceCalculators, ...investmentCalculators];
 
   const filtered = calculators.filter(
     (c) =>
@@ -124,6 +130,9 @@ export default function FinancialCalculators() {
             <IconButton onClick={colorMode.toggleColorMode} color="inherit" size="large">
               {theme.palette.mode === "dark" ? <LightModeIcon /> : <DarkModeIcon />}
             </IconButton>
+            <Button variant="outlined" color="primary" onClick={() => navigate('/tools/rental_property_calculator')} sx={{ borderRadius: 50, fontWeight: 700 }}>
+              Rental Calculator
+            </Button>
             <Button variant="contained" color="primary" sx={{ borderRadius: 50, fontWeight: 700 }}>
               My Account
             </Button>
