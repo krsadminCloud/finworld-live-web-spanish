@@ -102,9 +102,19 @@ Commands:
 
 ### Global Layout & Styling
 - BrowserRouter + Suspense fallback
-- Material‑UI + TailwindCSS
+- Material-UI + TailwindCSS
 - Theme: `src/theme.js`; color mode: `src/context/ColorModeContext.js`
 - Global styles in `src/index.css`
+
+### Mobile Responsiveness
+
+- Calculators Hub (`src/pages/tools/index.jsx`): Mobile-only alignment and spacing tuned (Nov 2025).
+  - AppBar: actions wrap on `xs` with `useFlexGap` row spacing; Toolbar `minHeight` raised on `xs`; dark-mode icon styled with subtle border/bg; "Rental Calculator" button removed (leaving only "My Account"); remaining button `size="small"`, responsive `px/py`, and `whiteSpace: 'nowrap'`.
+  - Hero: responsive `fontSize`/`lineHeight`; hero container adds `px` on `xs`.
+  - Search: centers with side margins on `xs` via `mx={{ xs: 2, sm: 'auto' }}`.
+  - “Popular” pills and category chips: responsive font size/padding; containers use `useFlexGap` so wrapped rows have vertical spacing (`rowGap`).
+  - Card grid: reduced `gap` on `xs`; slightly reduced card height to avoid crowding.
+- Principle: keep desktop unchanged. All changes are gated behind MUI responsive `sx` props (`xs` overrides; `md+` preserves existing styles).
 
 ### SEO
 - `index.html` includes base meta tags
@@ -179,3 +189,8 @@ Path: `src/pages/tools/rental_property_calculator/`
 - Wire optional Supabase integration if persisting scenarios is desired
 - Continue performance tuning (charts, lazy loading, code splitting)
 
+### Documentation Maintenance
+
+- Source of truth: This `README.md` tracks structure, routes, tech stack, and notable UX changes.
+- On feature additions or layout changes, update relevant sections (Structure, Routing, Mobile Responsiveness) in the same PR.
+- Keep file references current and prefer workspace-relative paths.
