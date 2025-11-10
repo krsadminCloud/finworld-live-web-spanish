@@ -7,8 +7,8 @@ import {
   Box,
   IconButton,
   Button,
-  alpha,
   useTheme,
+  Stack,
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import {
@@ -28,112 +28,60 @@ export default function TopBar() {
       color="transparent"
       elevation={0}
       sx={{
-        borderBottom: `1px solid ${alpha(theme.palette.text.primary, 0.12)}`,
-        backdropFilter: "blur(6px)",
+        borderBottom: `1px solid ${theme.palette.divider}`,
         bgcolor: "background.paper",
-        height: 65,
-        maxWidth: "50%",
-        mx: "auto",
-        borderRadius: "0 0 12px 12px",
-        transition: "background-color 0.3s ease",
+        color: "text.primary",
       }}
     >
       <Toolbar
-        disableGutters
         sx={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          height: 65,
-          px: { xs: 2, sm: 3 },
+          px: { xs: 2, md: 6 },
+          minHeight: { xs: 72, md: 64 },
         }}
       >
-        {/* === Left: Brand with Icon === */}
+        {/* Left: Brand */}
         <Box
           component={RouterLink}
           to="/"
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            textDecoration: "none",
-            gap: 0.6,
-          }}
+          sx={{ display: "flex", alignItems: "center", textDecoration: "none", gap: 0.75 }}
         >
-          <CalculatorIcon
-            sx={{
-              color: "#00A86B",
-              fontSize: "1.1rem",
-              mt: "1px",
-            }}
-          />
-          <Typography
-            variant="subtitle1"
-            sx={{
-              fontWeight: 800,
-              color: "text.primary",
-              fontSize: "1.10rem",
-              letterSpacing: 0.3,
-            }}
-          >
+          <CalculatorIcon sx={{ color: "#00A86B" }} />
+          <Typography variant="h6" sx={{ fontWeight: 800, letterSpacing: "-0.02em" }}>
             FinCalc
           </Typography>
         </Box>
 
-        {/* === Center: Navigation Buttons === */}
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            gap: { xs: 1.2, sm: 2.5 },
-            justifyContent: "center",
-          }}
+        {/* Right: Actions */}
+        <Stack
+          direction="row"
+          spacing={{ xs: 0.5, md: 1.5 }}
+          alignItems="center"
+          flexWrap={{ xs: "wrap", md: "nowrap" }}
+          justifyContent={{ xs: "flex-end", md: "flex-start" }}
+          useFlexGap
+          sx={{ rowGap: { xs: 1, md: 0 } }}
         >
-          <Button
-            component={RouterLink}
-            to="/"
-            sx={{
-              color: "text.primary",
-              fontWeight: 600,
-              textTransform: "none",
-              fontSize: "1.1rem",
-              minWidth: "auto",
-              p: 0,
-            }}
-          >
-            Home
-          </Button>
-<Button
-  component={RouterLink}
-  to="/tools"
-  sx={{
-    color: "text.primary",
-    fontWeight: 600,
-    textTransform: "none",
-    fontSize: "1.1rem",
-    minWidth: "auto",
-    p: 0,
-  }}
->
-  Calculator
-</Button>
-          {/* Buy vs Lease link removed per request */}
-          {/* Retirement Calculator button removed per request */}
-        </Box>
-
-        {/* === Right: Theme Toggle === */}
-        <Box sx={{ display: "flex", alignItems: "center" }}>
           <IconButton
             onClick={colorMode.toggleColorMode}
-            aria-label="toggle theme"
-            sx={{
-              color: "text.primary",
-              p: 0.5,
-              "& svg": { fontSize: "1.5rem" },
-            }}
+            color="inherit"
+            size="small"
+            sx={{ border: "1px solid", borderColor: "divider", bgcolor: "background.paper" }}
           >
             {theme.palette.mode === "dark" ? <SunIcon /> : <MoonIcon />}
           </IconButton>
-        </Box>
+
+          <Button
+            size="small"
+            variant="contained"
+            color="primary"
+            sx={{ borderRadius: 50, fontWeight: 700, px: { xs: 1.25, md: 2.5 }, py: { xs: 0.5, md: 1 }, whiteSpace: "nowrap" }}
+          >
+            My Account
+          </Button>
+        </Stack>
       </Toolbar>
     </AppBar>
   );
