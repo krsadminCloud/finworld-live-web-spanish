@@ -139,15 +139,29 @@ export function calcStateTax(agi, state, year = 2025, status = 'single') {
   };
 }
 
-export function calcFicaTax(year, income, status) {
+export function calcFicaComponents(year, income, status) {
   const limits = FICA_LIMITS[year] || FICA_LIMITS[2025];
 
-  let socialSecurityTax = Math.min(income, limits.ss_limit) * limits.ss_rate;
+  const socialSecurityTax = Math.min(income, limits.ss_limit) * limits.ss_rate;
   let medicareTax = income * limits.med_rate;
+  let additionalMedicareTax = 0;
 
   if (income > limits.add_med_threshold[status]) {
-    medicareTax += (income - limits.add_med_threshold[status]) * 0.009;
+    additionalMedicareTax = (income - limits.add_med_threshold[status]) * 0.009;
+    medicareTax += additionalMedicareTax;
   }
 
-  return socialSecurityTax + medicareTax;
+  return {
+    socialSecurityTax,
+    medicareTax,
+    additionalMedicareTax,
+    total: socialSecurityTax + medicareTax,
+    ssLimit: limits.ss_limit,
+    medRate: limits.med_rate,
+    addMedThreshold: limits.add_med_threshold[status],
+  };
+}
+
+export function calcFicaTax(year, income, status) {
+  return calcFicaComponents(year, income, status).total;
 }

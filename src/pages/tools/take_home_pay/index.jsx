@@ -1,7 +1,7 @@
 ﻿import React, { useEffect, useMemo, useState } from 'react';
 import Topbar from '../../../components/calculators_shared_files/topBar';
 import { STATES_LIST } from './utils/taxData';
-import { calcFederalTax, calcStateTax, calcFicaTax, formatCurrency } from './utils/taxCalculations';
+import { calcFederalTax, calcStateTax, calcFicaComponents, calcFicaTax, formatCurrency } from './utils/taxCalculations';
 import { TaxChart } from './components/TaxChart';
 import { ensureThpThemeCss, setThpThemeCss } from './themeCssLoader';
 
@@ -38,6 +38,7 @@ export default function TakeHomePayCalculator() {
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [showPreTaxDetails, setShowPreTaxDetails] = useState(false);
   const [showIncomeDetails, setShowIncomeDetails] = useState(false);
+  const [detailRow, setDetailRow] = useState('');
 
   // Ensure page-scoped theme CSS is loaded and kept in sync with global dark class
   useEffect(() => {
@@ -97,7 +98,8 @@ export default function TakeHomePayCalculator() {
       stateDeduction = sres.deductionAmount || 0;
     }
 
-    const ficaTax = calcFicaTax(inputs.year, totalIncome, inputs.status);
+    const ficaComponents = calcFicaComponents(inputs.year, totalIncome, inputs.status);
+    const ficaTax = ficaComponents.total;
     const localTax = adjustedIncome * ((Number(inputs.localTaxRate) || 0) / 100);
     const totalTax = federalTax + stateTax + ficaTax + localTax;
     const netPay = totalIncome - totalTax - preTaxDeductions;
@@ -114,6 +116,7 @@ export default function TakeHomePayCalculator() {
       federalTax,
       stateTax,
       ficaTax,
+      ficaComponents,
       localTax,
       totalTax,
       netPay,
@@ -145,6 +148,9 @@ export default function TakeHomePayCalculator() {
       finalNetWeekly: finalNet / 52,
       stateTaxable,
       stateDeduction,
+      stateDeduction,
+      stateTaxable,
+      ficaComponents,
     };
   }, [inputs]);
 
@@ -584,24 +590,24 @@ export default function TakeHomePayCalculator() {
                   className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 input-focus" />
               </div>
               <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <label className="block text-sm font-medium text-neutral-700">Dependent Care Credit</label>
-                  <span className="tooltip">
-                    <button type="button" aria-describedby="tip-dcc" className="p-0.5 rounded focus:outline-none focus:ring-2 focus:ring-teal-300">
-                      <svg className="h-4 w-4 text-teal-600 hover:text-teal-700" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1-9a1 1 0 112 0v5a1 1 0 11-2 0V9zm1-4a1.5 1.5 0 100 3 1.5 1.5 0 000-3z" clipRule="evenodd" />
-                      </svg>
-                    </button>
-                    <div id="tip-dcc" role="tooltip" className="tooltip-bubble">
-                      Enter your total annual Dependent Care Credit to apply (amount).
+                    <div className="flex items-center gap-2 mb-1">
+                      <label className="block text-sm font-medium text-neutral-700">Dependent Care Credit</label>
+                      <span className="tooltip">
+                        <button type="button" aria-describedby="tip-dcc" className="p-0.5 rounded focus:outline-none focus:ring-2 focus:ring-teal-300">
+                          <svg className="h-4 w-4 text-teal-600 hover:text-teal-700" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1-9a1 1 0 112 0v5a1 1 0 11-2 0V9zm1-4a1.5 1.5 0 100 3 1.5 1.5 0 000-3z" clipRule="evenodd" />
+                          </svg>
+                        </button>
+                        <div id="tip-dcc" role="tooltip" className="tooltip-bubble">
+                          Enter your total annual Dependent Care Credit to apply (amount).
+                        </div>
+                      </span>
                     </div>
-                  </span>
-                </div>
-                <input type="number" min="0" step="50" value={inputs.dependentCareCredit}
-                  onChange={(e)=>{ const val = e.target.value; setInputs(v=>({...v,dependentCareCredit: val === '' ? '' : Number(val)})); }}
-                  className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 input-focus" />
-              </div>
-              </div>
+                    <input type="number" min="0" step="50" value={inputs.dependentCareCredit}
+                      onChange={(e)=>{ const val = e.target.value; setInputs(v=>({...v,dependentCareCredit: val === '' ? '' : Number(val)})); }}
+                      className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 input-focus" />
+                  </div>
+                  </div>
               )}
             </div>
           </section>
@@ -705,7 +711,7 @@ export default function TakeHomePayCalculator() {
                         onClick={() => setShowPreTaxDetails(v => !v)}
                         className="ml-2 text-teal-700 hover:text-teal-800 text-xs underline"
                       >
-                        {showPreTaxDetails ? 'Hide details' : 'Show details'}
+                        Details
                       </button>
                     </span>
                     <span className="flex items-center gap-2 font-semibold tabular-nums font-mono text-rose-700">
@@ -754,19 +760,42 @@ export default function TakeHomePayCalculator() {
                   </div>
 
                   <div className="flex items-center justify-between px-3 py-2 text-sm bg-white">
-                    <span className="text-neutral-500">Federal Tax</span>
+                    <span className="text-neutral-500">
+                      Federal Tax
+                      <button
+                        type="button"
+                        onClick={() => setDetailRow(prev => prev === 'federal' ? '' : 'federal')}
+                        className="ml-2 text-teal-700 hover:text-teal-800 text-xs underline"
+                      >
+                        {detailRow === 'federal' ? 'Hide details' : 'Details'}
+                      </button>
+                    </span>
                     <span className="flex items-center gap-2 font-semibold tabular-nums font-mono text-rose-700">
                       {result && result.grossIncome ? (
                         <span className="text-[11px] text-rose-700/80 bg-rose-50 border border-rose-100 rounded-full px-2 py-0.5">
                           {((result.federalTax / result.grossIncome) * 100).toFixed(1)}%
                         </span>
                       ) : null}
-                      <span>-{result ? formatCurrency(result.federalTax) : '$0'}</span>
-                    </span>
+                    <span>-{result ? formatCurrency(result.federalTax) : '$0'}</span>
+                  </span>
+                </div>
+                {detailRow === 'federal' && result && (
+                  <div className="px-3 py-2 text-xs text-neutral-500 bg-neutral-50">
+                    Federal taxable = adjusted income ({formatCurrency(result.adjustedIncome)}) minus standard deduction ({formatCurrency(result.federalStdDeduction)}) = {formatCurrency(result.federalTaxable)}; tax computed at marginal {((result.federalMarginalRate || 0) * 100).toFixed(2)}%.
                   </div>
+                )}
 
                   <div className="flex items-center justify-between px-3 py-2 text-sm bg-neutral-50">
-                    <span className="text-neutral-500">State Tax</span>
+                    <span className="text-neutral-500">
+                      State Tax
+                      <button
+                        type="button"
+                        onClick={() => setDetailRow(prev => prev === 'state' ? '' : 'state')}
+                        className="ml-2 text-teal-700 hover:text-teal-800 text-xs underline"
+                      >
+                        {detailRow === 'state' ? 'Hide details' : 'Details'}
+                      </button>
+                    </span>
                     <span className="flex items-center gap-2 font-semibold tabular-nums font-mono text-rose-700">
                       {result && result.grossIncome ? (
                         <span className="text-[11px] text-rose-700/80 bg-rose-50 border border-rose-100 rounded-full px-2 py-0.5">
@@ -774,11 +803,25 @@ export default function TakeHomePayCalculator() {
                         </span>
                       ) : null}
                       <span>-{result ? formatCurrency(result.stateTax) : '$0'}</span>
-                    </span>
+                  </span>
+                </div>
+                {detailRow === 'state' && result && (
+                  <div className="px-3 py-2 text-xs text-neutral-500 bg-white">
+                    State taxable = adjusted income ({formatCurrency(result.adjustedIncome)}) minus state deduction ({formatCurrency(result.stateDeduction || 0)}) = {formatCurrency(result.stateTaxable || result.adjustedIncome)}; {result.stateInfo || 'Tax calculated via the configured state brackets.'}
                   </div>
+                )}
 
                   <div className="flex items-center justify-between px-3 py-2 text-sm bg-white">
-                    <span className="text-neutral-500">FICA Tax</span>
+                    <span className="text-neutral-500">
+                      FICA Tax
+                      <button
+                        type="button"
+                        onClick={() => setDetailRow(prev => prev === 'fica' ? '' : 'fica')}
+                        className="ml-2 text-teal-700 hover:text-teal-800 text-xs underline"
+                      >
+                        {detailRow === 'fica' ? 'Hide details' : 'Details'}
+                      </button>
+                    </span>
                     <span className="flex items-center gap-2 font-semibold tabular-nums font-mono text-rose-700">
                       {result && result.grossIncome ? (
                         <span className="text-[11px] text-rose-700/80 bg-rose-50 border border-rose-100 rounded-full px-2 py-0.5">
@@ -786,11 +829,25 @@ export default function TakeHomePayCalculator() {
                         </span>
                       ) : null}
                       <span>-{result ? formatCurrency(result.ficaTax) : '$0'}</span>
-                    </span>
+                  </span>
+                </div>
+                {detailRow === 'fica' && result && (
+                  <div className="px-3 py-2 text-xs text-neutral-500 bg-neutral-50">
+                    Social Security: {formatCurrency(result.ficaComponents.socialSecurityTax)} (6.2% of the first {formatCurrency(result.ficaComponents.ssLimit)}); Medicare: {formatCurrency(result.ficaComponents.medicareTax - (result.ficaComponents.additionalMedicareTax || 0))} (1.45% of total income); Additional Medicare: {formatCurrency(result.ficaComponents.additionalMedicareTax)} (0.9% above {formatCurrency(result.ficaComponents.addMedThreshold)}).
                   </div>
+                )}
 
                   <div className="flex items-center justify-between px-3 py-2 text-sm bg-neutral-50">
-                    <span className="text-neutral-500">Local Tax</span>
+                    <span className="text-neutral-500">
+                      Local Tax
+                      <button
+                        type="button"
+                        onClick={() => setDetailRow(prev => prev === 'local' ? '' : 'local')}
+                        className="ml-2 text-teal-700 hover:text-teal-800 text-xs underline"
+                      >
+                        {detailRow === 'local' ? 'Hide details' : 'Details'}
+                      </button>
+                    </span>
                     <span className="flex items-center gap-2 font-semibold tabular-nums font-mono text-rose-700">
                       {result && result.grossIncome ? (
                         <span className="text-[11px] text-rose-700/80 bg-rose-50 border border-rose-100 rounded-full px-2 py-0.5">
@@ -798,8 +855,13 @@ export default function TakeHomePayCalculator() {
                         </span>
                       ) : null}
                       <span>-{result ? formatCurrency(result.localTax) : '$0'}</span>
-                    </span>
+                  </span>
+                </div>
+                {detailRow === 'local' && result && (
+                  <div className="px-3 py-2 text-xs text-neutral-500 bg-white">
+                    Local tax = adjusted income ({formatCurrency(result.adjustedIncome)}) × rate ({((Number(inputs.localTaxRate) || 0)).toFixed(2)}%).
                   </div>
+                )}
 
                   <div className="flex items-center justify-between px-3 py-2 text-sm bg-white">
                     <span className="text-neutral-500">Total Tax</span>
