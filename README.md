@@ -71,6 +71,15 @@ This project is a modular React app with calculators under `src/pages/tools/`:
     formatNumber.js            # Number formatting
 ```
 
+Additional public assets used by calculators:
+
+```
+/public
+  /thp-themes                  # Take-Home Pay page-scoped theme styles
+    light.css                  # Light theme overrides (emerald outline)
+    dark.css                   # Dark theme overrides (deep navy + emerald outline)
+```
+
 ## Setup & Run
 
 - Prerequisite: Node.js 18+
@@ -102,9 +111,26 @@ Commands:
 
 ### Global Layout & Styling
 - BrowserRouter + Suspense fallback
-- Material‑UI + TailwindCSS
+- Material-UI + TailwindCSS
 - Theme: `src/theme.js`; color mode: `src/context/ColorModeContext.js`
 - Global styles in `src/index.css`
+
+#### Per-Tool Theme Overrides (Take-Home Pay)
+- The Take-Home Pay calculator uses page-scoped light/dark CSS files loaded at runtime so its styles can diverge slightly from the global palette without affecting other pages.
+- Loader: `src/pages/tools/take_home_pay/themeCssLoader.js` injects `<link id="thp-theme-css">` and swaps `href` when the global `dark` class toggles.
+- Theme files: `public/thp-themes/light.css`, `public/thp-themes/dark.css`.
+- Page wrapper: the route root element has a `.thp` class so overrides are limited to this page.
+- Dark mode styling is tuned to match the FinCalc dark aesthetic (deep navy surfaces, soft blue-gray borders, emerald accent `#34D399`). Both light and dark modes add a subtle emerald outline on card-like containers.
+
+### Mobile Responsiveness
+
+- Calculators Hub (`src/pages/tools/index.jsx`): Mobile-only alignment and spacing tuned (Nov 2025).
+  - AppBar: actions wrap on `xs` with `useFlexGap` row spacing; Toolbar `minHeight` raised on `xs`; dark-mode icon styled with subtle border/bg; "Rental Calculator" button removed (leaving only "My Account"); remaining button `size="small"`, responsive `px/py`, and `whiteSpace: 'nowrap'`.
+  - Hero: responsive `fontSize`/`lineHeight`; hero container adds `px` on `xs`.
+  - Search: centers with side margins on `xs` via `mx={{ xs: 2, sm: 'auto' }}`.
+  - “Popular” pills and category chips: responsive font size/padding; containers use `useFlexGap` so wrapped rows have vertical spacing (`rowGap`).
+  - Card grid: reduced `gap` on `xs`; slightly reduced card height to avoid crowding.
+- Principle: keep desktop unchanged. All changes are gated behind MUI responsive `sx` props (`xs` overrides; `md+` preserves existing styles).
 
 ### SEO
 - `index.html` includes base meta tags
@@ -179,3 +205,13 @@ Path: `src/pages/tools/rental_property_calculator/`
 - Wire optional Supabase integration if persisting scenarios is desired
 - Continue performance tuning (charts, lazy loading, code splitting)
 
+Data checks (Take-Home Pay):
+- 2024 federal standard deduction values are correct in `src/pages/tools/take_home_pay/utils/taxData.js`.
+- 2025 values in code currently read Single $15,000; MFJ $30,000; MFS $15,000; HOH $22,500. IRS 2025 amounts are Single $15,300; MFJ $30,600; MFS $15,300; HOH $22,950. Update `FED_STD` if using 2025 projections.
+
+### Documentation Maintenance
+
+- Source of truth: This `README.md` tracks structure, routes, tech stack, and notable UX changes.
+- On feature additions or layout changes, update relevant sections (Structure, Routing, Mobile Responsiveness) in the same PR.
+- Keep file references current and prefer workspace-relative paths.
+ - For Take-Home Pay styling changes, prefer editing `public/thp-themes/*.css` to keep overrides page-scoped.

@@ -1,0 +1,66 @@
+/* Take-Home Pay page theme (dark) */
+:root {
+  /* Variables specific to Take-Home Pay page */
+  --thp-bg: #0b1220;            /* deep navy */
+  --thp-surface: #0f172a;       /* dark surface */
+  --thp-text: #e5e7eb;          /* gray-200 */
+  --thp-text-muted: #9ca3af;    /* gray-400 */
+  --thp-text-subtle: #94a3b8;   /* slate-400 */
+  --thp-card: #0f172a;          /* card bg */
+  --thp-border: #233040;        /* soft blue-gray */
+  --thp-border-strong: #2b3a4e; /* stronger line */
+  --thp-accent: #34d399;        /* emerald-400 */
+}
+
+/* Scope overrides to the Take-Home Pay wrapper */
+.thp,
+.thp .bg-bg-page {
+  background-color: var(--thp-bg) !important;
+  color: var(--thp-text);
+}
+
+/* Surfaces and cards */
+.thp .bg-bg-surface { background-color: var(--thp-surface) !important; }
+.thp .bg-white { background-color: var(--thp-card) !important; }
+.thp .shadow-card { box-shadow: 0 10px 24px rgba(0,0,0,0.35), 0 1px 0 rgba(255,255,255,0.03) inset !important; }
+.thp .rounded-2xl, .thp .rounded-xl, .thp .rounded-lg { border-radius: 18px; }
+
+/* Emerald outline accent on card-like surfaces */
+.thp .bg-bg-surface.rounded-lg,
+.thp .bg-bg-surface.rounded-xl,
+.thp .bg-bg-surface.rounded-2xl,
+.thp section.bg-bg-surface {
+  border: 1px solid rgba(52, 211, 153, 0.28) !important; /* #34D399 */
+  box-shadow:
+    0 0 0 1px rgba(52, 211, 153, 0.10) inset,
+    0 10px 24px rgba(0, 0, 0, 0.35) !important;
+}
+
+/* Inputs */
+.thp input, .thp select, .thp textarea { background-color: var(--thp-card) !important; color: var(--thp-text) !important; border-color: var(--thp-border) !important; }
+.thp input::placeholder, .thp textarea::placeholder { color: #92a2b5; opacity: 0.75; }
+
+/* Borders and dividers */
+.thp .border-neutral-300, .thp .border-neutral-200 { border-color: var(--thp-border) !important; }
+.thp .divide-neutral-200 > * + * { border-color: var(--thp-border) !important; }
+
+/* Neutrals to dark equivalents */
+.thp .bg-neutral-50 { background-color: #0e1626 !important; }
+.thp .bg-neutral-100 { background-color: #0f1a2a !important; }
+.thp .hover\\:bg-neutral-200:hover { background-color: #162233 !important; }
+
+/* Text */
+.thp .text-neutral-900 { color: var(--thp-text) !important; }
+.thp .text-neutral-700, .thp .text-neutral-600 { color: var(--thp-text-muted) !important; }
+.thp .text-neutral-500 { color: var(--thp-text-subtle) !important; }
+
+/* Accent for the main page heading */
+.thp h1.font-extrabold { color: var(--thp-accent) !important; }
+
+/* Pills and chips */
+.thp .rounded-full.bg-neutral-100 { background-color: #0f1a2a !important; border: 1px solid var(--thp-border) !important; box-shadow: 0 6px 18px rgba(0,0,0,0.35); color: var(--thp-text) !important; }
+.thp .rounded-full.bg-neutral-100 .text-neutral-900 { color: var(--thp-text) !important; }
+
+/* Status chips that use semantic colors retain readable dark backgrounds */
+.thp .bg-rose-50 { background-color: rgba(244, 63, 94, 0.08) !important; }
+.thp .bg-amber-50 { background-color: rgba(245, 158, 11, 0.08) !important; }

@@ -113,6 +113,14 @@ The memo returns all values consumed by the chips, breakdown list, and chart, in
 - Floating label pattern exists for percent inputs using `data-has-value` + peer selectors.
 - Ensure `APP_DIR=take_home_pay` for CI builds that rely on dynamic PostCSS config.
 
+### Theme Separation (Light/Dark)
+
+- This page keeps light and dark styles in separate CSS files loaded at runtime, scoped to this page only.
+- Files: `public/thp-themes/light.css` and `public/thp-themes/dark.css` define variables and targeted overrides for the `.thp` wrapper.
+- Loader: `src/pages/tools/take_home_pay/themeCssLoader.js` injects a `<link id="thp-theme-css">` and swaps `href` when the global `dark` class toggles.
+- Integration: `src/pages/tools/take_home_pay/index.jsx` adds a top-level `.thp` wrapper and a `useEffect` with a `MutationObserver` to stay in sync with the global theme toggle.
+- Extend by adding overrides inside those CSS files; prefer variable-driven styles to avoid touching JSX.
+
 ## Charts
 
 - `components/TaxChart.jsx` wraps `react-chartjs-2` Pie

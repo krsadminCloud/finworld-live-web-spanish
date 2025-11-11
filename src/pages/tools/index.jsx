@@ -116,7 +116,7 @@ export default function FinancialCalculators() {
           borderBottom: `1px solid ${theme.palette.divider}`,
         }}
       >
-        <Toolbar sx={{ px: { xs: 2, md: 6 } }}>
+        <Toolbar sx={{ px: { xs: 2, md: 6 }, minHeight: { xs: 72, md: 64 } }}>
           <Stack direction="row" spacing={1} alignItems="center">
             <CalculateIcon color="primary" />
             <Typography variant="h6" fontWeight={800} sx={{ letterSpacing: "-0.02em" }}>
@@ -126,14 +126,34 @@ export default function FinancialCalculators() {
 
           <Box sx={{ flexGrow: 1 }} />
 
-          <Stack direction="row" spacing={1.5} alignItems="center">
-            <IconButton onClick={colorMode.toggleColorMode} color="inherit" size="large">
+          <Stack
+            direction="row"
+            spacing={{ xs: 0.5, md: 1.5 }}
+            alignItems="center"
+            flexWrap={{ xs: "wrap", md: "nowrap" }}
+            justifyContent={{ xs: "flex-end", md: "flex-start" }}
+            useFlexGap
+            sx={{ rowGap: { xs: 1, md: 0 } }}
+          >
+            <IconButton
+              onClick={colorMode.toggleColorMode}
+              color="inherit"
+              size="small"
+              sx={{
+                border: '1px solid',
+                borderColor: 'divider',
+                bgcolor: 'background.paper',
+              }}
+            >
               {theme.palette.mode === "dark" ? <LightModeIcon /> : <DarkModeIcon />}
             </IconButton>
-            <Button variant="outlined" color="primary" onClick={() => navigate('/tools/rental_property_calculator')} sx={{ borderRadius: 50, fontWeight: 700 }}>
-              Rental Calculator
-            </Button>
-            <Button variant="contained" color="primary" sx={{ borderRadius: 50, fontWeight: 700 }}>
+            {/** Rental Calculator button removed per request */}
+            <Button
+              size="small"
+              variant="contained"
+              color="primary"
+              sx={{ borderRadius: 50, fontWeight: 700, px: { xs: 1.25, md: 2.5 }, py: { xs: 0.5, md: 1 }, whiteSpace: 'nowrap' }}
+            >
               My Account
             </Button>
           </Stack>
@@ -143,12 +163,14 @@ export default function FinancialCalculators() {
       {/* ===== Main Content ===== */}
       <Container maxWidth="lg" sx={{ py: 8 }}>
         {/* Hero */}
-        <Stack spacing={1.5} alignItems="center" textAlign="center" sx={{ mb: 6 }}>
+        <Stack spacing={1.5} alignItems="center" textAlign="center" sx={{ mb: 6, px: 2 }}>
           <Typography
             variant="h3"
             fontWeight={800}
             sx={{
               letterSpacing: "-0.03em",
+              fontSize: { xs: "2rem", sm: "2.25rem", md: "3rem" },
+              lineHeight: { xs: 1.2, md: 1.2 },
               background:
                 theme.palette.mode === "dark"
                   ? "linear-gradient(90deg,#34d399,#2dd4bf)"
@@ -165,7 +187,7 @@ export default function FinancialCalculators() {
         </Stack>
 
         {/* Search Bar */}
-        <Paper elevation={1} sx={{ mx: "auto", mb: 4, maxWidth: 700, borderRadius: 50, p: 1 }}>
+        <Paper elevation={1} sx={{ mx: { xs: 2, sm: "auto" }, mb: 4, maxWidth: 700, borderRadius: 50, p: 1 }}>
           <TextField
             fullWidth
             placeholder="Search for a calculator..."
@@ -188,35 +210,35 @@ export default function FinancialCalculators() {
         <Stack alignItems="center" sx={{ mb: 3 }}>
           <Typography
             variant="subtitle1"
-            sx={{ fontWeight: 700, color: "#000000", mb: 1 }}
+            sx={{ fontWeight: 700, color: theme.palette.mode === 'dark' ? '#ffffff' : '#000000', mb: 1 }}
           >
             Popular:
           </Typography>
 
-          <Stack direction="row" spacing={1.5} flexWrap="wrap" justifyContent="center">
+          <Stack direction="row" spacing={{ xs: 1, md: 1.5 }} flexWrap="wrap" justifyContent="center" useFlexGap sx={{ rowGap: { xs: 1.5, md: 1.5 } }}>
             <Box
-              sx={{ backgroundColor: "#A7F3D0", color: "#065F46", px: 2, py: 0.5, borderRadius: "999px", fontWeight: 700, fontSize: "0.9rem", cursor: "pointer" }}
+              sx={{ backgroundColor: "#A7F3D0", color: "#065F46", px: { xs: 1.25, md: 2 }, py: { xs: 0.25, md: 0.5 }, borderRadius: "999px", fontWeight: 700, fontSize: { xs: "0.8rem", md: "0.9rem" }, cursor: "pointer" }}
               onClick={() => navigate("/tools/mortgage_calculator")}
             >
               Mortgage Calculator
             </Box>
             <Box
-              sx={{ backgroundColor: "#D1FAE5", color: "#065F46", px: 2, py: 0.5, borderRadius: "999px", fontWeight: 700, fontSize: "0.9rem", cursor: "pointer" }}
+              sx={{ backgroundColor: "#D1FAE5", color: "#065F46", px: { xs: 1.25, md: 2 }, py: { xs: 0.25, md: 0.5 }, borderRadius: "999px", fontWeight: 700, fontSize: { xs: "0.8rem", md: "0.9rem" }, cursor: "pointer" }}
               onClick={() => navigate("/tools/extra_payment")}
             >
               Loan Payoff
             </Box>
             <Box
-              sx={{ backgroundColor: "#BAE6FD", color: "#1E3A8A", px: 2, py: 0.5, borderRadius: "999px", fontWeight: 700, fontSize: "0.9rem", cursor: "pointer" }}
+              sx={{ backgroundColor: "#BAE6FD", color: "#1E3A8A", px: { xs: 1.25, md: 2 }, py: { xs: 0.25, md: 0.5 }, borderRadius: "999px", fontWeight: 700, fontSize: { xs: "0.8rem", md: "0.9rem" }, cursor: "pointer" }}
               onClick={() => navigate("/tools/take_home_pay")}
             >
               Take Home Pay
             </Box>
-            <Box sx={{ backgroundColor: "#FDE68A", color: "#78350F", px: 2, py: 0.5, borderRadius: "999px", fontWeight: 700, fontSize: "0.9rem" }}>
+            <Box sx={{ backgroundColor: "#FDE68A", color: "#78350F", px: { xs: 1.25, md: 2 }, py: { xs: 0.25, md: 0.5 }, borderRadius: "999px", fontWeight: 700, fontSize: { xs: "0.8rem", md: "0.9rem" } }}>
               Savings Goal
             </Box>
             <Box
-              sx={{ backgroundColor: "#FBCFE8", color: "#831843", px: 2, py: 0.5, borderRadius: "999px", fontWeight: 700, fontSize: "0.9rem", cursor: "pointer" }}
+              sx={{ backgroundColor: "#FBCFE8", color: "#831843", px: { xs: 1.25, md: 2 }, py: { xs: 0.25, md: 0.5 }, borderRadius: "999px", fontWeight: 700, fontSize: { xs: "0.8rem", md: "0.9rem" }, cursor: "pointer" }}
               onClick={() => navigate("/tools/retirement_calculator")}
             >
               Retirement Saving
@@ -227,7 +249,7 @@ export default function FinancialCalculators() {
         <Divider sx={{ mb: 4 }} />
 
         {/* === Category Chips === */}
-        <Stack direction="row" spacing={1} justifyContent="center" flexWrap="wrap" sx={{ mb: 6 }}>
+        <Stack direction="row" spacing={{ xs: 0.75, md: 1 }} justifyContent="center" flexWrap="wrap" useFlexGap sx={{ mb: 6, rowGap: { xs: 1.25, md: 1 } }}>
           {["Mortgage", "Personal Finance", "Investment", "Retirement", "Taxes", "Auto"].map((c) => (
             <Chip
               key={c}
@@ -237,7 +259,9 @@ export default function FinancialCalculators() {
               variant={c === category ? "filled" : "outlined"}
               sx={{
                 borderRadius: "999px",
-                px: 1,
+                height: { xs: 28, md: 32 },
+                fontSize: { xs: ".8rem", md: ".875rem" },
+                px: { xs: 0.5, md: 1 },
                 fontWeight: 600,
                 boxShadow: c === category ? "0 4px 10px rgba(16,185,129,0.3)" : "none",
                 "&:hover": {
@@ -254,7 +278,7 @@ export default function FinancialCalculators() {
         <Divider sx={{ mb: 4 }} />
 
         {/* === Updated Grid Layout (Uniform Tiles) === */}
-        <Box display="flex" flexWrap="wrap" justifyContent="center" gap={2.5}>
+        <Box display="flex" flexWrap="wrap" justifyContent="center" gap={{ xs: 1.5, md: 2.5 }}>
           {filtered.map((item) => (
             <Card
               key={item.title}
@@ -262,7 +286,7 @@ export default function FinancialCalculators() {
               sx={{
                 flex: "1 1 230px",
                 maxWidth: "230px",
-                height: "160px",
+                height: { xs: 148, md: 160 },
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",

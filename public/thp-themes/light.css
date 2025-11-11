@@ -1,0 +1,51 @@
+/* Take-Home Pay page theme (light) */
+:root {
+  /* Variables specific to Take-Home Pay page */
+  --thp-bg: #f8fafc;            /* slate-50 */
+  --thp-text: #111827;         /* gray-900 */
+  --thp-text-muted: #4b5563;   /* gray-600 */
+  --thp-text-subtle: #6b7280;  /* gray-500 */
+  --thp-card: #ffffff;         /* white */
+  --thp-border: #e5e7eb;       /* gray-200 */
+  --thp-accent: #14b8a6;       /* teal-500 */
+}
+
+/* Scope overrides to the Take-Home Pay wrapper */
+.thp,
+.thp .bg-bg-page {
+  background-color: var(--thp-bg) !important;
+  color: var(--thp-text);
+}
+
+.thp .bg-white { background-color: var(--thp-card) !important; }
+.thp .border-neutral-300 { border-color: var(--thp-border) !important; }
+
+.thp .text-neutral-900 { color: var(--thp-text) !important; }
+.thp .text-neutral-700 { color: var(--thp-text-muted) !important; }
+.thp .text-neutral-600 { color: var(--thp-text-muted) !important; }
+.thp .text-neutral-500 { color: var(--thp-text-subtle) !important; }
+
+/* Buttons and chips that use neutral backgrounds */
+.thp .bg-neutral-100 { background-color: #f5f5f5 !important; }
+.thp .hover\\:bg-neutral-200:hover { background-color: #e5e5e5 !important; }
+
+/* Emerald outline accent on card-like surfaces (light mode) */
+.thp .bg-bg-surface.rounded-lg,
+.thp .bg-bg-surface.rounded-xl,
+.thp .bg-bg-surface.rounded-2xl,
+.thp section.bg-bg-surface {
+  border: 1px solid rgba(52, 211, 153, 0.32) !important; /* #34D399 */
+  box-shadow:
+    0 0 0 1px rgba(52, 211, 153, 0.08) inset,
+    0 6px 18px rgba(0, 0, 0, 0.06) !important;
+}
+
+.thp .bg-white.rounded-lg,
+.thp .bg-white.rounded-xl,
+.thp .bg-white.rounded-2xl,
+.thp section.bg-white {
+  border: 1px solid rgba(52, 211, 153, 0.22) !important;
+  box-shadow:
+    0 0 0 1px rgba(52, 211, 153, 0.06) inset,
+    0 6px 18px rgba(0, 0, 0, 0.05) !important;
+}
