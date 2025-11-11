@@ -1,51 +1,74 @@
 import React from 'react';
 import Card from '../components/Card';
 import TooltipInfo from '../components/TooltipInfo';
+import IconBadge from '../components/IconBadge';
+import { Landmark } from 'lucide-react';
+import FloatingInput from '../components/FloatingInput';
 
 export default function LoanDetails({ value, onChange, onReset }) {
+  const [collapsed, setCollapsed] = React.useState(false);
   const set = (k, v) => onChange({ ...value, [k]: v });
   return (
     <Card
       title={
         <span className="flex items-center gap-2">
+          <IconBadge color="bg-violet-100" ring="ring-violet-200" fg="text-violet-600"><Landmark size={16} /></IconBadge>
           Loan Details <TooltipInfo text="Down payment, interest rate, term length, and optional points." />
         </span>
       }
       right={onReset ? (
-        <button
-          type="button"
-          onClick={onReset}
-          className="inline-flex items-center rounded-md bg-primary-700 px-4 py-2 text-white hover:bg-primary-700/90"
-        >
-          Reset
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={onReset}
+            className="uppercase tracking-wide text-[10px] px-3 py-1.5 rounded-full transition-colors border bg-teal-600 text-white border-teal-600 hover:bg-teal-700 shadow"
+          >
+            Reset
+          </button>
+          <button
+            type="button"
+            aria-label={collapsed ? 'Expand' : 'Collapse'}
+            onClick={() => setCollapsed((v) => !v)}
+            className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-teal-600 text-white hover:bg-teal-700"
+            title={collapsed ? 'Expand' : 'Minimize'}
+          >
+            <span className={`transition-transform ${collapsed ? 'rotate-180' : ''}`}>▾</span>
+          </button>
+        </div>
       ) : null}
     >
+      {!collapsed && (
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div>
-          <label className="text-sm text-slate-600">Down Payment (%)</label>
-          <input inputMode="decimal" className="mt-1 w-full rounded-md border border-slate-300 p-2 text-right" placeholder="20" value={value.downPaymentPct}
-            onChange={(e) => set('downPaymentPct', Number(e.target.value) || 0)} />
-        </div>
-        <div>
-          <label className="text-sm text-slate-600">Interest Rate (%)</label>
-          <input inputMode="decimal" className="mt-1 w-full rounded-md border border-slate-300 p-2 text-right" placeholder="6.5" value={value.interestRatePct}
-            onChange={(e) => set('interestRatePct', Number(e.target.value) || 0)} />
-        </div>
-        <div>
-          <label className="text-sm text-slate-600">Loan Term (Years)</label>
-          <input inputMode="numeric" className="mt-1 w-full rounded-md border border-slate-300 p-2 text-right" placeholder="30" value={value.termYears}
-            onChange={(e) => set('termYears', Number(e.target.value) || 0)} />
-        </div>
-        <div>
-          <label className="text-sm text-slate-600">
-            <span>Points</span>
-            <span className="block text-xs text-slate-500">(%)</span>
-          </label>
-          <input inputMode="decimal" className="mt-1 w-full rounded-md border border-slate-300 p-2 text-right" placeholder="0" value={value.points}
-            onChange={(e) => set('points', Number(e.target.value) || 0)} />
-        </div>
+        <FloatingInput
+          label="Down Payment (%)"
+          inputMode="decimal"
+          value={value.downPaymentPct}
+          onChange={(e) => set('downPaymentPct', e.target.value === '' ? '' : Number(e.target.value) || 0)}
+          placeholder="(%)"
+        />
+        <FloatingInput
+          label="Interest Rate (%)"
+          inputMode="decimal"
+          value={value.interestRatePct}
+          onChange={(e) => set('interestRatePct', e.target.value === '' ? '' : Number(e.target.value) || 0)}
+          placeholder="(%)"
+        />
+        <FloatingInput
+          label="Loan Term (Years)"
+          inputMode="numeric"
+          value={value.termYears}
+          onChange={(e) => set('termYears', e.target.value === '' ? '' : Number(e.target.value) || 0)}
+          placeholder="(years)"
+        />
+        <FloatingInput
+          label="Points (%)"
+          inputMode="decimal"
+          value={value.points}
+          onChange={(e) => set('points', e.target.value === '' ? '' : Number(e.target.value) || 0)}
+          placeholder="(%)"
+        />
       </div>
+      )}
     </Card>
   );
 }

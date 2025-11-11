@@ -10,8 +10,9 @@ export default function Card({ title, subtitle, right, children }) {
         </div>
         {right}
       </div>
-      <div className="p-4">{children}</div>
+      {children ? (
+        <div className="p-4">{children}</div>
+      ) : null}
     </div>
   );
 }
-

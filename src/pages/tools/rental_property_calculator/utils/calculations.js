@@ -46,14 +46,18 @@ export function expenseCalcs({
   utilitiesMonthly,
   garbageSewerMonthly,
   grossMonthlyIncome,
+  overrideOperatingMonthly,
+  customMonthly = 0,
 }) {
   const taxesMonthly = toNumber(propertyTaxesAnnual) / 12;
   const insuranceMonthly = toNumber(insuranceAnnual) / 12;
   const managementMonthly = toNumber(grossMonthlyIncome) * (toNumber(managementPct) / 100);
-  const operatingMonthly = taxesMonthly + insuranceMonthly + toNumber(maintenanceMonthly) + toNumber(capexMonthly)
-    + toNumber(hoaMonthly) + toNumber(utilitiesMonthly) + toNumber(garbageSewerMonthly) + managementMonthly;
+  let operatingMonthly = taxesMonthly + insuranceMonthly + toNumber(maintenanceMonthly) + toNumber(capexMonthly)
+    + toNumber(hoaMonthly) + toNumber(utilitiesMonthly) + toNumber(garbageSewerMonthly) + managementMonthly + toNumber(customMonthly);
+  const override = toNumber(overrideOperatingMonthly);
+  if (override > 0) operatingMonthly = override;
   const operatingAnnual = operatingMonthly * 12;
-  return { taxesMonthly, insuranceMonthly, managementMonthly, operatingMonthly, operatingAnnual };
+  return { taxesMonthly, insuranceMonthly, managementMonthly, operatingMonthly, operatingAnnual, customMonthly: toNumber(customMonthly) };
 }
 
 export function capRatePct({ noiAnnual, purchasePrice }) {
@@ -66,7 +70,9 @@ export function totalInvestmentNeeded({ purchasePrice, downPaymentPct, closingCo
   const downPayment = toNumber(purchasePrice) * (toNumber(downPaymentPct) / 100);
   const { loanAmount } = mortgageMonthlyPI({ purchasePrice, downPaymentPct, interestRatePct: 0, termYears: 30 });
   const points = pointsCost({ loanAmount, pointsPct });
-  return { downPayment, points, totalInvestment: downPayment + toNumber(closingCosts) + points };
+  // Treat closingCosts as a percentage of purchase price
+  const closingCostAmount = toNumber(purchasePrice) * (toNumber(closingCosts) / 100);
+  return { downPayment, points, closingCostAmount, totalInvestment: downPayment + closingCostAmount + points };
 }
 
 export function cashOnCashPct({ monthlyCashFlow, totalInvestment }) {
@@ -120,6 +126,10 @@ export function fullAnalysis(inputs) {
     utilitiesMonthly: inputs.expenses.utilities,
     garbageSewerMonthly: inputs.expenses.garbageSewer,
     grossMonthlyIncome: income.grossMonthlyIncome,
+    overrideOperatingMonthly: inputs.expenses.overrideOperatingMonthly,
+    customMonthly: Array.isArray(inputs.expenses.custom)
+      ? inputs.expenses.custom.reduce((sum, it) => sum + toNumber(it?.amount), 0)
+      : 0,
   });
   const noiAnnual = income.effectiveAnnualIncome - expenses.operatingAnnual;
   const capRate = capRatePct({ noiAnnual, purchasePrice: inputs.property.purchasePrice });
@@ -179,6 +189,10 @@ export function roiSeriesOverYears(inputs) {
     utilitiesMonthly: inputs.expenses.utilities,
     garbageSewerMonthly: inputs.expenses.garbageSewer,
     grossMonthlyIncome: income.grossMonthlyIncome,
+    overrideOperatingMonthly: inputs.expenses.overrideOperatingMonthly,
+    customMonthly: Array.isArray(inputs.expenses.custom)
+      ? inputs.expenses.custom.reduce((sum, it) => sum + toNumber(it?.amount), 0)
+      : 0,
   });
   const monthlyCashFlow = income.effectiveMonthlyIncome - exp.operatingMonthly - monthlyPI;
   for (let year = 0; year <= 5; year++) {
@@ -196,4 +210,3 @@ export function roiSeriesOverYears(inputs) {
   }
   return result;
 }
-

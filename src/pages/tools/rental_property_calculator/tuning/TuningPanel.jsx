@@ -24,11 +24,10 @@ export default function TuningPanel({ inputs, setIncome, setExpenses, setLoan, r
           onChange={(v) => setExpenses({ ...inputs.expenses, vacancyRatePct: v })} suffix="%" />
         <Slider label="Interest Rate" min={0} max={15} step={0.125} value={inputs.loan.interestRatePct}
           onChange={(v) => setLoan({ ...inputs.loan, interestRatePct: v })} suffix="%" />
+        <Slider label="Total Expenses" min={0} max={10000} step={25} value={Number(inputs.expenses.overrideOperatingMonthly || 0)}
+          onChange={(v) => setExpenses({ ...inputs.expenses, overrideOperatingMonthly: v })} />
       </div>
-      <div className="mt-4">
-        <button onClick={reset} className="rounded-md bg-primary-700 px-4 py-2 text-white hover:bg-primary-700/90">Reset to defaults</button>
-      </div>
+      {/* Note: No global reset here to ensure per-box resets act independently */}
     </Card>
   );
 }
-

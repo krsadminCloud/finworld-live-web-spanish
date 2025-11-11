@@ -28,10 +28,30 @@ export const DEFAULTS = {
     utilities: 0,
     garbageSewer: 0,
     vacancyRatePct: 5,
+    custom: [],
   },
 };
 
-export function useCalculatorState(initial = DEFAULTS) {
+export const BLANKS = {
+  property: { address: '', purchasePrice: '', closingCosts: '' },
+  loan: { downPaymentPct: '', interestRatePct: '', termYears: '', points: '' },
+  income: { monthlyRent: '', otherIncome: '', custom: [] },
+  expenses: {
+    propertyTaxes: '',
+    insurance: '',
+    maintenance: '',
+    capex: '',
+    managementPct: '',
+    hoa: '',
+    utilities: '',
+    garbageSewer: '',
+    vacancyRatePct: '',
+    overrideOperatingMonthly: '',
+    custom: [],
+  },
+};
+
+export function useCalculatorState(initial = BLANKS) {
   const [property, setProperty] = useState(initial.property);
   const [loan, setLoan] = useState(initial.loan);
   const [income, setIncome] = useState(initial.income);
@@ -60,4 +80,3 @@ export function useCalculatorState(initial = DEFAULTS) {
     reset,
   };
 }
-

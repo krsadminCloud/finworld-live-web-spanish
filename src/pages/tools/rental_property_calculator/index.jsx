@@ -1,5 +1,5 @@
 import React from 'react';
-import { useCalculatorState, DEFAULTS } from './state/useCalculatorState';
+import { useCalculatorState, DEFAULTS, BLANKS } from './state/useCalculatorState';
 import PropertyInfo from './inputs/PropertyInfo';
 import LoanDetails from './inputs/LoanDetails';
 import Income from './inputs/Income';
@@ -21,11 +21,20 @@ export default function RentalPropertyCalculatorPage() {
         </div>
       </header>
       <main className="mx-auto max-w-6xl px-4 py-8 space-y-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="flex justify-end">
+          <button
+            type="button"
+            onClick={() => { setProperty(DEFAULTS.property); setLoan(DEFAULTS.loan); setIncome(DEFAULTS.income); setExpenses(DEFAULTS.expenses); }}
+            className="uppercase tracking-wide text-[11px] px-3 py-1.5 rounded-full transition-colors border bg-teal-600 text-white border-teal-600 hover:bg-teal-700 shadow"
+          >
+            Prefill Sample Values
+          </button>
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
           <PropertyInfo value={inputs.property} onChange={setProperty} />
-          <LoanDetails value={inputs.loan} onChange={setLoan} onReset={() => setLoan(DEFAULTS.loan)} />
-          <Income value={inputs.income} onChange={setIncome} onReset={() => setIncome(DEFAULTS.income)} />
-          <Expenses value={inputs.expenses} onChange={setExpenses} onReset={() => setExpenses(DEFAULTS.expenses)} />
+          <LoanDetails value={inputs.loan} onChange={setLoan} onReset={() => setLoan(BLANKS.loan)} />
+          <Income value={inputs.income} onChange={setIncome} onReset={() => setIncome(BLANKS.income)} />
+          <Expenses value={inputs.expenses} onChange={setExpenses} onReset={() => setExpenses(BLANKS.expenses)} />
         </div>
 
         <ResultsSummary analysis={analysis} />
