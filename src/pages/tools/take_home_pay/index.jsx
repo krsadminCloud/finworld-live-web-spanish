@@ -80,17 +80,21 @@ export default function TakeHomePayCalculator() {
     const fedResult = calcFederalTax(inputs.year, adjustedIncome, inputs.status);
     const federalTax = Math.max(0, fedResult.tax - (Number(inputs.childTaxCredit) || 0) - (Number(inputs.dependentCareCredit) || 0));
 
-    let stateTax, stateInfo, stateMarginalRate;
+    let stateTax, stateInfo, stateMarginalRate, stateTaxable, stateDeduction;
     if (inputs.overrideStateRate !== undefined && inputs.overrideStateRate !== null && inputs.overrideStateRate !== '') {
       const rate = Number(inputs.overrideStateRate) / 100;
       stateTax = adjustedIncome * rate;
       stateInfo = `Override ${Number(inputs.overrideStateRate).toFixed(2)}%`;
       stateMarginalRate = rate;
+      stateTaxable = adjustedIncome;
+      stateDeduction = 0;
     } else {
-      const sres = calcStateTax(adjustedIncome, inputs.state);
+      const sres = calcStateTax(adjustedIncome, inputs.state, inputs.year, inputs.status);
       stateTax = sres.tax;
       stateInfo = sres.info;
       stateMarginalRate = sres.marginalRate;
+      stateTaxable = sres.taxable ?? adjustedIncome;
+      stateDeduction = sres.deductionAmount || 0;
     }
 
     const ficaTax = calcFicaTax(inputs.year, totalIncome, inputs.status);
@@ -139,6 +143,8 @@ export default function TakeHomePayCalculator() {
       finalNetMonthly: finalNet / 12,
       finalNetBiweekly: finalNet / 26,
       finalNetWeekly: finalNet / 52,
+      stateTaxable,
+      stateDeduction,
     };
   }, [inputs]);
 
@@ -180,7 +186,7 @@ export default function TakeHomePayCalculator() {
       .map((code) => {
         const stRes = (inputs.overrideStateRate !== undefined && inputs.overrideStateRate !== null && inputs.overrideStateRate !== '')
           ? { tax: result.adjustedIncome * (Number(inputs.overrideStateRate) / 100), info: `Override ${Number(inputs.overrideStateRate).toFixed(2)}%` }
-          : calcStateTax(result.adjustedIncome, code);
+          : calcStateTax(result.adjustedIncome, code, inputs.year, inputs.status);
         const netS = result.grossIncome - result.federalTax - stRes.tax - result.ficaTax - result.localTax - result.k401Total;
         const finalS = Math.max(0, netS - result.rothContributions);
         return { code, stateTax: stRes.tax, netAnnual: netS, finalAnnual: finalS, monthly: finalS/12, biweekly: finalS/26, weekly: finalS/52, info: stRes.info };
@@ -196,7 +202,7 @@ export default function TakeHomePayCalculator() {
       const ft = Math.max(0, fr.tax - (Number(inputs.childTaxCredit)||0) - (Number(inputs.dependentCareCredit)||0));
       const st = (inputs.overrideStateRate !== undefined && inputs.overrideStateRate !== null && inputs.overrideStateRate !== '')
         ? offerAdj * (Number(inputs.overrideStateRate)/100)
-        : calcStateTax(offerAdj, inputs.state).tax;
+        : calcStateTax(offerAdj, inputs.state, inputs.year, inputs.status).tax;
       const fica = calcFicaTax(inputs.year, Number(offerIncome||0), inputs.status);
       const lt = offerAdj * ((Number(inputs.localTaxRate)||0)/100);
       const tot = ft + st + fica + lt;
@@ -615,7 +621,7 @@ export default function TakeHomePayCalculator() {
                       <strong>{formatCurrency(result.federalStdDeduction)}</strong>
                     </div>
                     <div className="inline-flex items-center gap-2 rounded-full bg-neutral-100 px-3 py-1 text-xs text-neutral-900 border border-neutral-200">
-                      <span>Taxable</span>
+                      <span>Federal Taxable</span>
                       <strong>{formatCurrency(result.federalTaxable)}</strong>
                     </div>
                     <div className="inline-flex items-center gap-2 rounded-full bg-neutral-100 px-3 py-1 text-xs text-neutral-900 border border-neutral-200">
@@ -629,6 +635,14 @@ export default function TakeHomePayCalculator() {
                     <div className="inline-flex items-center gap-2 rounded-full bg-neutral-100 px-3 py-1 text-xs text-neutral-900 border border-neutral-200">
                       <span>State Marginal</span>
                       <strong>{(result.stateMarginalRate * 100).toFixed(2)}%</strong>
+                    </div>
+                    <div className="inline-flex items-center gap-2 rounded-full bg-neutral-100 px-3 py-1 text-xs text-neutral-900 border border-neutral-200">
+                      <span>State Taxable</span>
+                      <strong>{formatCurrency(result.stateTaxable || 0)}</strong>
+                    </div>
+                    <div className="inline-flex items-center gap-2 rounded-full bg-neutral-100 px-3 py-1 text-xs text-neutral-900 border border-neutral-200">
+                      <span>State Deduction</span>
+                      <strong>{formatCurrency(result.stateDeduction || 0)}</strong>
                     </div>
                     {false && (
                       <div className="inline-flex items-center gap-2 rounded-full bg-neutral-100 px-3 py-1 text-xs text-neutral-900 border border-neutral-200">

@@ -51,8 +51,10 @@ All computations are isolated in `utils/`.
 - `taxCalculations.js`
   - `formatCurrency(n)` — USD currency (0 decimals)
   - `calcFederalTax(year, agi, status)` → `{ tax, taxable, marginalRate, std }`
-  - `calcStateTax(agi, state)` → `{ tax, info, marginalRate }`
-  - `calcFicaTax(year, income, status)` → SS + Medicare + Additional Medicare (if above threshold)
+- `calcStateTax(agi, state, year, status)` → `{ tax, taxable, info, marginalRate }`
+- `calcFicaTax(year, income, status)` → SS + Medicare + Additional Medicare (if above threshold)
+
+State deduction/exemption policies for each state (2024/2025) live in `utils/StateDeductions.js` and feed into `calcStateTax` so the calculator subtracts the appropriate standard deduction (or exemption) before applying the state brackets/flat rate models.
 
 Important behavior notes:
 
@@ -100,7 +102,7 @@ The memo returns all values consumed by the chips, breakdown list, and chart, in
   - Roth IRA groups
   - Advanced options (pre‑tax deductions, credits, etc.)
 - Right column (results):
-  - Header with Annual Take‑Home and chips: Std Deduction, Taxable, Federal Marginal, 401(k) per paycheck, State Marginal
+  - Header with Annual Take‑Home and chips: Std Deduction, Federal Taxable, State Taxable, State Deduction, Federal Marginal, 401(k) per paycheck, State Marginal
 - Breakdown list with zebra rows, percent‑of‑gross chips for each deduction/tax
 - Total Pre‑Tax Deductions row includes a “Show details” toggle that itemizes: Your 401(k), Spouse’s 401(k), Health Insurance, HSA, Traditional IRA, Student Loan Interest, FSA, and Other Pre‑Tax Deductions (only non‑zero rows are shown)
 - Final Net (Weekly, Biweekly, Monthly) emphasized in bold

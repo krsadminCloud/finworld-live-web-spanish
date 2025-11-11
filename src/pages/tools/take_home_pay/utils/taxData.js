@@ -24,7 +24,7 @@ export const FICA_LIMITS = {
 
 export const FED_STD = {
   2024: { single: 14600, mfj: 29200, mfs: 14600, hoh: 21900 },
-  2025: { single: 15000, mfj: 30000, mfs: 15000, hoh: 22500 }
+  2025: { single: 15750, mfj: 31500, mfs: 15750, hoh: 23600 }
 };
 
 export const FED_BRACKETS = {
