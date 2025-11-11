@@ -3,6 +3,7 @@ import Topbar from '../../../components/calculators_shared_files/topBar';
 import { STATES_LIST } from './utils/taxData';
 import { calcFederalTax, calcStateTax, calcFicaTax, formatCurrency } from './utils/taxCalculations';
 import { TaxChart } from './components/TaxChart';
+import { ensureThpThemeCss, setThpThemeCss } from './themeCssLoader';
 
 export default function TakeHomePayCalculator() {
   const [inputs, setInputs] = useState({
@@ -37,6 +38,18 @@ export default function TakeHomePayCalculator() {
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [showPreTaxDetails, setShowPreTaxDetails] = useState(false);
   const [showIncomeDetails, setShowIncomeDetails] = useState(false);
+
+  // Ensure page-scoped theme CSS is loaded and kept in sync with global dark class
+  useEffect(() => {
+    const isDark = document.documentElement.classList.contains('dark');
+    ensureThpThemeCss(isDark ? 'dark' : 'light');
+    const observer = new MutationObserver(() => {
+      const nextIsDark = document.documentElement.classList.contains('dark');
+      setThpThemeCss(nextIsDark ? 'dark' : 'light');
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    return () => observer.disconnect();
+  }, []);
 
   const result = useMemo(() => {
     const baseSelf = Number(inputs.income) || 0;
@@ -197,7 +210,7 @@ export default function TakeHomePayCalculator() {
   }, [result, offer1Income, offer2Income, inputs]);
 
   return (
-    <div className="min-h-screen bg-bg-page text-neutral-900">
+    <div className="thp min-h-screen bg-bg-page text-neutral-900">
       <Topbar />
 
       <main className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
