@@ -207,7 +207,8 @@ Path: `src/pages/tools/rental_property_calculator/`
 
 Data checks (Take-Home Pay):
 - 2024 federal standard deduction values are correct in `src/pages/tools/take_home_pay/utils/taxData.js`.
-- 2025 values in code currently read Single $15,000; MFJ $30,000; MFS $15,000; HOH $22,500. IRS 2025 amounts are Single $15,300; MFJ $30,600; MFS $15,300; HOH $22,950. Update `FED_STD` if using 2025 projections.
+- 2025 values have been updated to Single $15,750; MFJ $31,500; MFS $15,750; HOH $23,600.
+- State-level deductions/exemptions are now tracked in `src/pages/tools/take_home_pay/utils/StateDeductions.js`, which mirrors the full table in `src/pages/tools/take_home_pay/utils/State Standard Deductions (2024-2025) – Amounts and Phase-Outs.docx`; use it when adjusting `calcStateTax` for more accurate deductions or phase-outs.
 
 ### Documentation Maintenance
 
