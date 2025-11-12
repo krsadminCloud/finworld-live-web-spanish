@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Moon, Sun, Home } from 'lucide-react';
+import { Home } from 'lucide-react';
+import { useTheme } from '@mui/material/styles';
 import InputCard from './components/InputCard';
 import ResultsCard from './components/ResultsCard';
 import BreakdownChart from './components/BreakdownChart';
 import ComparisonChart from './components/ComparisonChart';
 import StickySummary from './components/StickySummary';
 import { calculateMaxAffordablePrice, calculatePITIBreakdown } from './utils/calculations';
+import TopBar from '../../../components/calculators_shared_files/topBar';
+import { ensureHomeAffThemeCss } from './themeCssLoader';
 
 function HomeAffordabilityCalculator() {
-  const [darkMode, setDarkMode] = useState(false);
   const [inputs, setInputs] = useState({
     annualIncome: 100000,
     monthlyDebts: 500,
@@ -27,6 +29,7 @@ function HomeAffordabilityCalculator() {
 
   const [affordablePrice, setAffordablePrice] = useState(0);
   const [pitiBreakdown, setPitiBreakdown] = useState(null);
+  const theme = useTheme();
 
   // Load saved inputs from localStorage
   useEffect(() => {
@@ -50,43 +53,34 @@ function HomeAffordabilityCalculator() {
     setPitiBreakdown(breakdown);
   }, [inputs]);
 
-  // Toggle dark mode
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-    document.documentElement.classList.toggle('dark');
-  };
+  useEffect(() => {
+    ensureHomeAffThemeCss(theme.palette.mode);
+  }, [theme.palette.mode]);
 
   return (
-    <div className="calculator-container min-h-screen bg-bg-page transition-colors duration-300">
-      {/* Dark mode toggle */}
-      <button
-        onClick={toggleDarkMode}
-        className="fixed top-4 right-4 z-50 p-3 bg-bg-surface rounded-lg shadow-card hover:shadow-card-hover transition-all duration-200"
-        aria-label="Toggle dark mode"
+    <div className="home-affordability calculator-container min-h-screen bg-bg-page transition-colors duration-300">
+      <TopBar />
+      <motion.section
+        className="text-center mb-12 mt-8"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
       >
-        {darkMode ? (
-          <Sun className="w-5 h-5 text-yellow-500" />
-        ) : (
-          <Moon className="w-5 h-5 text-text-secondary" />
-        )}
-      </button>
-
-      {/* Header */}
-      <header className="bg-surface shadow-sm border-b border-border-subtle">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center space-x-3">
-            <Home className="w-8 h-8 text-primary-500" />
-            <div>
-              <h1 className="text-3xl font-heading font-bold text-text-primary">
-                Home Affordability Calculator
-              </h1>
-              <p className="text-text-secondary mt-1">
-                Calculate how much home you can afford based on your financial situation
-              </p>
-            </div>
+        <div className="flex items-center justify-center gap-3 mb-4">
+          <div className="w-9 h-9 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center">
+            <Home className="w-5 h-5" />
+          </div>
+          <div>
+            <h1 className="text-h1 font-bold text-neutral-900">
+              Home Affordability Calculator
+            </h1>
+            <p className="text-lg text-neutral-500 max-w-2xl mx-auto">
+              Calculate how much home you can afford based on your financial situation
+            </p>
           </div>
         </div>
-      </header>
+        <div className="mt-4 w-24 h-1 bg-primary-500 mx-auto rounded-full" />
+      </motion.section>
 
       {/* Sticky Summary */}
       <StickySummary affordablePrice={affordablePrice} pitiBreakdown={pitiBreakdown} />

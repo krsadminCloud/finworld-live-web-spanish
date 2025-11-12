@@ -1,0 +1,28 @@
+.home-affordability {
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+.home-affordability .bg-bg-page {
+  background-color: #f8fafc !important;
+}
+.home-affordability .bg-surface,
+.home-affordability .bg-bg-surface {
+  background-color: #ffffff !important;
+}
+.home-affordability .text-text-primary,
+.home-affordability .text-neutral-900 {
+  color: #0f172a !important;
+}
+.home-affordability .text-text-secondary,
+.home-affordability .text-neutral-500,
+.home-affordability .text-neutral-600 {
+  color: #475569 !important;
+}
+.home-affordability .border-border-subtle,
+.home-affordability .border-neutral-200 {
+  border-color: rgba(226, 232, 240, 0.9) !important;
+}
+.home-affordability .shadow-card,
+.home-affordability .shadow-card-hover {
+  box-shadow: 0 10px 20px rgba(14, 165, 233, 0.12) !important;
+}
