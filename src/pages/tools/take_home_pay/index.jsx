@@ -148,9 +148,7 @@ export default function TakeHomePayCalculator() {
       finalNetWeekly: finalNet / 52,
       stateTaxable,
       stateDeduction,
-      stateDeduction,
-      stateTaxable,
-      ficaComponents,
+      // de-dup keys: stateDeduction/stateTaxable/ficaComponents already included above
     };
   }, [inputs]);
 
