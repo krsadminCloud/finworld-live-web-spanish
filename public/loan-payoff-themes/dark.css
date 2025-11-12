@@ -1,0 +1,53 @@
+.loan-payoff {
+  background-color: #0f172a;
+  color: #f8fafc;
+}
+.loan-payoff .bg-bg-page {
+  background-color: #0f172a !important;
+}
+.loan-payoff .bg-surface,
+.loan-payoff .bg-bg-surface,
+.loan-payoff .MuiPaper-root {
+  background-color: #1f2937 !important;
+}
+.loan-payoff .text-primary,
+.loan-payoff .text-neutral-900 {
+  color: #f8fafc !important;
+}
+.loan-payoff .text-secondary,
+.loan-payoff .text-neutral-500,
+.loan-payoff .text-neutral-600 {
+  color: #cbd5f5 !important;
+}
+.loan-payoff .border-border-subtle,
+.loan-payoff .MuiPaper-root {
+  border-color: rgba(148, 163, 184, 0.3) !important;
+}
+.loan-payoff .shadow-card,
+.loan-payoff .MuiPaper-root {
+  box-shadow: 0 25px 40px rgba(15, 23, 42, 0.45) !important;
+}
+.loan-payoff .MuiOutlinedInput-root,
+.loan-payoff .MuiSelect-select {
+  background-color: rgba(15, 23, 42, 0.7) !important;
+  color: #f8fafc !important;
+  border-radius: 12px !important;
+}
+.loan-payoff .MuiInputBase-input,
+.loan-payoff .MuiSelect-select,
+.loan-payoff .MuiFormLabel-root {
+  color: #f8fafc !important;
+}
+.loan-payoff .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(148, 163, 184, 0.4) !important;
+}
+.loan-payoff .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #14B8A6 !important;
+  box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.25);
+}
+.loan-payoff .MuiAccordion-root {
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  border-radius: 16px !important;
+  overflow: hidden;
+  background-color: rgba(17, 24, 39, 0.85);
+}

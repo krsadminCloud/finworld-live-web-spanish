@@ -4,8 +4,11 @@ import Layout from "./components/Layout";
 import PayoffChart from "./components/PayoffChart";
 import SummaryPanel from "./components/SummaryPanel";
 import AmortizationTable from "./components/AmortizationTable";
+import InputCard from "./components/InputCard";
 import calculateLoanDetails from "./utils/calculateLoanDetails";
-import { Box, Typography, FormControlLabel, Switch } from "@mui/material";
+import { Box, Typography, FormControlLabel, Switch, Stack } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import { ensureLoanPayoffThemeCss } from "./themeCssLoader";
 
 const fmtCurrency = (v) =>
   typeof v === "number"
@@ -21,6 +24,7 @@ export default function ExtraPayment() {
   const [compare1Visible, setCompare1Visible] = React.useState(true);
   const [compare2Visible, setCompare2Visible] = React.useState(true);
   const [matchAnnual, setMatchAnnual] = React.useState(false);
+  const theme = useTheme();
 
   // === Input State ===
   const [inputs, setInputs] = React.useState({
@@ -92,10 +96,15 @@ export default function ExtraPayment() {
     handleCalculate();
   }, [handleCalculate]);
 
+  React.useEffect(() => {
+    ensureLoanPayoffThemeCss(theme.palette.mode);
+  }, [theme.palette.mode]);
+
   const initialAmount = parseFloat(inputs.amount.replace(/,/g, "")) || 0;
 
   return (
     <Box
+      className="loan-payoff"
       sx={{
         display: "flex",
         flexDirection: "column",
@@ -106,78 +115,113 @@ export default function ExtraPayment() {
             : "linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%)",
       }}
     >
-      <Layout
-        compare1Visible={compare1Visible}
-        compare2Visible={compare2Visible}
-        setCompare1Visible={setCompare1Visible}
-        setCompare2Visible={setCompare2Visible}
-        inputs={inputs}
-        setInputs={setInputs}
-        onCalculate={handleCalculate}
-      >
-        {/* === Payoff Chart === */}
-        <Box
+      <Layout>
+        <Stack
+          spacing={{ xs: 3, md: 4 }}
           sx={{
-            maxWidth: { xs: "100%", md: "40%" },
             width: "100%",
-            mx: "auto",
-            mb: 3,
-          }}
-        >
-          <PayoffChart
-            results={results}
-            compare1Visible={compare1Visible}
-            compare2Visible={compare2Visible}
-            initialAmount={initialAmount}
-          />
-        </Box>
-
-        {/* === Summary Panel === */}
-        <Box
-          sx={{
-            maxWidth: { xs: "100%", md: "40%" },
-            width: "100%",
-            mx: "auto",
-            mb: 3,
-          }}
-        >
-          <SummaryPanel
-            results={results}
-            fmtCurrency={fmtCurrency}
-            compare1Visible={compare1Visible}
-            compare2Visible={compare2Visible}
-          />
-        </Box>
-
-        {/* === Amortization Table Section === */}
-        <Box
-          sx={{
-            maxWidth: { xs: "100%", md: "40%" },
-            width: "100%",
+            maxWidth: 1200,
             mx: "auto",
             px: { xs: 1, sm: 2, md: 3 },
           }}
         >
-          <FormControlLabel
-            control={
-              <Switch
-                checked={matchAnnual}
-                onChange={(e) => setMatchAnnual(e.target.checked)}
-              />
-            }
-            label="Match Annual Spending"
-            sx={{ mb: 1 }}
-          />
-          <Typography
-            variant="caption"
-            sx={{ opacity: 0.75, display: "block", mb: 2 }}
+          <Box
+            textAlign="center"
+            sx={{
+              py: { xs: 2.5, md: 3 },
+              mt: { xs: 0, md: 0 },
+              px: { xs: 2, md: 4 },
+            }}
           >
-            When enabled, extra payments are adjusted so each plan spends the
-            same total extra amount per year.
-          </Typography>
+            <Typography
+              variant="h3"
+              fontWeight={800}
+              sx={{ color: "text.primary", mb: 1 }}
+            >
+              Loan Payoff Calculator
+            </Typography>
+            <Typography
+              variant="body1"
+              sx={{ color: "text.secondary", maxWidth: 600, mx: "auto" }}
+            >
+              Compare payoff strategies and extra payments to see how quickly you
+              can become debt free.
+            </Typography>
+            <Box
+              sx={{
+                width: 96,
+                height: 4,
+                bgcolor: "#14B8A6",
+                borderRadius: 999,
+                mx: "auto",
+                mt: 2,
+              }}
+            />
+          </Box>
 
-          <AmortizationTable results={results} fmtCurrency={fmtCurrency} />
-        </Box>
+          <Stack
+            direction={{ xs: "column", lg: "row" }}
+            spacing={{ xs: 3, md: 4 }}
+            alignItems="stretch"
+          >
+            <Box sx={{ flex: 1, minWidth: 0 }}>
+              <InputCard
+                inputs={inputs}
+                setInputs={setInputs}
+                compare1Visible={compare1Visible}
+                compare2Visible={compare2Visible}
+                setCompare1Visible={setCompare1Visible}
+                setCompare2Visible={setCompare2Visible}
+              />
+            </Box>
+
+            <Stack sx={{ flex: 1, minWidth: 0 }} spacing={3}>
+              <Box>
+                <PayoffChart
+                  results={results}
+                  compare1Visible={compare1Visible}
+                  compare2Visible={compare2Visible}
+                  initialAmount={initialAmount}
+                />
+              </Box>
+
+              <Box>
+                <SummaryPanel
+                  results={results}
+                  fmtCurrency={fmtCurrency}
+                  compare1Visible={compare1Visible}
+                  compare2Visible={compare2Visible}
+                />
+              </Box>
+            </Stack>
+          </Stack>
+
+          <Box>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={matchAnnual}
+                  onChange={(e) => setMatchAnnual(e.target.checked)}
+                />
+              }
+              label="Match Annual Spending"
+              sx={{
+                mb: 1,
+                gap: 1,
+                alignItems: "center",
+              }}
+            />
+            <Typography
+              variant="caption"
+              sx={{ opacity: 0.75, display: "block", mb: 2 }}
+            >
+              When enabled, extra payments are adjusted so each plan spends the
+              same total extra amount per year.
+            </Typography>
+
+            <AmortizationTable results={results} fmtCurrency={fmtCurrency} />
+          </Box>
+        </Stack>
       </Layout>
     </Box>
   );

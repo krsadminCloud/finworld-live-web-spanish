@@ -18,7 +18,7 @@ import {
 } from "@mui/icons-material";
 import { ColorModeContext } from "../../context/ColorModeContext";
 
-export default function TopBar() {
+export default function TopBar({ onMenuClick }) {
   const theme = useTheme();
   const colorMode = React.useContext(ColorModeContext);
 
@@ -43,22 +43,71 @@ export default function TopBar() {
           minHeight: { xs: 72, md: 64 },
         }}
       >
-        {/* Left: Brand */}
-        <Box
-          component={RouterLink}
-          to="/"
-          sx={{ display: "flex", alignItems: "center", textDecoration: "none", gap: 0.75 }}
-        >
-          <CalculatorIcon sx={{ color: "#14B8A6" }} />
-          <Typography variant="h6" sx={{ fontWeight: 800, letterSpacing: "-0.02em" }}>
-            <Box component="span" sx={{ color: "inherit" }}>
-              Fin
-            </Box>
-            <Box component="span" sx={{ color: "#14B8A6" }}>
-              World
-            </Box>
-          </Typography>
-        </Box>
+        <Stack direction="row" spacing={1.5} alignItems="center">
+          {onMenuClick && (
+            <IconButton
+              onClick={onMenuClick}
+              edge="start"
+              color="inherit"
+              sx={{
+                display: { xs: "inline-flex", md: "none" },
+                border: "1px solid",
+                borderColor: "divider",
+                bgcolor: "background.paper",
+              }}
+            >
+              <Box
+                component="span"
+                sx={{
+                  width: 16,
+                  height: 2,
+                  backgroundColor: "currentColor",
+                  position: "relative",
+                  display: "inline-block",
+                }}
+              >
+                <Box
+                  component="span"
+                  sx={{
+                    position: "absolute",
+                    width: 16,
+                    height: 2,
+                    backgroundColor: "currentColor",
+                    top: -5,
+                    left: 0,
+                  }}
+                />
+                <Box
+                  component="span"
+                  sx={{
+                    position: "absolute",
+                    width: 16,
+                    height: 2,
+                    backgroundColor: "currentColor",
+                    top: 5,
+                    left: 0,
+                  }}
+                />
+              </Box>
+            </IconButton>
+          )}
+          {/* Left: Brand */}
+          <Box
+            component={RouterLink}
+            to="/"
+            sx={{ display: "flex", alignItems: "center", textDecoration: "none", gap: 0.75 }}
+          >
+            <CalculatorIcon sx={{ color: "#14B8A6" }} />
+            <Typography variant="h6" sx={{ fontWeight: 800, letterSpacing: "-0.02em" }}>
+              <Box component="span" sx={{ color: "inherit" }}>
+                Fin
+              </Box>
+              <Box component="span" sx={{ color: "#14B8A6" }}>
+                World
+              </Box>
+            </Typography>
+          </Box>
+        </Stack>
 
         {/* Right: Actions */}
         <Stack

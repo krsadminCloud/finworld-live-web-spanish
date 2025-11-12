@@ -6,6 +6,7 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  TableContainer,
   Box,
   Button,
   Typography,
@@ -66,76 +67,106 @@ export default function SummaryPanel({
   return (
     <Paper
       sx={{
-        p: 3,
+        p: { xs: 2, sm: 3 },
         bgcolor: "background.paper",
-        overflow: "hidden",
         borderRadius: 2,
         boxShadow: 2,
-        minHeight: 330,
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        position: "relative",
       }}
     >
-      <Box sx={{ position: "absolute", top: 16, right: 20 }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", sm: "row" },
+          alignItems: { xs: "stretch", sm: "center" },
+          justifyContent: "space-between",
+          gap: 1.5,
+          mb: 2,
+        }}
+      >
+        <Typography variant="h6" fontWeight={700}>
+          Loan Summary
+        </Typography>
         <Button
           size="small"
           variant="outlined"
           color="secondary"
           onClick={handleExportSummaryPDF}
-          sx={{ textTransform: "none", fontWeight: 500 }}
+          sx={{
+            textTransform: "none",
+            fontWeight: 500,
+            width: { xs: "100%", sm: "auto" },
+          }}
         >
           Export Summary PDF
         </Button>
       </Box>
 
-      <Typography variant="h6" fontWeight={700} sx={{ mb: 2 }}>
-        Loan Summary
-      </Typography>
-
-      <Table size="small" sx={{ tableLayout: "fixed", mt: 1 }}>
-        <TableHead>
-          <TableRow>
-            <TableCell sx={{ width: "30%" }}>Description</TableCell>
-            <TableCell align="right" sx={{ width: "23%" }}>Original</TableCell>
-            <TableCell align="right" sx={{ width: "23%" }}>Compare 1</TableCell>
-            <TableCell align="right" sx={{ width: "24%" }}>Compare 2</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          <TableRow>
-            <TableCell>Total Interest</TableCell>
-            <TableCell align="right">{fmtCurrency(origT.totalInterest)}</TableCell>
-            <TableCell align="right">{fmtCurrency(c1T.totalInterest)}</TableCell>
-            <TableCell align="right">{fmtCurrency(c2T.totalInterest)}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>Total Payments</TableCell>
-            <TableCell align="right">{fmtCurrency(origT.totalPayments)}</TableCell>
-            <TableCell align="right">{fmtCurrency(c1T.totalPayments)}</TableCell>
-            <TableCell align="right">{fmtCurrency(c2T.totalPayments)}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>Interest Saved (vs Original)</TableCell>
-            <TableCell align="right">–</TableCell>
-            <TableCell align="right" sx={{ color: "success.main" }}>{fmtCurrency(savedC1)}</TableCell>
-            <TableCell align="right" sx={{ color: "success.main" }}>{fmtCurrency(savedC2)}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>Years to Payoff</TableCell>
-            <TableCell align="right">{years(origT)}</TableCell>
-            <TableCell align="right">{years(c1T)}</TableCell>
-            <TableCell align="right">{years(c2T)}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>Months to Payoff</TableCell>
-            <TableCell align="right">{months(origT)}</TableCell>
-            <TableCell align="right">{months(c1T)}</TableCell>
-            <TableCell align="right">{months(c2T)}</TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
+      <TableContainer sx={{ overflowX: "auto" }}>
+        <Table size="small" sx={{ tableLayout: "fixed", minWidth: 520 }}>
+          <TableHead>
+            <TableRow>
+              <TableCell sx={{ width: "30%" }}>Description</TableCell>
+              <TableCell align="right" sx={{ width: "23%" }}>
+                Original
+              </TableCell>
+              <TableCell align="right" sx={{ width: "23%" }}>
+                Compare 1
+              </TableCell>
+              <TableCell align="right" sx={{ width: "24%" }}>
+                Compare 2
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            <TableRow>
+              <TableCell>Total Interest</TableCell>
+              <TableCell align="right">
+                {fmtCurrency(origT.totalInterest)}
+              </TableCell>
+              <TableCell align="right">
+                {fmtCurrency(c1T.totalInterest)}
+              </TableCell>
+              <TableCell align="right">
+                {fmtCurrency(c2T.totalInterest)}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>Total Payments</TableCell>
+              <TableCell align="right">
+                {fmtCurrency(origT.totalPayments)}
+              </TableCell>
+              <TableCell align="right">
+                {fmtCurrency(c1T.totalPayments)}
+              </TableCell>
+              <TableCell align="right">
+                {fmtCurrency(c2T.totalPayments)}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>Interest Saved (vs Original)</TableCell>
+              <TableCell align="right">–</TableCell>
+              <TableCell align="right" sx={{ color: "success.main" }}>
+                {fmtCurrency(savedC1)}
+              </TableCell>
+              <TableCell align="right" sx={{ color: "success.main" }}>
+                {fmtCurrency(savedC2)}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>Years to Payoff</TableCell>
+              <TableCell align="right">{years(origT)}</TableCell>
+              <TableCell align="right">{years(c1T)}</TableCell>
+              <TableCell align="right">{years(c2T)}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>Months to Payoff</TableCell>
+              <TableCell align="right">{months(origT)}</TableCell>
+              <TableCell align="right">{months(c1T)}</TableCell>
+              <TableCell align="right">{months(c2T)}</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
     </Paper>
   );
 }

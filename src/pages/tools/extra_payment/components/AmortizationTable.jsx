@@ -13,8 +13,6 @@ import {
   Typography,
 } from "@mui/material";
 
-const PAGE_SIZE = 20;
-
 function getPlan(results, key) {
   switch (key) {
     case "Original":
@@ -78,15 +76,33 @@ function downloadCSV(filename, rows) {
 
 export default function AmortizationTable({ results, fmtCurrency }) {
   const [activePlan, setActivePlan] = React.useState("Original");
-  const [visibleCount, setVisibleCount] = React.useState(PAGE_SIZE);
+  const tableRef = React.useRef(null);
+  const [visibleCount, setVisibleCount] = React.useState(40);
 
   const plan = getPlan(results, activePlan);
   const allRows = React.useMemo(() => buildRows(plan), [plan]);
   const rows = allRows.slice(0, visibleCount);
 
   React.useEffect(() => {
-    setVisibleCount(PAGE_SIZE);
+    setVisibleCount(40);
   }, [activePlan, results]);
+
+  React.useEffect(() => {
+    const container = tableRef.current;
+    if (!container) return;
+    const handleScroll = () => {
+      if (
+        container.scrollTop + container.clientHeight >=
+        container.scrollHeight - 16
+      ) {
+        setVisibleCount((prev) =>
+          prev < allRows.length ? prev + 40 : prev
+        );
+      }
+    };
+    container.addEventListener("scroll", handleScroll);
+    return () => container.removeEventListener("scroll", handleScroll);
+  }, [allRows.length]);
 
   const handleExportCSV = () => {
     const key = activePlan.toLowerCase().replace(/\s+/g, "-");
@@ -140,64 +156,97 @@ export default function AmortizationTable({ results, fmtCurrency }) {
   const headerLabel = `${labelForPPY(plan?.meta?.paymentsPerYear)} Payment`;
 
   return (
-    // ✅ Match Summary/Chart width: 100% mobile, 70% desktop
-    <Box sx={{ width: { xs: "100%", md: "102%" }, mx: "auto", mb: 4 }}>
+    <Box sx={{ width: "100%", maxWidth: 1200, mx: "auto", mb: 4 }}>
       <Paper
         sx={{
           bgcolor: "background.paper",
           borderRadius: 2,
           boxShadow: 2,
-          p: 3,            // match SummaryPanel padding
+          p: { xs: 2, sm: 3 },
         }}
       >
         {/* Header */}
         <Stack
-          direction={{ xs: "column", sm: "row" }}
+          direction={{ xs: "column", md: "row" }}
           spacing={2}
-          alignItems="center"
+          alignItems={{ xs: "flex-start", md: "center" }}
           justifyContent="space-between"
-          sx={{
-            pb: 2,
-          }}
+          sx={{ pb: 2 }}
         >
           <Typography variant="h6" fontWeight={700}>
             Amortization Schedule
           </Typography>
 
-          <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap">
-            {["Original", "Compare 1", "Compare 2"].map((label) => (
-              <Button
-                key={label}
-                variant={activePlan === label ? "contained" : "outlined"}
-                onClick={() => setActivePlan(label)}
-                sx={{ textTransform: "none" }}
-              >
-                {label}
-              </Button>
-            ))}
+          <Stack
+            spacing={{ xs: 1.5, md: 2 }}
+            direction={{ xs: "column", md: "row" }}
+            alignItems={{ xs: "stretch", md: "center" }}
+            justifyContent="flex-end"
+            sx={{ width: { xs: "100%", md: "auto" } }}
+          >
+            <Stack
+              direction={{ xs: "column", sm: "row" }}
+              spacing={1}
+              alignItems="stretch"
+              justifyContent={{ xs: "flex-start", md: "flex-end" }}
+              sx={{ minWidth: { md: 320 } }}
+            >
+              {["Original", "Compare 1", "Compare 2"].map((label) => (
+                <Button
+                  key={label}
+                  size="small"
+                  variant={activePlan === label ? "contained" : "outlined"}
+                  onClick={() => setActivePlan(label)}
+                  sx={{ textTransform: "none", flex: 1, minWidth: { xs: 0, md: 120 } }}
+                >
+                  {label}
+                </Button>
+              ))}
+            </Stack>
 
-            <Button
-              variant="outlined"
-              color="secondary"
-              onClick={handleExportCSV}
-              sx={{ textTransform: "none", fontWeight: 500, ml: 2 }}
+            <Stack
+              direction={{ xs: "column", sm: "row" }}
+              spacing={1}
+              alignItems="stretch"
+              justifyContent={{ xs: "flex-start", md: "flex-end" }}
+              sx={{ minWidth: { md: 280 } }}
             >
-              Export CSV
-            </Button>
-            <Button
-              variant="outlined"
-              color="secondary"
-              onClick={handleExportPDF}
-              sx={{ textTransform: "none", fontWeight: 500 }}
-            >
-              Export PDF
-            </Button>
+              <Button
+                size="small"
+                variant="outlined"
+                color="secondary"
+                onClick={handleExportCSV}
+                sx={{
+                  textTransform: "none",
+                  fontWeight: 500,
+                  flex: 1,
+                }}
+              >
+                Export CSV
+              </Button>
+              <Button
+                size="small"
+                variant="outlined"
+                color="secondary"
+                onClick={handleExportPDF}
+                sx={{
+                  textTransform: "none",
+                  fontWeight: 500,
+                  flex: 1,
+                }}
+              >
+                Export PDF
+              </Button>
+            </Stack>
           </Stack>
         </Stack>
 
         {/* Table */}
-        <TableContainer sx={{ maxHeight: 320 }}>
-          <Table stickyHeader size="small">
+        <TableContainer
+          sx={{ maxHeight: 320, overflowX: "auto" }}
+          ref={tableRef}
+        >
+          <Table stickyHeader size="small" sx={{ minWidth: 600 }}>
             <TableHead>
               <TableRow>
                 <TableCell>Payment #</TableCell>
@@ -228,19 +277,7 @@ export default function AmortizationTable({ results, fmtCurrency }) {
           </Table>
         </TableContainer>
 
-        {/* Footer */}
-        <Box sx={{ p: 2, borderTop: 1, borderColor: "divider", textAlign: "center" }}>
-          {visibleCount < allRows.length ? (
-            <Button size="small" onClick={() => setVisibleCount((v) => v + PAGE_SIZE)}>
-              Load More
-            </Button>
-          ) : (
-            <Typography variant="body2" color="text.secondary">
-              End of schedule
-            </Typography>
-          )}
-        </Box>
-      </Paper>
-    </Box>
-  );
+     </Paper>
+   </Box>
+ );
 }
