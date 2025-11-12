@@ -31,6 +31,7 @@ export default function TopBar() {
         borderBottom: `1px solid ${theme.palette.divider}`,
         bgcolor: "background.paper",
         color: "text.primary",
+        zIndex: (theme) => theme.zIndex.drawer + 1,
       }}
     >
       <Toolbar
@@ -48,9 +49,14 @@ export default function TopBar() {
           to="/"
           sx={{ display: "flex", alignItems: "center", textDecoration: "none", gap: 0.75 }}
         >
-          <CalculatorIcon sx={{ color: "#00A86B" }} />
+          <CalculatorIcon sx={{ color: "#14B8A6" }} />
           <Typography variant="h6" sx={{ fontWeight: 800, letterSpacing: "-0.02em" }}>
-            FinCalc
+            <Box component="span" sx={{ color: "inherit" }}>
+              Fin
+            </Box>
+            <Box component="span" sx={{ color: "#14B8A6" }}>
+              World
+            </Box>
           </Typography>
         </Box>
 
@@ -76,8 +82,18 @@ export default function TopBar() {
           <Button
             size="small"
             variant="contained"
-            color="primary"
-            sx={{ borderRadius: 50, fontWeight: 700, px: { xs: 1.25, md: 2.5 }, py: { xs: 0.5, md: 1 }, whiteSpace: "nowrap" }}
+            sx={{
+              borderRadius: 50,
+              fontWeight: 700,
+              px: { xs: 1.25, md: 2.5 },
+              py: { xs: 0.5, md: 1 },
+              whiteSpace: "nowrap",
+              bgcolor: "#14B8A6",
+              color: "#fff",
+              "&:hover": {
+                bgcolor: "#0f948a",
+              },
+            }}
           >
             My Account
           </Button>

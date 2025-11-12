@@ -118,9 +118,14 @@ export default function FinancialCalculators() {
       >
         <Toolbar sx={{ px: { xs: 2, md: 6 }, minHeight: { xs: 72, md: 64 } }}>
           <Stack direction="row" spacing={1} alignItems="center">
-            <CalculateIcon color="primary" />
+            <CalculateIcon sx={{ color: "#14B8A6" }} />
             <Typography variant="h6" fontWeight={800} sx={{ letterSpacing: "-0.02em" }}>
-              FinCalc
+              <Box component="span" sx={{ color: "inherit" }}>
+                Fin
+              </Box>
+              <Box component="span" sx={{ color: "#14B8A6" }}>
+                World
+              </Box>
             </Typography>
           </Stack>
 
@@ -151,12 +156,22 @@ export default function FinancialCalculators() {
             <Button
               size="small"
               variant="contained"
-              color="primary"
-              sx={{ borderRadius: 50, fontWeight: 700, px: { xs: 1.25, md: 2.5 }, py: { xs: 0.5, md: 1 }, whiteSpace: 'nowrap' }}
+              sx={{
+                borderRadius: 50,
+                fontWeight: 700,
+                px: { xs: 1.25, md: 2.5 },
+                py: { xs: 0.5, md: 1 },
+                whiteSpace: "nowrap",
+                bgcolor: "#14B8A6",
+                color: "#fff",
+                "&:hover": {
+                  bgcolor: "#0f948a",
+                },
+              }}
             >
               My Account
             </Button>
-          </Stack>
+  </Stack>
         </Toolbar>
       </AppBar>
 
