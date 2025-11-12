@@ -1,10 +1,12 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
+import { useTheme } from '@mui/material/styles';
 import Topbar from '../../../components/calculators_shared_files/topBar';
 import CalculatorSection from './components/CalculatorSection';
 import ResultsSection from './components/ResultsSection';
 import { calculateAll } from './utils/calc';
 import { useSearchParams } from 'react-router-dom';
+import { ensureCompThemeCss } from './themeCssLoader';
 
 const DEFAULTS = {
   initialInvestment: 0,
@@ -41,12 +43,17 @@ export default function CompoundingCalculator() {
     C: { primary: '#3B82F6', secondary1: '#8B5CF6', secondary2: '#14B8A6' },
   };
   const scheduleRef = useRef(null);
+  const theme = useTheme();
 
   useEffect(() => {
     const params = new URLSearchParams();
     Object.entries(inputs).forEach(([k, v]) => params.set(k, String(v)));
     setSearchParams(params, { replace: true });
   }, [inputs, setSearchParams]);
+
+  useEffect(() => {
+    ensureCompThemeCss(theme.palette.mode);
+  }, [theme.palette.mode]);
 
   const results = useMemo(() => {
     return calculateAll({ ...inputs, chartGranularity: granularity });
@@ -59,7 +66,7 @@ export default function CompoundingCalculator() {
   const reset = () => setInputs(RESET_STATE);
 
   return (
-    <div className="min-h-screen bg-bg-page text-neutral-900">
+    <div className="compounding-calculator min-h-screen bg-bg-page text-neutral-900">
       <Topbar />
       <main className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <motion.section

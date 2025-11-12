@@ -1,0 +1,40 @@
+.compounding-calculator {
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+.compounding-calculator .bg-gray-100 {
+  background-color: #f1f5f9 !important;
+}
+.compounding-calculator .bg-bg-surface {
+  background-color: #ffffff !important;
+}
+.compounding-calculator .text-neutral-900 {
+  color: #0f172a !important;
+}
+.compounding-calculator .text-neutral-700 {
+  color: #475569 !important;
+}
+.compounding-calculator .text-neutral-500 {
+  color: #6b7280 !important;
+}
+.compounding-calculator .border {
+  border-color: rgba(226, 232, 240, 0.9) !important;
+}
+.compounding-calculator .border-sky-200 {
+  border-color: #bae6fd !important;
+}
+.compounding-calculator .border-amber-200 {
+  border-color: #fde68a !important;
+}
+.compounding-calculator .border-fuchsia-200 {
+  border-color: #f5d0fe !important;
+}
+.compounding-calculator .bg-sky-50 {
+  background-color: #ecfeff !important;
+}
+.compounding-calculator .bg-amber-50 {
+  background-color: #fff7ed !important;
+}
+.compounding-calculator .bg-fuchsia-50 {
+  background-color: #fdf4ff !important;
+}

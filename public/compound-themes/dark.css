@@ -1,0 +1,47 @@
+.compounding-calculator {
+  background-color: #0f172a;
+  color: #f8fafc;
+}
+.compounding-calculator .bg-gray-100,
+.compounding-calculator .bg-bg-surface,
+.compounding-calculator .bg-neutral-50 {
+  background-color: #1f2937 !important;
+  border-color: #374151 !important;
+}
+.compounding-calculator .border-neutral-200 {
+  border-color: rgba(148, 163, 184, 0.3) !important;
+}
+.compounding-calculator .text-neutral-900 {
+  color: #f8fafc !important;
+}
+.compounding-calculator .text-neutral-700,
+.compounding-calculator .text-neutral-600,
+.compounding-calculator .text-neutral-500 {
+  color: #f8fafc !important;
+}
+.compounding-calculator input,
+.compounding-calculator select,
+.compounding-calculator textarea {
+  color: #0f172a !important;
+}
+.compounding-calculator .border {
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+.compounding-calculator .border-sky-200 {
+  border-color: rgba(59, 130, 246, 0.4) !important;
+}
+.compounding-calculator .border-amber-200 {
+  border-color: rgba(245, 158, 11, 0.4) !important;
+}
+.compounding-calculator .border-fuchsia-200 {
+  border-color: rgba(236, 72, 153, 0.4) !important;
+}
+.compounding-calculator .bg-sky-50 {
+  background-color: rgba(56, 189, 248, 0.1) !important;
+}
+.compounding-calculator .bg-amber-50 {
+  background-color: rgba(251, 191, 36, 0.12) !important;
+}
+.compounding-calculator .bg-fuchsia-50 {
+  background-color: rgba(236, 72, 153, 0.12) !important;
+}
