@@ -5,7 +5,7 @@ import IconBadge from '../components/IconBadge';
 import { Landmark } from 'lucide-react';
 import FloatingInput from '../components/FloatingInput';
 
-export default function LoanDetails({ value, onChange, onReset }) {
+export default function LoanDetails({ value, onChange, onReset, disabled = false }) {
   const [collapsed, setCollapsed] = React.useState(false);
   const set = (k, v) => onChange({ ...value, [k]: v });
   return (
@@ -21,7 +21,7 @@ export default function LoanDetails({ value, onChange, onReset }) {
           <button
             type="button"
             onClick={onReset}
-            className="uppercase tracking-wide text-[10px] px-3 py-1.5 rounded-full transition-colors border bg-teal-600 text-white border-teal-600 hover:bg-teal-700 shadow"
+            className="uppercase tracking-wide text-[10px] px-3 py-1.5 rounded-full transition-colors border bg-primary-500 text-white border-primary-500 hover:bg-primary-500/90 shadow"
           >
             Reset
           </button>
@@ -29,7 +29,7 @@ export default function LoanDetails({ value, onChange, onReset }) {
             type="button"
             aria-label={collapsed ? 'Expand' : 'Collapse'}
             onClick={() => setCollapsed((v) => !v)}
-            className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-teal-600 text-white hover:bg-teal-700"
+            className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary-500 text-white hover:bg-primary-500/90"
             title={collapsed ? 'Expand' : 'Minimize'}
           >
             <span className={`transition-transform ${collapsed ? 'rotate-180' : ''}`}>▾</span>
@@ -38,19 +38,19 @@ export default function LoanDetails({ value, onChange, onReset }) {
       ) : null}
     >
       {!collapsed && (
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className={`grid grid-cols-1 md:grid-cols-4 gap-4 ${disabled ? 'opacity-50 pointer-events-none' : ''}`}>
         <FloatingInput
           label="Down Payment (%)"
           inputMode="decimal"
           value={value.downPaymentPct}
-          onChange={(e) => set('downPaymentPct', e.target.value === '' ? '' : Number(e.target.value) || 0)}
+          onChange={(e) => set('downPaymentPct', e.target.value === '' ? '' : e.target.value)}
           placeholder="(%)"
         />
         <FloatingInput
           label="Interest Rate (%)"
           inputMode="decimal"
           value={value.interestRatePct}
-          onChange={(e) => set('interestRatePct', e.target.value === '' ? '' : Number(e.target.value) || 0)}
+          onChange={(e) => set('interestRatePct', e.target.value === '' ? '' : e.target.value)}
           placeholder="(%)"
         />
         <FloatingInput
@@ -64,7 +64,7 @@ export default function LoanDetails({ value, onChange, onReset }) {
           label="Points (%)"
           inputMode="decimal"
           value={value.points}
-          onChange={(e) => set('points', e.target.value === '' ? '' : Number(e.target.value) || 0)}
+          onChange={(e) => set('points', e.target.value === '' ? '' : e.target.value)}
           placeholder="(%)"
         />
       </div>
@@ -72,3 +72,4 @@ export default function LoanDetails({ value, onChange, onReset }) {
     </Card>
   );
 }
+

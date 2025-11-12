@@ -96,7 +96,7 @@ export default function Expenses({ value, onChange, onReset }) {
   };
   const toggleCustomAnnual = (id) => setCustomAnnual((m) => ({ ...m, [id]: !m?.[id] }));
   return (
-    <div className="relative">
+    <div className="relative pt-4">
       {/* Top tabs above and attached to the card */}
       <div className="absolute left-3 -top-3 z-10">
         <div className="relative inline-flex w-[160px]">
@@ -107,7 +107,7 @@ export default function Expenses({ value, onChange, onReset }) {
               aria-selected={tab === 'standard'}
               className={`flex-1 text-center px-3 py-1 text-[11px] rounded-t-[10px] border border-b-0 transition-colors duration-200 ${
                 tab === 'standard'
-                  ? 'bg-teal-600 text-white border-teal-600'
+                  ? 'bg-primary-500 text-white border-primary-500'
                   : 'bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200'
               }`}
               style={{ marginRight: 4 }}
@@ -121,7 +121,7 @@ export default function Expenses({ value, onChange, onReset }) {
               aria-selected={tab === 'itemized'}
               className={`flex-1 text-center px-3 py-1 text-[11px] rounded-t-[10px] border border-b-0 transition-colors duration-200 ${
                 tab === 'itemized'
-                  ? 'bg-teal-600 text-white border-teal-600'
+                  ? 'bg-primary-500 text-white border-primary-500'
                   : 'bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200'
               }`}
               ref={itmTabRef}
@@ -132,7 +132,7 @@ export default function Expenses({ value, onChange, onReset }) {
           {/* Animated underline */}
           <span
             ref={underlineRef}
-            className="absolute bottom-0 left-0 h-px rounded-full bg-teal-700 transition-[transform,width] duration-300 ease-out"
+            className="absolute bottom-0 left-0 h-px rounded-full bg-primary-500 transition-[transform,width] duration-300 ease-out"
           />
         </div>
       </div>
@@ -147,7 +147,7 @@ export default function Expenses({ value, onChange, onReset }) {
       right={(
         <div className="flex items-center gap-3">
           {tab === 'itemized' && (
-            <label className="inline-flex items-center gap-2 uppercase tracking-wide text-[9px] text-teal-500">
+            <label className="inline-flex items-center gap-2 uppercase tracking-wide text-[9px] text-primary-500">
               <input type="checkbox" className="h-4 w-4" checked={itemizedOn} onChange={(e) => setItemizedOn(e.target.checked)} />
               Enable itemized
             </label>
@@ -156,7 +156,7 @@ export default function Expenses({ value, onChange, onReset }) {
             <button
               type="button"
               onClick={addCustom}
-              className="uppercase tracking-wide text-[9px] px-2.5 py-1 rounded-full transition-colors border bg-teal-600 text-white border-teal-600 hover:bg-teal-700 shadow"
+              className="uppercase tracking-wide text-[9px] px-2.5 py-1 rounded-full transition-colors border bg-primary-500 text-white border-primary-500 hover:bg-primary-500/90 shadow"
             >
               + Custom Expense
             </button>
@@ -165,7 +165,7 @@ export default function Expenses({ value, onChange, onReset }) {
             <button
               type="button"
               onClick={onReset}
-              className="uppercase tracking-wide text-[10px] px-3 py-1.5 rounded-full transition-colors border bg-teal-600 text-white border-teal-600 hover:bg-teal-700 shadow"
+              className="uppercase tracking-wide text-[10px] px-3 py-1.5 rounded-full transition-colors border bg-primary-500 text-white border-primary-500 hover:bg-primary-500/90 shadow"
             >
               Reset
             </button>
@@ -174,7 +174,7 @@ export default function Expenses({ value, onChange, onReset }) {
             type="button"
             aria-label={collapsed ? 'Expand' : 'Collapse'}
             onClick={() => setCollapsed((v) => !v)}
-            className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-teal-600 text-white hover:bg-teal-700"
+            className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-primary-500 text-white hover:bg-primary-500/90"
             title={collapsed ? 'Expand' : 'Minimize'}
           >
             <span className={`transition-transform ${collapsed ? 'rotate-180' : ''}`}>▾</span>
@@ -227,7 +227,7 @@ export default function Expenses({ value, onChange, onReset }) {
                 type="button"
                 onClick={() => setOverrideAnnual((v) => !v)}
                 title={overrideAnnual ? 'Show Monthly' : 'Show Annual'}
-                className="px-1.5 py-0.5 text-[10px] leading-none bg-blue-600 hover:bg-blue-700 text-white rounded"
+                className="px-1.5 py-0.5 text-[10px] leading-none bg-blue-600 hover:bg-blue-700 text-white rounded-full"
               >
                 M/A
               </button>
@@ -238,103 +238,103 @@ export default function Expenses({ value, onChange, onReset }) {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
           <FloatingInput
-            label={`Property Taxes`}
+            label={`Property Taxes ${unitForKey('propertyTaxes')}`}
             prefix="$"
             inputMode="decimal"
             value={(() => { const v = displayForKey('propertyTaxes', value.propertyTaxes); return v === '' ? '' : Number(v).toLocaleString(); })()}
             onChange={(e) => set('propertyTaxes', saveFromDisplay('propertyTaxes', (e.target.value || '').replace(/,/g,'') ))}
             placeholder={periodLabel('propertyTaxes')}
             rightAddon={
-              <button type="button" onClick={() => toggle('propertyTaxes')} className="px-1.5 py-0.5 text-[10px] leading-none bg-blue-600 hover:bg-blue-700 text-white rounded">M/A</button>
+              <button type="button" onClick={() => toggle('propertyTaxes')} className="px-1.5 py-0.5 text-[10px] leading-none bg-blue-600 hover:bg-blue-700 text-white rounded-full">M/A</button>
             }
           />
         </div>
         <div>
           <FloatingInput
-            label="Insurance"
+            label={`Insurance ${unitForKey('insurance')}`}
             prefix="$"
             inputMode="decimal"
             value={(() => { const v = displayForKey('insurance', value.insurance); return v === '' ? '' : Number(v).toLocaleString(); })()}
             onChange={(e) => set('insurance', saveFromDisplay('insurance', (e.target.value || '').replace(/,/g,'') ))}
             placeholder={periodLabel('insurance')}
-            rightAddon={<button type="button" onClick={() => toggle('insurance')} className="px-1.5 py-0.5 text-[10px] leading-none bg-blue-600 hover:bg-blue-700 text-white rounded">M/A</button>}
+            rightAddon={<button type="button" onClick={() => toggle('insurance')} className="px-1.5 py-0.5 text-[10px] leading-none bg-blue-600 hover:bg-blue-700 text-white rounded-full">M/A</button>}
           />
         </div>
         <div>
           <FloatingInput
-            label="Maintenance"
+            label={`Maintenance ${unitForKey('maintenance')}`}
             prefix="$"
             inputMode="decimal"
             value={(() => { const v = displayForKey('maintenance', value.maintenance); return v === '' ? '' : Number(v).toLocaleString(); })()}
             onChange={(e) => set('maintenance', saveFromDisplay('maintenance', (e.target.value || '').replace(/,/g,'') ))}
             placeholder={periodLabel('maintenance')}
-            rightAddon={<button type="button" onClick={() => toggle('maintenance')} className="px-1.5 py-0.5 text-[10px] leading-none bg-blue-600 hover:bg-blue-700 text-white rounded">M/A</button>}
+            rightAddon={<button type="button" onClick={() => toggle('maintenance')} className="px-1.5 py-0.5 text-[10px] leading-none bg-blue-600 hover:bg-blue-700 text-white rounded-full">M/A</button>}
           />
         </div>
         <div>
           <FloatingInput
-            label="CapEx"
+            label={`CapEx ${unitForKey('capex')}`}
             prefix="$"
             inputMode="decimal"
             value={(() => { const v = displayForKey('capex', value.capex); return v === '' ? '' : Number(v).toLocaleString(); })()}
             onChange={(e) => set('capex', saveFromDisplay('capex', (e.target.value || '').replace(/,/g,'') ))}
             placeholder={periodLabel('capex')}
-            rightAddon={<button type="button" onClick={() => toggle('capex')} className="px-1.5 py-0.5 text-[10px] leading-none bg-blue-600 hover:bg-blue-700 text-white rounded">M/A</button>}
+            rightAddon={<button type="button" onClick={() => toggle('capex')} className="px-1.5 py-0.5 text-[10px] leading-none bg-blue-600 hover:bg-blue-700 text-white rounded-full">M/A</button>}
           />
         </div>
         <div>
           <FloatingInput
-            label="Property Mgmt"
+            label={`Property Mgmt ${unitForKey('managementPct')}`}
             prefix="%"
             inputMode="decimal"
             value={value.managementPct}
             onChange={(e) => set('managementPct', e.target.value === '' ? '' : Number(e.target.value) || 0)}
             placeholder={periodLabel('managementPct')}
-            rightAddon={<button type="button" onClick={() => toggle('managementPct')} className="px-1.5 py-0.5 text-[10px] leading-none bg-blue-600 hover:bg-blue-700 text-white rounded">M/A</button>}
+            rightAddon={<button type="button" onClick={() => toggle('managementPct')} className="px-1.5 py-0.5 text-[10px] leading-none bg-blue-600 hover:bg-blue-700 text-white rounded-full">M/A</button>}
           />
         </div>
         <div>
           <FloatingInput
-            label="Vacancy"
+            label={`Vacancy ${unitForKey('vacancyRatePct')}`}
             prefix="%"
             inputMode="decimal"
             value={value.vacancyRatePct}
             onChange={(e) => set('vacancyRatePct', e.target.value === '' ? '' : Number(e.target.value) || 0)}
             placeholder={periodLabel('vacancyRatePct')}
-            rightAddon={<button type="button" onClick={() => toggle('vacancyRatePct')} className="px-1.5 py-0.5 text-[10px] leading-none bg-blue-600 hover:bg-blue-700 text-white rounded">M/A</button>}
+            rightAddon={<button type="button" onClick={() => toggle('vacancyRatePct')} className="px-1.5 py-0.5 text-[10px] leading-none bg-blue-600 hover:bg-blue-700 text-white rounded-full">M/A</button>}
           />
         </div>
         <div>
           <FloatingInput
-            label="HOA"
+            label={`HOA ${unitForKey('hoa')}`}
             prefix="$"
             inputMode="decimal"
             value={(() => { const v = displayForKey('hoa', value.hoa); return v === '' ? '' : Number(v).toLocaleString(); })()}
             onChange={(e) => set('hoa', saveFromDisplay('hoa', (e.target.value || '').replace(/,/g,'') ))}
             placeholder={periodLabel('hoa')}
-            rightAddon={<button type="button" onClick={() => toggle('hoa')} className="px-1.5 py-0.5 text-[10px] leading-none bg-blue-600 hover:bg-blue-700 text-white rounded">M/A</button>}
+            rightAddon={<button type="button" onClick={() => toggle('hoa')} className="px-1.5 py-0.5 text-[10px] leading-none bg-blue-600 hover:bg-blue-700 text-white rounded-full">M/A</button>}
           />
         </div>
         <div>
           <FloatingInput
-            label="Utilities"
+            label={`Utilities ${unitForKey('utilities')}`}
             prefix="$"
             inputMode="decimal"
             value={(() => { const v = displayForKey('utilities', value.utilities); return v === '' ? '' : Number(v).toLocaleString(); })()}
             onChange={(e) => set('utilities', saveFromDisplay('utilities', (e.target.value || '').replace(/,/g,'') ))}
             placeholder={periodLabel('utilities')}
-            rightAddon={<button type="button" onClick={() => toggle('utilities')} className="px-1.5 py-0.5 text-[10px] leading-none bg-blue-600 hover:bg-blue-700 text-white rounded">M/A</button>}
+            rightAddon={<button type="button" onClick={() => toggle('utilities')} className="px-1.5 py-0.5 text-[10px] leading-none bg-blue-600 hover:bg-blue-700 text-white rounded-full">M/A</button>}
           />
         </div>
         <div>
           <FloatingInput
-            label="Garbage / Sewer"
+            label={`Garbage / Sewer ${unitForKey('garbageSewer')}`}
             prefix="$"
             inputMode="decimal"
             value={(() => { const v = displayForKey('garbageSewer', value.garbageSewer); return v === '' ? '' : Number(v).toLocaleString(); })()}
             onChange={(e) => set('garbageSewer', saveFromDisplay('garbageSewer', (e.target.value || '').replace(/,/g,'') ))}
             placeholder={periodLabel('garbageSewer')}
-            rightAddon={<button type="button" onClick={() => toggle('garbageSewer')} className="px-1.5 py-0.5 text-[10px] leading-none bg-blue-600 hover:bg-blue-700 text-white rounded">M/A</button>}
+            rightAddon={<button type="button" onClick={() => toggle('garbageSewer')} className="px-1.5 py-0.5 text-[10px] leading-none bg-blue-600 hover:bg-blue-700 text-white rounded-full">M/A</button>}
           />
         </div>
 
@@ -361,7 +361,7 @@ export default function Expenses({ value, onChange, onReset }) {
                   const monthly = raw === '' ? '' : (customAnnual?.[item.id] ? entered / 12 : entered);
                   updateCustom(item.id, { amount: monthly });
                 }}
-                rightAddon={<button type="button" onClick={() => toggleCustomAnnual(item.id)} className="px-1.5 py-0.5 text-[10px] leading-none bg-blue-600 hover:bg-blue-700 text-white rounded">M/A</button>}
+                rightAddon={<button type="button" onClick={() => toggleCustomAnnual(item.id)} className="px-1.5 py-0.5 text-[10px] leading-none bg-blue-600 hover:bg-blue-700 text-white rounded-full">M/A</button>}
               />
             </div>
             <div>
@@ -377,4 +377,5 @@ export default function Expenses({ value, onChange, onReset }) {
     </div>
   );
 }
+
 

@@ -2,6 +2,44 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Simple 3D flip helper for the insights card */
+.flip-card { position: relative; perspective: 1000px; height: 100%; }
+.flip-card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s; transform-style: preserve-3d; }
+.flip-card-inner.is-flipped { transform: rotateY(180deg); }
+.flip-card-front, .flip-card-back { position: absolute; inset: 0; width: 100%; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.flip-card-back { transform: rotateY(180deg); }
+
+/* Circular green checkbox with white checkmark */
+.circle-check {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 9999px;
+  border: 2px solid #22c55e; /* green-500 */
+  background: #ffffff;
+  display: inline-grid;
+  place-items: center;
+  cursor: pointer;
+}
+.circle-check:checked {
+  background: #22c55e; /* green-500 */
+  border-color: #22c55e;
+}
+.circle-check:checked::after {
+  content: "";
+  width: 6px;
+  height: 10px;
+  border-right: 2px solid #ffffff;
+  border-bottom: 2px solid #ffffff;
+  transform: rotate(45deg);
+  margin-top: -2px;
+}
+
+/* Criteria input width (~10% larger than w-12) */
+.crit-input { width: calc(3rem * 1.1); }
+.crit-gap { width: calc(3rem * 1.1); }
+
 /* Custom CSS for enhanced UX */
 @layer base {
   html {

@@ -34,9 +34,8 @@ export default function ExportActions({ inputs, analysis }) {
   return (
     <div className="flex items-center gap-3">
       <button onClick={handlePdf} className="rounded-md bg-slate-100 px-4 py-2 text-slate-800 hover:bg-slate-200 border border-slate-200">Download Report as PDF</button>
-      <button onClick={handleCopy} className="rounded-md bg-primary-700 px-4 py-2 text-white hover:bg-primary-700/90">Copy Shareable Summary</button>
+      <button onClick={handleCopy} className="rounded-md bg-primary-500 px-4 py-2 text-white hover:bg-primary-500/90">Copy Shareable Summary</button>
       {msg ? <span className="text-sm text-slate-500">{msg}</span> : null}
     </div>
   );
 }
-

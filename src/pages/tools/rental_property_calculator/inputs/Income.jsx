@@ -73,7 +73,7 @@ export default function Income({ value, onChange, onReset }) {
     onChange({ ...value, custom });
   };
   return (
-    <div className="relative">
+    <div className="relative pt-4">
       {/* Top tabs above and attached to the card */}
       <div className="absolute left-3 -top-3 z-10">
         <div className="relative inline-flex w-[160px]">
@@ -84,7 +84,7 @@ export default function Income({ value, onChange, onReset }) {
               aria-selected={tab === 'standard'}
               className={`flex-1 text-center px-3 py-1 text-[11px] rounded-t-[10px] border border-b-0 transition-colors duration-200 ${
                 tab === 'standard'
-                  ? 'bg-teal-600 text-white border-teal-600'
+                  ? 'bg-primary-500 text-white border-primary-500'
                   : 'bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200'
               }`}
               style={{ marginRight: 4 }}
@@ -98,7 +98,7 @@ export default function Income({ value, onChange, onReset }) {
               aria-selected={tab === 'itemized'}
               className={`flex-1 text-center px-3 py-1 text-[11px] rounded-t-[10px] border border-b-0 transition-colors duration-200 ${
                 tab === 'itemized'
-                  ? 'bg-teal-600 text-white border-teal-600'
+                  ? 'bg-primary-500 text-white border-primary-500'
                   : 'bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200'
               }`}
               ref={itmTabRef}
@@ -109,7 +109,7 @@ export default function Income({ value, onChange, onReset }) {
           {/* Animated underline */}
           <span
             ref={underlineRef}
-            className="absolute bottom-0 left-0 h-px rounded-full bg-teal-700 transition-[transform,width] duration-300 ease-out"
+            className="absolute bottom-0 left-0 h-px rounded-full bg-primary-500 transition-[transform,width] duration-300 ease-out"
           />
         </div>
       </div>
@@ -125,14 +125,14 @@ export default function Income({ value, onChange, onReset }) {
         <div className="flex items-center gap-3">
           {tab === 'itemized' && (
             <>
-              <label className="inline-flex items-center gap-2 uppercase tracking-wide text-[9px] text-teal-500">
+              <label className="inline-flex items-center gap-2 uppercase tracking-wide text-[9px] text-primary-500">
                 <input type="checkbox" className="h-4 w-4" checked={itemizedOn} onChange={(e) => setItemizedOn(e.target.checked)} />
                 Enable itemized
               </label>
               <button
                 type="button"
                 onClick={addCustom}
-                className="uppercase tracking-wide text-[9px] px-2.5 py-1 rounded-full transition-colors border bg-teal-600 text-white border-teal-600 hover:bg-teal-700 shadow"
+                className="uppercase tracking-wide text-[9px] px-2.5 py-1 rounded-full transition-colors border bg-primary-500 text-white border-primary-500 hover:bg-primary-500 shadow"
               >
                 + Add Custom Income
               </button>
@@ -142,7 +142,7 @@ export default function Income({ value, onChange, onReset }) {
             <button
               type="button"
               onClick={onReset}
-              className="uppercase tracking-wide text-[10px] px-3 py-1.5 rounded-full transition-colors border bg-teal-600 text-white border-teal-600 hover:bg-teal-700 shadow"
+              className="uppercase tracking-wide text-[10px] px-3 py-1.5 rounded-full transition-colors border bg-primary-500 text-white border-primary-500 hover:bg-primary-500 shadow"
             >
               Reset
             </button>
@@ -151,7 +151,7 @@ export default function Income({ value, onChange, onReset }) {
             type="button"
             aria-label={collapsed ? 'Expand' : 'Collapse'}
             onClick={() => setCollapsed((v) => !v)}
-            className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-teal-600 text-white hover:bg-teal-700"
+            className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-primary-500 text-white hover:bg-primary-500"
             title={collapsed ? 'Expand' : 'Minimize'}
           >
             <span className={`transition-transform ${collapsed ? 'rotate-180' : ''}`}>▾</span>
@@ -180,7 +180,7 @@ export default function Income({ value, onChange, onReset }) {
                 type="button"
                 onClick={() => toggleFlag('totalIncome')}
                 title={annualFlags.totalIncome ? 'Show Monthly' : 'Show Annual'}
-                className="px-1.5 py-0.5 text-[10px] leading-none bg-blue-600 hover:bg-blue-700 text-white rounded"
+                className="px-1.5 py-0.5 text-[10px] leading-none bg-blue-600 hover:bg-blue-700 text-white rounded-full"
               >
                 M/A
               </button>
@@ -202,7 +202,7 @@ export default function Income({ value, onChange, onReset }) {
               set('monthlyRent', fromDisplay(raw, annualFlags.monthlyRent));
             }}
             rightAddon={
-              <button type="button" onClick={() => toggleFlag('monthlyRent')} title={annualFlags.monthlyRent ? 'Show Monthly' : 'Show Annual'} className="px-1.5 py-0.5 text-[10px] leading-none bg-blue-600 hover:bg-blue-700 text-white rounded">M/A</button>
+              <button type="button" onClick={() => toggleFlag('monthlyRent')} title={annualFlags.monthlyRent ? 'Show Monthly' : 'Show Annual'} className="px-1.5 py-0.5 text-[10px] leading-none bg-blue-600 hover:bg-blue-700 text-white rounded-full">M/A</button>
             }
           />
         </div>
@@ -229,7 +229,7 @@ export default function Income({ value, onChange, onReset }) {
                   const amt = raw === '' ? '' : fromDisplay(raw, annualFlags.custom?.[item.id]);
                   updateCustom(item.id, { amount: amt });
                 }}
-                rightAddon={<button type="button" onClick={() => toggleFlag('custom', item.id)} title={annualFlags.custom?.[item.id] ? 'Show Monthly' : 'Show Annual'} className="px-1.5 py-0.5 text-[10px] leading-none bg-blue-600 hover:bg-blue-700 text-white rounded">M/A</button>}
+                rightAddon={<button type="button" onClick={() => toggleFlag('custom', item.id)} title={annualFlags.custom?.[item.id] ? 'Show Monthly' : 'Show Annual'} className="px-1.5 py-0.5 text-[10px] leading-none bg-blue-600 hover:bg-blue-700 text-white rounded-full">M/A</button>}
               />
             </div>
             <div>
@@ -251,7 +251,7 @@ export default function Income({ value, onChange, onReset }) {
               if (raw === '') return set('otherIncome', '');
               set('otherIncome', fromDisplay(raw, annualFlags.otherIncome));
             }}
-            rightAddon={<button type="button" onClick={() => toggleFlag('otherIncome')} title={annualFlags.otherIncome ? 'Show Monthly' : 'Show Annual'} className="px-1.5 py-0.5 text-[10px] leading-none bg-blue-600 hover:bg-blue-700 text-white rounded">M/A</button>}
+            rightAddon={<button type="button" onClick={() => toggleFlag('otherIncome')} title={annualFlags.otherIncome ? 'Show Monthly' : 'Show Annual'} className="px-1.5 py-0.5 text-[10px] leading-none bg-blue-600 hover:bg-blue-700 text-white rounded-full">M/A</button>}
           />
         </div>
       </div>
@@ -266,3 +266,4 @@ export default function Income({ value, onChange, onReset }) {
     </div>
   );
 }
+

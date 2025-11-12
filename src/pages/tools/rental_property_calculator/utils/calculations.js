@@ -66,12 +66,24 @@ export function capRatePct({ noiAnnual, purchasePrice }) {
   return (toNumber(noiAnnual) / price) * 100;
 }
 
-export function totalInvestmentNeeded({ purchasePrice, downPaymentPct, closingCosts, pointsPct }) {
-  const downPayment = toNumber(purchasePrice) * (toNumber(downPaymentPct) / 100);
+export function totalInvestmentNeeded({ purchasePrice, downPaymentPct, closingCosts, pointsPct, allCash = false, closingIsDollar = false }) {
+  const price = toNumber(purchasePrice);
+  let closingCostAmount = 0;
+  if (closingIsDollar) {
+    closingCostAmount = toNumber(closingCosts);
+  } else {
+    // Treat closingCosts as a percentage (cap at 30% to prevent accidental dollar entry like 5000)
+    const closingPct = Math.min(Math.max(toNumber(closingCosts), 0), 30);
+    closingCostAmount = price * (closingPct / 100);
+  }
+  if (allCash) {
+    const downPayment = price; // 100% cash purchase
+    const points = 0; // no loan points when all-cash
+    return { downPayment, points, closingCostAmount, totalInvestment: downPayment + closingCostAmount + points };
+  }
+  const downPayment = price * (toNumber(downPaymentPct) / 100);
   const { loanAmount } = mortgageMonthlyPI({ purchasePrice, downPaymentPct, interestRatePct: 0, termYears: 30 });
   const points = pointsCost({ loanAmount, pointsPct });
-  // Treat closingCosts as a percentage of purchase price
-  const closingCostAmount = toNumber(purchasePrice) * (toNumber(closingCosts) / 100);
   return { downPayment, points, closingCostAmount, totalInvestment: downPayment + closingCostAmount + points };
 }
 
@@ -109,7 +121,9 @@ export function fiveYearRoiPct({ monthlyCashFlow, totalInvestment, purchasePrice
 }
 
 export function fullAnalysis(inputs) {
-  const { monthlyPI, loanAmount } = mortgageMonthlyPI(inputs.loan);
+  const allCash = !!inputs?.property?.allCash;
+  const loanParams = { ...inputs.loan, purchasePrice: inputs.property.purchasePrice };
+  const { monthlyPI, loanAmount } = allCash ? { monthlyPI: 0, loanAmount: 0 } : mortgageMonthlyPI(loanParams);
   const income = incomeCalcs({
     monthlyRent: inputs.income.monthlyRent,
     otherIncome: inputs.income.otherIncome,
@@ -132,13 +146,16 @@ export function fullAnalysis(inputs) {
       : 0,
   });
   const noiAnnual = income.effectiveAnnualIncome - expenses.operatingAnnual;
-  const capRate = capRatePct({ noiAnnual, purchasePrice: inputs.property.purchasePrice });
+  const noiAfterDebt = noiAnnual - (monthlyPI * 12);
+  const capRate = capRatePct({ noiAnnual: noiAfterDebt, purchasePrice: inputs.property.purchasePrice });
   const monthlyCashFlow = income.effectiveMonthlyIncome - expenses.operatingMonthly - monthlyPI;
   const investBreakdown = totalInvestmentNeeded({
     purchasePrice: inputs.property.purchasePrice,
     downPaymentPct: inputs.loan.downPaymentPct,
     closingCosts: inputs.property.closingCosts,
     pointsPct: inputs.loan.points,
+    allCash,
+    closingIsDollar: inputs.property.closingIsDollar,
   });
   const coc = cashOnCashPct({ monthlyCashFlow, totalInvestment: investBreakdown.totalInvestment });
   const roi5 = fiveYearRoiPct({
@@ -157,6 +174,7 @@ export function fullAnalysis(inputs) {
     expenses,
     noiAnnual,
     capRate,
+    noiAfterDebt,
     monthlyCashFlow,
     investBreakdown,
     coc,
@@ -166,13 +184,17 @@ export function fullAnalysis(inputs) {
 
 export function roiSeriesOverYears(inputs) {
   const result = [];
+  const allCash = !!inputs?.property?.allCash;
   const invest = totalInvestmentNeeded({
     purchasePrice: inputs.property.purchasePrice,
     downPaymentPct: inputs.loan.downPaymentPct,
     closingCosts: inputs.property.closingCosts,
     pointsPct: inputs.loan.points,
+    allCash,
+    closingIsDollar: inputs.property.closingIsDollar,
   }).totalInvestment;
-  const { monthlyPI } = mortgageMonthlyPI(inputs.loan);
+  const loanParams = { ...inputs.loan, purchasePrice: inputs.property.purchasePrice };
+  const { monthlyPI } = allCash ? { monthlyPI: 0 } : mortgageMonthlyPI(loanParams);
   const income = incomeCalcs({
     monthlyRent: inputs.income.monthlyRent,
     otherIncome: inputs.income.otherIncome,

@@ -3,37 +3,39 @@ import { fullAnalysis, roiSeriesOverYears } from '../utils/calculations';
 
 export const DEFAULTS = {
   property: {
-    address: '',
-    purchasePrice: 350000,
-    closingCosts: 5000,
+    address: '123 Main St',
+    purchasePrice: 500000,
+    closingCosts: 5,
+    closingIsDollar: false,
+    allCash: false,
   },
   loan: {
     downPaymentPct: 20,
-    interestRatePct: 6.5,
+    interestRatePct: 5.5,
     termYears: 30,
     points: 0,
   },
   income: {
-    monthlyRent: 2500,
+    monthlyRent: 4500,
     otherIncome: 0,
     custom: [],
   },
   expenses: {
-    propertyTaxes: 3500, // annual
+    propertyTaxes: 8000, // annual
     insurance: 1200, // annual
     maintenance: 150, // monthly
     capex: 150, // monthly
     managementPct: 8,
-    hoa: 0,
-    utilities: 0,
-    garbageSewer: 0,
+    hoa: 150,
+    utilities: 200,
+    garbageSewer: 50,
     vacancyRatePct: 5,
     custom: [],
   },
 };
 
 export const BLANKS = {
-  property: { address: '', purchasePrice: '', closingCosts: '' },
+  property: { address: '', purchasePrice: '', closingCosts: '', closingIsDollar: false, allCash: false },
   loan: { downPaymentPct: '', interestRatePct: '', termYears: '', points: '' },
   income: { monthlyRent: '', otherIncome: '', custom: [] },
   expenses: {
