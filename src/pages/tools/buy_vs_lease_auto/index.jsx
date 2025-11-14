@@ -1,11 +1,18 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Topbar from "../../../components/calculators_shared_files/topBar";
+import { Helmet } from 'react-helmet-async';
 import InputSection from "./components/InputSection";
 import Insights from "./components/Insights";
 import { calculateBuyVsLease } from "./utils/calc";
 
 export default function BuyVsLeaseAuto() {
+  const canonical = typeof window !== 'undefined' ? (window.location.origin + window.location.pathname) : 'https://www.finworld.live/tools/buy-vs-lease-auto';
+  const seoFaq = [
+    { q: 'Is it cheaper to lease or buy a car?', a: 'It depends on term length, money factor/APR, fees, and resale value. This calculator compares total costs over your chosen period.' },
+    { q: 'What is a money factor?', a: 'Money factor is the leasing equivalent of APR. Multiply by 2400 to approximate APR.' },
+    { q: 'How do miles affect a lease?', a: 'Exceeding the allowed miles per year increases cost via per-mile fees. The tool includes this.' }
+  ];
   const [scenario, setScenario] = useState({
     vehiclePrice: 38000, // compact SUV MSRP example
     ownershipYears: 5,
@@ -123,6 +130,17 @@ export default function BuyVsLeaseAuto() {
 
   return (
     <div className="min-h-screen bg-bg-page text-neutral-900">
+      <Helmet>
+  <title>Buy vs Lease Car Calculator | FinWorld</title>
+  <meta name="description" content="Compare total cost of buying vs leasing a car, including money factor/APR, fees, miles, and resale value." />
+  <link rel="canonical" href={canonical} />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Buy vs Lease Car Calculator | FinWorld" />
+  <meta property="og:description" content="Compare total cost of buying vs leasing a car, including money factor/APR, fees, miles, and resale value." />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content="https://www.finworld.live/assets/finworld-preview.png" />
+  <script type="application/ld+json">{JSON.stringify({ '@context':'https://schema.org','@type':'FAQPage', mainEntity: [ { '@type':'Question', name:'Is it cheaper to lease or buy a car?', acceptedAnswer:{'@type':'Answer', text:'It depends on term length, money factor/APR, fees, and resale value. This calculator compares total costs over your chosen period.'}}, { '@type':'Question', name:'What is a money factor?', acceptedAnswer:{'@type':'Answer', text:'Money factor is the leasing equivalent of APR. Multiply by 2400 to approximate APR.'}}, { '@type':'Question', name:'How do miles affect a lease?', acceptedAnswer:{'@type':'Answer', text:'Exceeding the allowed miles per year increases cost via per-mile fees. The tool includes this.'}} ] })}</script>
+</Helmet>
       <Topbar />
 
       <main className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

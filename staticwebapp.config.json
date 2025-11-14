@@ -12,5 +12,26 @@
     "404": {
       "rewrite": "/index.html"
     }
-  }
+  },
+  "routes": [
+    { "route": "/tools/auto_loan_calculator", "redirect": "/tools/auto-loan-calculator", "statusCode": 301 },
+    { "route": "/tools/buy_vs_lease_auto", "redirect": "/tools/buy-vs-lease-auto", "statusCode": 301 },
+    { "route": "/tools/compounding_calculator", "redirect": "/tools/compounding-calculator", "statusCode": 301 },
+    { "route": "/tools/extra_payment", "redirect": "/tools/extra-payment", "statusCode": 301 },
+    { "route": "/tools/home_affordability", "redirect": "/tools/home-affordability", "statusCode": 301 },
+    { "route": "/tools/Mortgage_calculator", "redirect": "/tools/mortgage-calculator", "statusCode": 301 },
+    { "route": "/tools/rental_property_calculator", "redirect": "/tools/rental-property-calculator", "statusCode": 301 },
+    { "route": "/tools/retirement_calculator", "redirect": "/tools/retirement-calculator", "statusCode": 301 },
+    { "route": "/tools/take_home_pay", "redirect": "/tools/take-home-pay", "statusCode": 301 },
+
+    { "route": "/pages/tools/auto_loan_calculator", "redirect": "/tools/auto-loan-calculator", "statusCode": 301 },
+    { "route": "/pages/tools/buy_vs_lease_auto", "redirect": "/tools/buy-vs-lease-auto", "statusCode": 301 },
+    { "route": "/pages/tools/compounding_calculator", "redirect": "/tools/compounding-calculator", "statusCode": 301 },
+    { "route": "/pages/tools/extra_payment", "redirect": "/tools/extra-payment", "statusCode": 301 },
+    { "route": "/pages/tools/home_affordability", "redirect": "/tools/home-affordability", "statusCode": 301 },
+    { "route": "/pages/tools/Mortgage_calculator", "redirect": "/tools/mortgage-calculator", "statusCode": 301 },
+    { "route": "/pages/tools/rental_property_calculator", "redirect": "/tools/rental-property-calculator", "statusCode": 301 },
+    { "route": "/pages/tools/retirement_calculator", "redirect": "/tools/retirement-calculator", "statusCode": 301 },
+    { "route": "/pages/tools/take_home_pay", "redirect": "/tools/take-home-pay", "statusCode": 301 }
+  ]
 }
