@@ -3,7 +3,9 @@
     "rewrite": "/index.html",
     "exclude": [
       "/assets/*",
-      "/*.{png,jpg,gif,ico,css,js}"
+      "/*.{png,jpg,gif,ico,css,js,xml,txt}",
+      "/sitemap.xml",
+      "/robots.txt"
     ]
   },
   "responseOverrides": {
