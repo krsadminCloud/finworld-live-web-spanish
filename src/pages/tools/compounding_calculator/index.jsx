@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import { useTheme } from '@mui/material/styles';
 import Topbar from '../../../components/calculators_shared_files/topBar';
@@ -64,9 +65,37 @@ export default function CompoundingCalculator() {
   };
 
   const reset = () => setInputs(RESET_STATE);
+  // Build canonical URL dynamically to match deployed route
+  const loc = typeof window !== 'undefined' && window.location ? window.location : null;
+  const canonicalUrl = loc ? `${loc.origin}${loc.pathname}` : 'https://www.finworld.live/tools/compounding-calculator';
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'Compounding Calculator',
+    url: canonicalUrl,
+    applicationCategory: 'FinanceApplication',
+    operatingSystem: 'Web',
+    description: 'Calculate compound interest with flexible frequencies and periodic contributions. Visualize growth and export schedules.'
+  };
 
   return (
     <div className="compounding-calculator min-h-screen bg-bg-page text-neutral-900">
+      <Helmet>
+        <title>Compounding Calculator | FinWorld</title>
+        <meta name="description" content="Free compounding calculator to project investment growth with compound interest, contributions, and flexible frequencies. Visualize results and export your schedule." />
+        <meta name="keywords" content="compounding calculator, compound interest calculator, financial calculator, investment calculator, savings growth, future value, FinWorld" />
+        <link rel="canonical" href={canonicalUrl} />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Compounding Calculator | FinWorld" />
+        <meta property="og:description" content="Project your investment growth with compound interest and contributions. Charts, tables, and exports included." />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:image" content="https://www.finworld.live/assets/finworld-preview.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Compounding Calculator | FinWorld" />
+        <meta name="twitter:description" content="Free compounding calculator with charts and exportable schedules." />
+        <meta name="twitter:image" content="https://www.finworld.live/assets/finworld-preview.png" />
+        <script type="application/ld+json">{JSON.stringify(schema)}</script>
+      </Helmet>
       <Topbar />
       <main className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <motion.section
@@ -79,7 +108,7 @@ export default function CompoundingCalculator() {
             Compounding Calculator
           </h1>
           <p className="text-lg text-neutral-500 max-w-2xl mx-auto">
-            Calculate compound growth with flexible compounding and contribution schedules. Share results with a link, export tables, and visualize your growth.
+            Calculate compound interest and projected investment growth with flexible contribution and compounding schedules. This free financial calculator helps you estimate future value, interest earned, and total contributions over time.
           </p>
           <div className="mt-6 w-24 h-1 bg-primary-500 mx-auto rounded-full" />
         </motion.section>
@@ -92,6 +121,58 @@ export default function CompoundingCalculator() {
         >
           <CalculatorSection inputs={inputs} onChange={updateInput} onReset={reset} results={results} granularity={granularity} setGranularity={setGranularity} />
           <ResultsSection results={results} granularity={granularity} setGranularity={setGranularity} scheduleRef={scheduleRef} palette={PALETTES[palette]} />
+        </motion.section>
+
+        {/* SEO FAQ Section */}
+        <motion.section
+          className="prose prose-slate max-w-3xl mx-auto mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        >
+          <h2 className="text-2xl font-bold text-neutral-900 mb-4">Compounding Calculator FAQs</h2>
+          <div>
+            <h3 className="text-lg font-semibold text-neutral-900">What is a compounding calculator?</h3>
+            <p className="text-neutral-600">A compounding calculator estimates how your money can grow over time when interest is added to both your original balance and previously earned interest. You can also include regular contributions.</p>
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold text-neutral-900">How do contributions affect results?</h3>
+            <p className="text-neutral-600">Contributions increase your balance at a chosen frequency (monthly, weekly, etc.). Depending on timing, they are applied at the beginning or end of each period, which slightly changes the outcome.</p>
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold text-neutral-900">What’s the difference between nominal and effective rate?</h3>
+            <p className="text-neutral-600">The nominal rate is the stated annual rate. The effective annual yield accounts for how often interest compounds, providing a more accurate picture of growth.</p>
+          </div>
+          <script type="application/ld+json">{JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            mainEntity: [
+              {
+                '@type': 'Question',
+                name: 'What is a compounding calculator?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: 'A compounding calculator estimates how your money can grow over time when interest is added to both your original balance and previously earned interest. You can also include regular contributions.'
+                }
+              },
+              {
+                '@type': 'Question',
+                name: 'How do contributions affect results?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: 'Contributions increase your balance at a chosen frequency (monthly, weekly, etc.). Depending on timing, they are applied at the beginning or end of each period, which slightly changes the outcome.'
+                }
+              },
+              {
+                '@type': 'Question',
+                name: 'What’s the difference between nominal and effective rate?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: 'The nominal rate is the stated annual rate. The effective annual yield accounts for how often interest compounds, providing a more accurate picture of growth.'
+                }
+              }
+            ]
+          })}</script>
         </motion.section>
       </main>
     </div>
@@ -113,3 +194,4 @@ function readParams(sp) {
     timing: val('timing', 'end', String),
   };
 }
+
