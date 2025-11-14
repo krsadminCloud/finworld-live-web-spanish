@@ -81,8 +81,12 @@ export function buildSchedule({
   }
   const m = compounding;
   const stepRate = Math.pow(1 + annualNominal / m, m / stepsPerYear) - 1;
-
-  const contribEverySteps = Math.round(stepsPerYear / contribFreq);
+  // Accumulator-based contribution handling so high contribution frequencies
+  // (e.g., weekly) are not lost when charting yearly/monthly.
+  // stepUnits = number of contribution periods that occur per schedule step.
+  // We accumulate fractional periods until they reach a full contribution.
+  const stepUnits = contribFreq / stepsPerYear; // may be < 1 or > 1
+  let contribUnitsAcc = 0; // accumulates contribution periods across steps
 
   let balance = sanitizeNumber(initial, 0);
   const rows = [];
@@ -93,9 +97,17 @@ export function buildSchedule({
 
   for (let i = 1; i <= totalSteps; i++) {
     let contribThisStep = 0;
-    const isContribStep = contribEverySteps > 0 && i % contribEverySteps === 0;
-    if (contribution > 0 && isContribStep && due) {
-      contribThisStep = contribution;
+    if (contribution > 0 && contribFreq > 0) {
+      contribUnitsAcc += stepUnits;
+      const unitsNow = Math.floor(contribUnitsAcc);
+      if (unitsNow > 0) {
+        contribThisStep = contribution * unitsNow;
+        contribUnitsAcc -= unitsNow;
+      }
+    }
+
+    // Apply contributions at beginning if due (annuity due)
+    if (due && contribThisStep > 0) {
       balance += contribThisStep;
       totalContrib += contribThisStep;
     }
@@ -104,8 +116,8 @@ export function buildSchedule({
     balance += interest;
     totalInterest += interest;
 
-    if (contribution > 0 && isContribStep && !due) {
-      contribThisStep = contribution;
+    // Apply contributions at end if ordinary annuity
+    if (!due && contribThisStep > 0) {
       balance += contribThisStep;
       totalContrib += contribThisStep;
     }
@@ -200,4 +212,3 @@ export function formatYearsMonths(decimalYears) {
   const months = Math.round((decimalYears - years) * 12);
   return { years, months };
 }
-

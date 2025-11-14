@@ -53,15 +53,23 @@ export default function CalculatorSection({ inputs, onChange, onReset, results, 
           <div>
             <label className={labelCls}>Initial Investment ($)</label>
             <CurrencyInput
-              value={inputs.initialInvestment === '' ? '' : Number(inputs.initialInvestment || 0)}
+              value={(inputs.initialInvestment === '' || Number(inputs.initialInvestment || 0) === 0) ? '' : Number(inputs.initialInvestment)}
               onValueChange={(val)=>onChange('initialInvestment', val)}
+              placeholder="Initial amount"
             />
           </div>
           <div className="grid grid-cols-2 gap-2">
             <div>
               <label className={labelCls}>Interest Rate (%)</label>
-              <input type="number" className={inputCls} step="0.01" value={showVal(inputs.ratePercent)}
-                onChange={(e)=>onChange('ratePercent', e.target.value === '' ? '' : Number(e.target.value))} min="0" />
+              <input
+                type="number"
+                className={inputCls}
+                step="0.01"
+                placeholder="e.g., 7.5"
+                value={(inputs.ratePercent === '' || inputs.ratePercent === 0) ? '' : inputs.ratePercent}
+                onChange={(e)=>onChange('ratePercent', e.target.value === '' ? '' : Number(e.target.value))}
+                min="0"
+              />
             </div>
             <div>
               <label className={labelCls}>Unit</label>
@@ -87,21 +95,35 @@ export default function CalculatorSection({ inputs, onChange, onReset, results, 
           <div className="grid grid-cols-2 gap-2">
             <div>
               <label className={labelCls}>Years</label>
-              <input type="number" className={inputCls} value={showVal(inputs.years)}
-                onChange={(e)=>onChange('years', e.target.value === '' ? '' : Number(e.target.value))} min="0" />
+              <input
+                type="number"
+                className={inputCls}
+                placeholder="Years"
+                value={(inputs.years === '' || inputs.years === 0) ? '' : inputs.years}
+                onChange={(e)=>onChange('years', e.target.value === '' ? '' : Number(e.target.value))}
+                min="0"
+              />
             </div>
             <div>
               <label className={labelCls}>Months</label>
-              <input type="number" className={inputCls} value={showVal(inputs.months)}
-                onChange={(e)=>onChange('months', e.target.value === '' ? '' : Number(e.target.value))} min="0" max="11" />
+              <input
+                type="number"
+                className={inputCls}
+                placeholder="Months"
+                value={(inputs.months === '' || inputs.months === 0) ? '' : inputs.months}
+                onChange={(e)=>onChange('months', e.target.value === '' ? '' : Number(e.target.value))}
+                min="0"
+                max="11"
+              />
             </div>
           </div>
 
           <div>
             <label className={labelCls}>Regular Contribution ($)</label>
             <CurrencyInput
-              value={inputs.contribution === '' ? '' : Number(inputs.contribution || 0)}
+              value={(inputs.contribution === '' || Number(inputs.contribution || 0) === 0) ? '' : Number(inputs.contribution)}
               onValueChange={(val)=>onChange('contribution', val)}
+              placeholder="Contribution per period"
             />
           </div>
           <div className="grid grid-cols-2 gap-2">
