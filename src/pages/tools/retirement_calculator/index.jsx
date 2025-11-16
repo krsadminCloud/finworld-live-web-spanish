@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Box, useTheme } from '@mui/material';
 import Topbar from '../../../components/calculators_shared_files/topBar';
 import Footer from '../auto_loan_calculator/components/Footer';
+import { Helmet } from 'react-helmet-async';
 import { formatCurrency } from './utils/retirementLogic';
 
 // Local components
@@ -80,6 +81,55 @@ export default function RetirementCalculator() {
       }}
     >
       <Topbar />
+      <Helmet>
+        <title>Retirement Savings Calculator | FinWorld</title>
+        <meta
+          name="description"
+          content="Estimate your retirement nest egg, inflation-adjusted savings, and potential withdrawal income based on your age, contributions, and return assumptions."
+        />
+        <link
+          rel="canonical"
+          href={
+            typeof window !== 'undefined'
+              ? `${window.location.origin}/tools/retirement-calculator`
+              : 'https://www.finworld.live/tools/retirement-calculator'
+          }
+        />
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:title"
+          content="Retirement Savings Calculator | FinWorld"
+        />
+        <meta
+          property="og:description"
+          content="Project your retirement savings and withdrawal income with an interactive, inflation-aware calculator."
+        />
+        <meta
+          property="og:url"
+          content={
+            typeof window !== 'undefined'
+              ? `${window.location.origin}/tools/retirement-calculator`
+              : 'https://www.finworld.live/tools/retirement-calculator'
+          }
+        />
+        <meta
+          property="og:image"
+          content="https://www.finworld.live/assets/finworld-preview.png"
+        />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:title"
+          content="Retirement Savings Calculator | FinWorld"
+        />
+        <meta
+          name="twitter:description"
+          content="See how your monthly savings and investment returns can add up by retirement."
+        />
+        <meta
+          name="twitter:image"
+          content="https://www.finworld.live/assets/finworld-preview.png"
+        />
+      </Helmet>
 
       <main className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Hero */}
@@ -127,6 +177,37 @@ export default function RetirementCalculator() {
 
         {/* Supplemental Info */}
         <RetirementResources />
+
+        <section className="mt-10 space-y-3">
+          <h2 className="text-xl font-semibold text-neutral-900">
+            How to use this retirement calculator
+          </h2>
+          <p className="text-sm text-neutral-600">
+            Start with your current age, desired retirement age, existing savings, and monthly contribution. Then select reasonable assumptions for annual investment return, inflation, and withdrawal rate. The chart and summary show both nominal and inflation-adjusted balances at retirement.
+          </p>
+          <p className="text-sm text-neutral-600">
+            Use the withdrawal section to see a rough estimate of sustainable annual and monthly income at your chosen withdrawal rate, then tweak contributions or retirement age to close any gap.
+          </p>
+
+          <h3 className="text-lg font-semibold text-neutral-900 mt-4">
+            Related tools
+          </h3>
+          <p className="text-sm text-neutral-600">
+            For a fuller picture of your finances, explore the{" "}
+            <a href="/tools/compounding-calculator" className="underline">
+              Compounding Calculator
+            </a>
+            ,{" "}
+            <a href="/tools/take-home-pay" className="underline">
+              Take-Home Pay Calculator
+            </a>
+            , and{" "}
+            <a href="/tools/extra-payment" className="underline">
+              Loan Payoff Calculator
+            </a>
+            .
+          </p>
+        </section>
 
         {/* Footer */}
         <Footer />

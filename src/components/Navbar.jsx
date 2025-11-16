@@ -5,7 +5,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import MenuIcon from '@mui/icons-material/Menu';
-import { ColorModeContext } from '../theme';
+import { ColorModeContext } from '../context/ColorModeContext';
 
 export default function Navbar() {
   const theme = useTheme();
@@ -70,8 +70,8 @@ export default function Navbar() {
           <Button component={RouterLink} to="/" sx={{ fontWeight: 600 }}>Home</Button>
           <Button onClick={handleOpenTools} sx={{ fontWeight: 600 }}>Financial Tools</Button>
           <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleCloseTools}>
-            <MenuItem component={RouterLink} to="/tools/extra_payment" onClick={handleCloseTools}>Extra Payment Calculator</MenuItem>
-            <MenuItem component={RouterLink} to="/tools/paycheck" onClick={handleCloseTools}>Take-Home Pay</MenuItem>
+            <MenuItem component={RouterLink} to="/tools/extra-payment" onClick={handleCloseTools}>Loan Payoff Calculator</MenuItem>
+            <MenuItem component={RouterLink} to="/tools/take-home-pay" onClick={handleCloseTools}>Take-Home Pay Calculator</MenuItem>
           </Menu>
           <Button sx={{ fontWeight: 600 }} component={RouterLink} to="/comparisons">Comparisons</Button>
           <Button sx={{ fontWeight: 600 }} component={RouterLink} to="/guides">Guides</Button>

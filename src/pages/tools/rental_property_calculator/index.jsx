@@ -1,5 +1,7 @@
 import React from 'react';
 import TopBar from '../../../components/calculators_shared_files/topBar';
+import { Helmet } from 'react-helmet-async';
+import { trackEvent } from '../../../utils/analytics';
 import { useCalculatorState, DEFAULTS, BLANKS } from './state/useCalculatorState';
 import PropertyInfo from './inputs/PropertyInfo';
 import LoanDetails from './inputs/LoanDetails';
@@ -23,8 +25,82 @@ export default function RentalPropertyCalculatorPage() {
     }
   }, [uiOption]);
 
+  const canonical =
+    typeof window !== 'undefined'
+      ? `${window.location.origin}/tools/rental-property-calculator`
+      : 'https://www.finworld.live/tools/rental-property-calculator';
+
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'What does this rental property calculator show?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'The calculator estimates monthly cash flow, operating expenses, cap rate, and cash-on-cash return based on your purchase price, rent, financing, and ongoing costs.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Can I customize expenses and vacancy?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Yes. You can enter detailed property taxes, insurance, maintenance, management, HOA, utilities, and vacancy assumptions or override the total operating expenses with a single number.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Does this work for cash and financed deals?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'You can model an all-cash purchase or a financed purchase by adjusting the down payment, loan term, rate, and points. Monthly cash flow and returns update instantly.',
+        },
+      },
+    ],
+  };
+
   return (
     <div className="min-h-screen bg-slate-50">
+      <Helmet>
+        <title>Rental Property Calculator | FinWorld</title>
+        <meta
+          name="description"
+          content="Analyze a rental property in minutes. Estimate cash flow, cap rate, and cash-on-cash returns with detailed income and expense assumptions."
+        />
+        <link rel="canonical" href={canonical} />
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:title"
+          content="Rental Property Calculator | FinWorld"
+        />
+        <meta
+          property="og:description"
+          content="Model rental income, operating expenses, and financing to see projected cash flow and ROI on your investment property."
+        />
+        <meta property="og:url" content={canonical} />
+        <meta
+          property="og:image"
+          content="https://www.finworld.live/assets/finworld-preview.png"
+        />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:title"
+          content="Rental Property Calculator | FinWorld"
+        />
+        <meta
+          name="twitter:description"
+          content="Evaluate rental deals with cash flow and ROI metrics before you make an offer."
+        />
+        <meta
+          name="twitter:image"
+          content="https://www.finworld.live/assets/finworld-preview.png"
+        />
+        <script type="application/ld+json">
+          {JSON.stringify(faqSchema)}
+        </script>
+      </Helmet>
       <TopBar />
       <header className="bg-transparent">
         <div className="mx-auto max-w-4xl px-4 py-10 text-center">
@@ -82,6 +158,7 @@ export default function RentalPropertyCalculatorPage() {
               } catch {
                 setExpenses(DEFAULTS.expenses);
               }
+              trackEvent('rental_prefill_clicked', { calculator: 'rental_property' });
             }}
             className="uppercase tracking-wide text-[11px] px-3 py-1.5 rounded-full transition-colors border bg-primary-500 text-white border-primary-500 hover:bg-primary-500/90 shadow"
           >
@@ -185,6 +262,37 @@ export default function RentalPropertyCalculatorPage() {
         )}
 
         <TuningPanel inputs={inputs} setIncome={setIncome} setExpenses={setExpenses} setLoan={setLoan} reset={reset} />
+
+        <section className="space-y-3 pt-4">
+          <h2 className="text-xl font-semibold text-slate-900">
+            How to use this rental property calculator
+          </h2>
+          <p className="text-sm text-slate-600">
+            Enter your purchase price, closing costs, and loan details, then add rent, vacancy, and operating expenses. The analysis and charts update as you tweak assumptions so you can see whether a deal meets your cash flow and return targets.
+          </p>
+          <p className="text-sm text-slate-600">
+            Use the tuning panel to run quick sensitivities on rent, expenses, or interest rates so you understand the range of outcomes before you make an offer.
+          </p>
+
+          <h3 className="text-lg font-semibold text-slate-900 mt-4">
+            Related tools
+          </h3>
+          <p className="text-sm text-slate-600">
+            Planning a real estate portfolio? Explore the{" "}
+            <a href="/tools/mortgage-calculator" className="underline">
+              Mortgage Calculator
+            </a>
+            ,{" "}
+            <a href="/tools/home-affordability" className="underline">
+              Home Affordability Calculator
+            </a>
+            , and{" "}
+            <a href="/tools/compounding-calculator" className="underline">
+              Compounding Calculator
+            </a>{" "}
+            to project long-term wealth from your investments.
+          </p>
+        </section>
 
         <div className="flex justify-between items-center">
           <div className="text-slate-500 text-sm">FinWorld Edition • Teal theme • Local-only</div>

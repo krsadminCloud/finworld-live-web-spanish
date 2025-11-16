@@ -1,9 +1,11 @@
 ﻿import React, { useEffect, useMemo, useState } from 'react';
 import Topbar from '../../../components/calculators_shared_files/topBar';
+import { Helmet } from 'react-helmet-async';
 import { STATES_LIST } from './utils/taxData';
 import { calcFederalTax, calcStateTax, calcFicaComponents, calcFicaTax, formatCurrency } from './utils/taxCalculations';
 import { TaxChart } from './components/TaxChart';
 import { ensureThpThemeCss, setThpThemeCss } from './themeCssLoader';
+import { trackEvent } from '../../../utils/analytics';
 
 export default function TakeHomePayCalculator() {
   const [inputs, setInputs] = useState({
@@ -51,6 +53,11 @@ export default function TakeHomePayCalculator() {
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
     return () => observer.disconnect();
   }, []);
+
+  const canonical =
+    typeof window !== 'undefined'
+      ? `${window.location.origin}/tools/take-home-pay`
+      : 'https://www.finworld.live/tools/take-home-pay';
 
   const result = useMemo(() => {
     const baseSelf = Number(inputs.income) || 0;
@@ -103,9 +110,9 @@ export default function TakeHomePayCalculator() {
     const localTax = adjustedIncome * ((Number(inputs.localTaxRate) || 0) / 100);
     const totalTax = federalTax + stateTax + ficaTax + localTax;
     const netPay = totalIncome - totalTax - preTaxDeductions;
-    const finalNet = Math.max(0, netPay - rothTotal);
+      const finalNet = Math.max(0, netPay - rothTotal);
 
-    return {
+      return {
       grossIncome: totalIncome,
       yourBaseIncome: baseSelf,
       spouseBaseIncome: baseSpouse,

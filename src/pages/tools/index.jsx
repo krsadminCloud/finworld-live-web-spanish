@@ -56,9 +56,9 @@ export default function FinancialCalculators() {
 
   // === Mortgage Calculators (Cool Pastel Palette) ===
   const mortgageCalculators = [
-    { title: "Mortgage Calculator", icon: <PaymentsIcon sx={{ color: "#A5F3FC" }} fontSize="large" />, to: "/tools/mortgage_calculator", disabled: false, cat: "Mortgage" },
-    { title: "Loan Payoff Calculator", icon: <PaidIcon sx={{ color: "#6EE7B7" }} fontSize="large" />, to: "/tools/extra_payment", disabled: false, cat: "Mortgage" },
-    { title: "Mortgage Affordability Calculator", icon: <AttachMoneyIcon sx={{ color: "#86EFAC" }} fontSize="large" />, to: "/tools/home_affordability", disabled: false, cat: "Mortgage" },
+    { title: "Mortgage Calculator", icon: <PaymentsIcon sx={{ color: "#A5F3FC" }} fontSize="large" />, to: "/tools/mortgage-calculator", disabled: false, cat: "Mortgage" },
+    { title: "Loan Payoff Calculator", icon: <PaidIcon sx={{ color: "#6EE7B7" }} fontSize="large" />, to: "/tools/extra-payment", disabled: false, cat: "Mortgage" },
+    { title: "Mortgage Affordability Calculator", icon: <AttachMoneyIcon sx={{ color: "#86EFAC" }} fontSize="large" />, to: "/tools/home-affordability", disabled: false, cat: "Mortgage" },
     { title: "Mortgage Amortization Calculator", icon: <ReceiptLongIcon sx={{ color: "#93C5FD" }} fontSize="large" />, disabled: true, cat: "Mortgage" },
     { title: "Bi-Weekly Payment Calculator", icon: <EventRepeatIcon sx={{ color: "#C4B5FD" }} fontSize="large" />, disabled: true, cat: "Mortgage" },
     { title: "Interest-Only Mortgage Calculator", icon: <MoneyOffIcon sx={{ color: "#FCA5A5" }} fontSize="large" />, disabled: true, cat: "Mortgage" },
@@ -68,17 +68,17 @@ export default function FinancialCalculators() {
     { title: "Home Equity Loan Calculator", icon: <HouseIcon sx={{ color: "#A7F3D0" }} fontSize="large" />, disabled: true, cat: "Mortgage" },
     { title: "Mortgage Comparison Calculator", icon: <CompareArrowsIcon sx={{ color: "#C7D2FE" }} fontSize="large" />, disabled: true, cat: "Mortgage" },
     { title: "Rent vs. Buy Calculator", icon: <ApartmentIcon sx={{ color: "#BAE6FD" }} fontSize="large" />, disabled: true, cat: "Mortgage" },
-    { title: "Rental Property Calculator", icon: <RealEstateAgentIcon sx={{ color: "#00C1B0" }} fontSize="large" />, to: "/tools/rental_property_calculator", disabled: false, cat: "Mortgage" },
+    { title: "Rental Property Calculator", icon: <RealEstateAgentIcon sx={{ color: "#00C1B0" }} fontSize="large" />, to: "/tools/rental-property-calculator", disabled: false, cat: "Mortgage" },
   ];
 
   // === Personal Finance Calculators (Warm Pastel Palette) ===
   const personalFinanceCalculators = [
     // Active calculators in requested order
-    { title: "Compounding Calculator", icon: <TrendingUpIcon sx={{ color: "#FCD34D" }} fontSize="large" />, to: "/tools/compounding_calculator", disabled: false, cat: "Personal Finance" },
-    { title: "Retirement Saving", icon: <SavingsIcon sx={{ color: "#93C5FD" }} fontSize="large" />, to: "/tools/retirement_calculator", disabled: false, cat: "Personal Finance" },
-    { title: "Take Home Pay", icon: <AttachMoneyIcon sx={{ color: "#F9A8D4" }} fontSize="large" />, to: "/tools/take_home_pay", disabled: false, cat: "Personal Finance" },
-    { title: "Car Loan", icon: <DirectionsCarIcon sx={{ color: "#A5F3FC" }} fontSize="large" />, to: "/tools/auto_loan_calculator", disabled: false, cat: "Personal Finance" },
-    { title: "Buy vs Lease", icon: <DirectionsCarIcon sx={{ color: "#86EFAC" }} fontSize="large" />, to: "/tools/buy_vs_lease_auto", disabled: false, cat: "Personal Finance" },
+    { title: "Compounding Calculator", icon: <TrendingUpIcon sx={{ color: "#FCD34D" }} fontSize="large" />, to: "/tools/compounding-calculator", disabled: false, cat: "Personal Finance" },
+    { title: "Retirement Saving", icon: <SavingsIcon sx={{ color: "#93C5FD" }} fontSize="large" />, to: "/tools/retirement-calculator", disabled: false, cat: "Personal Finance" },
+    { title: "Take Home Pay", icon: <AttachMoneyIcon sx={{ color: "#F9A8D4" }} fontSize="large" />, to: "/tools/take-home-pay", disabled: false, cat: "Personal Finance" },
+    { title: "Car Loan", icon: <DirectionsCarIcon sx={{ color: "#A5F3FC" }} fontSize="large" />, to: "/tools/auto-loan-calculator", disabled: false, cat: "Personal Finance" },
+    { title: "Buy vs Lease", icon: <DirectionsCarIcon sx={{ color: "#86EFAC" }} fontSize="large" />, to: "/tools/buy-vs-lease-auto", disabled: false, cat: "Personal Finance" },
     // Remaining (coming soon) items
     { title: "Budget Planner", icon: <CalculateIcon sx={{ color: "#FDE68A" }} fontSize="large" />, disabled: true, cat: "Personal Finance" },
     { title: "Net Worth", icon: <AccountBalanceIcon sx={{ color: "#A7F3D0" }} fontSize="large" />, disabled: true, cat: "Personal Finance" },
@@ -92,7 +92,7 @@ export default function FinancialCalculators() {
 
   // === Investment Calculators ===
   const investmentCalculators = [
-    { title: "Rental Property Calculator", icon: <RealEstateAgentIcon sx={{ color: "#00C1B0" }} fontSize="large" />, to: "/tools/rental_property_calculator", disabled: false, cat: "Investment" },
+    { title: "Rental Property Calculator", icon: <RealEstateAgentIcon sx={{ color: "#00C1B0" }} fontSize="large" />, to: "/tools/rental-property-calculator", disabled: false, cat: "Investment" },
   ];
 
   // === Combine Categories ===

@@ -2,12 +2,28 @@
 import React from "react";
 import { Box, Container, Typography, Button, Stack } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import FeaturedTools from "../components/FeaturedTools";
 import ArticlesGrid from "../components/ArticlesGrid";
 
 export default function Home() {
   return (
     <Box>
+      <Helmet>
+        <title>FinWorld | Free Mortgage & Money Calculators</title>
+        <meta
+          name="description"
+          content="Use FinWorld's free calculators to plan your mortgage, estimate take-home pay, compare loan payoff strategies, and analyze rental properties."
+        />
+        <link
+          rel="canonical"
+          href={
+            typeof window !== "undefined"
+              ? `${window.location.origin}/`
+              : "https://www.finworld.live/"
+          }
+        />
+      </Helmet>
       {/* 🌅 Hero Section */}
       <Box
         sx={{

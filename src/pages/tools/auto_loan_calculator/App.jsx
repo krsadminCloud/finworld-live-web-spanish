@@ -5,7 +5,9 @@ import CalculatorSection from './components/CalculatorSection';
 import ResultsSection from './components/ResultsSection';
 import LenderOffers from './components/LenderOffers';
 import Footer from './components/Footer';
+import { Helmet } from 'react-helmet-async';
 import { calculateStandardLoan, calculateAcceleratedLoan } from './utils/loanCalculations';
+import { trackEvent } from '../../../utils/analytics';
 
 function App() {
   // Loan input state
@@ -68,6 +70,14 @@ function App() {
           ]
         }
       });
+      trackEvent('auto_loan_calculated', {
+        calculator: 'auto_loan',
+        amount: loanInputs.amount,
+        termMonths: loanInputs.term,
+        rate: loanInputs.rate,
+        extraPayment: loanInputs.extraPayment,
+        extraFrequency: loanInputs.extraPaymentFrequency,
+      });
     } catch (error) {
       console.error('Calculation error:', error);
     } finally {
@@ -95,6 +105,55 @@ function App() {
   return (
     <div className="min-h-screen bg-bg-page text-neutral-900">
       <Topbar />
+      <Helmet>
+        <title>Auto Loan Early Payoff Calculator | FinWorld</title>
+        <meta
+          name="description"
+          content="See how extra payments and different schedules change your auto loan payoff date, interest cost, and savings."
+        />
+        <link
+          rel="canonical"
+          href={
+            typeof window !== 'undefined'
+              ? `${window.location.origin}/tools/auto-loan-calculator`
+              : 'https://www.finworld.live/tools/auto-loan-calculator'
+          }
+        />
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:title"
+          content="Auto Loan Early Payoff Calculator | FinWorld"
+        />
+        <meta
+          property="og:description"
+          content="Compare standard vs accelerated auto loan payoff and visualize how much interest you can save."
+        />
+        <meta
+          property="og:url"
+          content={
+            typeof window !== 'undefined'
+              ? `${window.location.origin}/tools/auto-loan-calculator`
+              : 'https://www.finworld.live/tools/auto-loan-calculator'
+          }
+        />
+        <meta
+          property="og:image"
+          content="https://www.finworld.live/assets/finworld-preview.png"
+        />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:title"
+          content="Auto Loan Early Payoff Calculator | FinWorld"
+        />
+        <meta
+          name="twitter:description"
+          content="Model extra payments, biweekly schedules, and interest savings on your car loan."
+        />
+        <meta
+          name="twitter:image"
+          content="https://www.finworld.live/assets/finworld-preview.png"
+        />
+      </Helmet>
 
       <main className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Hero Section */}
@@ -139,6 +198,37 @@ function App() {
 
         {/* Lender Offers */}
         <LenderOffers />
+
+        <section className="mt-10 space-y-3">
+          <h2 className="text-xl font-semibold text-neutral-900">
+            How to use this auto loan payoff calculator
+          </h2>
+          <p className="text-sm text-neutral-600">
+            Enter your loan amount, term, and interest rate, then choose a payment frequency and extra payment strategy. The results panel compares your standard schedule with an accelerated plan so you can see how many months and how much interest you save.
+          </p>
+          <p className="text-sm text-neutral-600">
+            Try testing different extra payment amounts or switching between monthly and biweekly payments to find a plan that fits your budget while still paying off the loan faster.
+          </p>
+
+          <h3 className="text-lg font-semibold text-neutral-900 mt-4">
+            Related tools
+          </h3>
+          <p className="text-sm text-neutral-600">
+            Shopping for a car? Compare financing options with the{" "}
+            <a href="/tools/buy-vs-lease-auto" className="underline">
+              Buy vs Lease Calculator
+            </a>
+            , or explore broader debt strategies with the{" "}
+            <a href="/tools/extra-payment" className="underline">
+              Loan Payoff Calculator
+            </a>{" "}
+            and{" "}
+            <a href="/tools/take-home-pay" className="underline">
+              Take-Home Pay Calculator
+            </a>
+            .
+          </p>
+        </section>
 
         {/* Footer */}
         <Footer />
