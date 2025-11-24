@@ -1,9 +1,30 @@
 import * as React from 'react';
-import { Grid, Card, CardActionArea, CardContent, Typography, Box } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
+import { Box, Card, CardActionArea, CardContent, Typography } from '@mui/material';
+import { articles } from '../data/articles';
 
-const ArticleCard = ({ title, excerpt, image }) => (
-  <Card sx={{ borderRadius: 3, overflow: 'hidden', '&:hover': { transform: 'translateY(-2px)' } }}>
-    <CardActionArea>
+const ArticleCard = ({ title, excerpt, image, slug }) => (
+  <Card
+    sx={{
+      borderRadius: 3,
+      overflow: 'hidden',
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      boxShadow: '0 12px 28px rgba(15,23,42,0.12)',
+      '&:hover': { transform: 'translateY(-3px)' }
+    }}
+  >
+    <CardActionArea
+      component={RouterLink}
+      to={`/articles/${slug}`}
+      sx={{
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'stretch'
+      }}
+    >
       <Box sx={{
         position: 'relative',
         pt: '56.25%',
@@ -11,45 +32,44 @@ const ArticleCard = ({ title, excerpt, image }) => (
         backgroundSize: 'cover',
         backgroundPosition: 'center'
       }} />
-      <CardContent>
-        <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>{title}</Typography>
-        <Typography variant="body2" color="text.secondary">{excerpt}</Typography>
+      <CardContent
+        sx={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 0.9,
+          px: 2.6,
+          pb: 2.6,
+          pt: 2.2
+        }}
+      >
+        <Typography variant="subtitle1" sx={{ fontWeight: 800, letterSpacing: '-0.01em' }}>{title}</Typography>
+        <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.5 }}>{excerpt}</Typography>
       </CardContent>
     </CardActionArea>
   </Card>
 );
 
 export default function ArticlesGrid() {
-  const articles = [
-    {
-      title: '5 Tips for Building Credit',
-      excerpt: 'Improve your score and unlock better financial products.',
-      image: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=1200&auto=format&fit=crop'
-    },
-    {
-      title: 'Understanding Investment Risks',
-      excerpt: 'A practical framework to assess and manage risks.',
-      image: 'https://images.unsplash.com/photo-1581091870622-7b5ae7cdf3d7?q=80&w=1200&auto=format&fit=crop'
-    },
-    {
-      title: 'First-Time Homebuyer Guide',
-      excerpt: 'Everything you need to know before you buy.',
-      image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1200&auto=format&fit=crop'
-    },
-    {
-      title: 'Negotiating Your Auto Loan',
-      excerpt: 'Strategies to secure the best possible terms.',
-      image: 'https://images.unsplash.com/photo-1550552448-9f78575c3b70?q=80&w=1200&auto=format&fit=crop'
-    }
-  ];
-
   return (
-    <Grid container spacing={3}>
+    <Box
+      sx={{
+        display: 'grid',
+        gridTemplateColumns: {
+          xs: '1fr',
+          sm: 'repeat(2, minmax(0, 1fr))',
+          md: 'repeat(3, minmax(0, 1fr))',
+          lg: 'repeat(4, minmax(0, 1fr))'
+        },
+        gap: { xs: 2.5, sm: 3 },
+        alignItems: 'stretch'
+      }}
+    >
       {articles.map((a, i) => (
-        <Grid key={i} item xs={12} sm={6} lg={3}>
+        <Box key={i} sx={{ display: 'flex' }}>
           <ArticleCard {...a} />
-        </Grid>
+        </Box>
       ))}
-    </Grid>
+    </Box>
   );
 }

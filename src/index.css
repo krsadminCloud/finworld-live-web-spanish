@@ -195,7 +195,17 @@
 
 @layer base {
   html { font-family:'Inter',system-ui,sans-serif; }
-  body { background-color:theme('colors.bg-page'); color:theme('colors.neutral.900'); }
+  body {
+    background-color:theme('colors.bg-page');
+    color:theme('colors.neutral.900');
+    min-height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  #root {
+    min-height: 100vh;
+    overflow: visible;
+  }
 }
 
 @layer components {

@@ -184,3 +184,10 @@ Use it to:
 
 ---
 **Version 1.0** — Initial release (Codex-compatible)
+
+
+Note:
+
+Always use MCP to take a look at the page as you make changes to make sure they are aligned with what you are trying to do .
+
+Always use MCP to do every task to make sure you are visually checking as you make changes
