@@ -18,6 +18,7 @@ import {
   Tooltip,
   Badge,
   IconButton as MuiIconButton,
+  Collapse,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
@@ -48,6 +49,7 @@ import HealthAndSafetyIcon from "@mui/icons-material/HealthAndSafety";
 import SchoolIcon from "@mui/icons-material/School";
 import HomeIcon from "@mui/icons-material/Home";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 export default function FinancialCalculators() {
   const theme = useTheme();
@@ -57,6 +59,7 @@ export default function FinancialCalculators() {
   const [query, setQuery] = React.useState("");
   const [debouncedQuery, setDebouncedQuery] = React.useState("");
   const [category, setCategory] = React.useState("All");
+  const [showPlanned, setShowPlanned] = React.useState(false);
   const searchRef = React.useRef(null);
 
   const calculators = [
@@ -752,96 +755,114 @@ export default function FinancialCalculators() {
           </Paper>
         )}
 
-        <Stack spacing={2.5} sx={{ mt: 6 }}>
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <Typography variant="h6" fontWeight={800}>
-              Planned calculators
-            </Typography>
-            <Chip label="Roadmap" color="default" size="small" />
+        <Stack spacing={1.5} sx={{ mt: 6 }}>
+          <Stack direction="row" alignItems="center" justifyContent="space-between">
+            <Stack direction="row" spacing={1} alignItems="center">
+              <Typography variant="h6" fontWeight={800}>
+                Planned calculators
+              </Typography>
+              <Chip label={`${plannedCalculators.length} planned`} color="default" size="small" />
+            </Stack>
+            <Button
+              size="small"
+              variant="text"
+              endIcon={
+                <ExpandMoreIcon
+                  sx={{ transform: showPlanned ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s ease" }}
+                />
+              }
+              onClick={() => setShowPlanned((p) => !p)}
+            >
+              {showPlanned ? "Hide planned" : "Show planned"}
+            </Button>
           </Stack>
-          <Stack spacing={2.5}>
-            {Object.entries(plannedByCategory).map(([cat, items]) => (
-              <Box key={cat}>
-                <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 800 }}>
-                  {cat}
-                </Typography>
-                <Box
-                  sx={{
-                    display: "grid",
-                    gridTemplateColumns: { xs: "repeat(auto-fit,minmax(220px,1fr))", sm: "repeat(auto-fit,minmax(240px,1fr))" },
-                    gap: { xs: 1.25, md: 1.5 },
-                  }}
-                >
-                  {items.map((item) => (
-                    <Paper
-                      key={item.title}
-                      elevation={0}
-                      sx={{
-                        height: "100%",
-                        p: 2.25,
-                        borderRadius: "14px !important",
-                        border: `1px dashed ${theme.palette.divider}`,
-                        opacity: 0.97,
-                        background:
-                          theme.palette.mode === "dark"
-                            ? "linear-gradient(135deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))"
-                            : "linear-gradient(135deg,#ffffff,#f8fafc)",
-                        boxShadow:
-                          theme.palette.mode === "dark"
-                            ? "0 10px 24px rgba(0,0,0,0.26)"
-                            : "0 12px 26px rgba(15,23,42,0.08)",
-                      }}
-                    >
-                      <Stack spacing={1.25} sx={{ height: "100%" }}>
-                        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                          {item.icon}
-                          <Tooltip title="Coming soon">
-                            <Chip label="Coming soon" size="small" color="default" />
-                          </Tooltip>
-                        </Box>
-                        <Typography fontWeight={800}>{item.title}</Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          {item.desc}
-                        </Typography>
-                        {!!item.tags?.length && (
-                          <Stack direction="row" spacing={1} flexWrap="wrap">
-                            {item.tags.slice(0, 3).map((tag) => (
-                              <Stack direction="row" spacing={0.5} alignItems="center" key={tag}>
-                                <Box
-                                  sx={{
-                                    width: 6,
-                                    height: 6,
-                                    borderRadius: "50%",
-                                    backgroundColor: item.icon?.props?.sx?.color || "#94a3b8",
-                                  }}
-                                />
-                                <Typography variant="caption" color="text.secondary">
-                                  {tag}
-                                </Typography>
-                              </Stack>
-                            ))}
-                          </Stack>
-                        )}
-                        <Button
-                          variant="outlined"
-                          size="small"
-                          onClick={() =>
-                            window.open(
-                              "mailto:hello@finworld.live?subject=Notify%20me&body=Let%20me%20know%20when%20this%20calculator%20ships%3A%20" +
-                                encodeURIComponent(item.title)
-                            )
-                          }
-                          sx={{ alignSelf: "flex-start", borderRadius: 999, mt: "auto" }}
-                        >
-                          Notify me
-                        </Button>
-                      </Stack>
-                    </Paper>
-                  ))}
+          <Collapse in={showPlanned}>
+            <Stack spacing={2.5} sx={{ pt: 1 }}>
+              {Object.entries(plannedByCategory).map(([cat, items]) => (
+                <Box key={cat}>
+                  <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 800 }}>
+                    {cat}
+                  </Typography>
+                  <Box
+                    sx={{
+                      display: "grid",
+                      gridTemplateColumns: { xs: "repeat(auto-fit,minmax(220px,1fr))", sm: "repeat(auto-fit,minmax(240px,1fr))" },
+                      gap: { xs: 1.25, md: 1.5 },
+                    }}
+                  >
+                    {items.map((item) => (
+                      <Paper
+                        key={item.title}
+                        elevation={0}
+                        sx={{
+                          height: "100%",
+                          p: 2.25,
+                          borderRadius: "14px !important",
+                          border: `1px dashed ${theme.palette.divider}`,
+                          opacity: 0.92,
+                          color: theme.palette.text.secondary,
+                          background:
+                            theme.palette.mode === "dark"
+                              ? "linear-gradient(135deg,rgba(148,163,184,0.08),rgba(148,163,184,0.04))"
+                              : "linear-gradient(135deg,#f8fafc,#f4f4f5)",
+                          filter: "grayscale(0.75)",
+                          boxShadow:
+                            theme.palette.mode === "dark"
+                              ? "0 10px 24px rgba(0,0,0,0.26)"
+                              : "0 12px 26px rgba(15,23,42,0.08)",
+                        }}
+                      >
+                        <Stack spacing={1.25} sx={{ height: "100%" }}>
+                          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                            {item.icon}
+                            <Tooltip title="Coming soon">
+                              <Chip label="Coming soon" size="small" color="default" />
+                            </Tooltip>
+                          </Box>
+                          <Typography fontWeight={800}>{item.title}</Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            {item.desc}
+                          </Typography>
+                          {!!item.tags?.length && (
+                            <Stack direction="row" spacing={1} flexWrap="wrap">
+                              {item.tags.slice(0, 3).map((tag) => (
+                                <Stack direction="row" spacing={0.5} alignItems="center" key={tag}>
+                                  <Box
+                                    sx={{
+                                      width: 6,
+                                      height: 6,
+                                      borderRadius: "50%",
+                                      backgroundColor: item.icon?.props?.sx?.color || "#94a3b8",
+                                    }}
+                                  />
+                                  <Typography variant="caption" color="text.secondary">
+                                    {tag}
+                                  </Typography>
+                                </Stack>
+                              ))}
+                            </Stack>
+                          )}
+                          <Button
+                            variant="outlined"
+                            size="small"
+                            onClick={() =>
+                              window.open(
+                                "mailto:hello@finworld.live?subject=Notify%20me&body=Let%20me%20know%20when%20this%20calculator%20ships%3A%20" +
+                                  encodeURIComponent(item.title)
+                              )
+                            }
+                            sx={{ alignSelf: "flex-start", borderRadius: 999, mt: "auto" }}
+                          >
+                            Notify me
+                          </Button>
+                        </Stack>
+                      </Paper>
+                    ))}
+                  </Box>
                 </Box>
-              </Box>
-            ))}
-          </Stack>
+              ))}
+            </Stack>
+          </Collapse>
         </Stack>
 
         <Box
