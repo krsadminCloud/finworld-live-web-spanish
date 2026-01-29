@@ -200,7 +200,7 @@ export default function MortgageCalculator() {
             gap: { xs: 3, sm: 4, md: 6 },
           }}
         >
-          <PaymentBreakdown results={results} />
+          <PaymentBreakdown results={results} inputs={inputs} />
           <AdvancedSection />
           <RateCards />
           <LenderPartners />

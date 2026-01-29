@@ -16,13 +16,16 @@ import {
   TableRow,
   Grid, // Import Grid component
 } from "@mui/material";
+import PaidIcon from "@mui/icons-material/Paid";
+import SavingsIcon from "@mui/icons-material/Savings";
+import PercentIcon from "@mui/icons-material/Percent";
 import { Doughnut, Line } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, Filler } from "chart.js";
 import { formatCurrency, formatCurrencyDetailed, calculatePayoffDate, prepareLoanEstimateChartData } from "../utils/mortgageCalculations";
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, Filler);
 
-export default function PaymentBreakdown({ results }) {
+export default function PaymentBreakdown({ results, inputs }) {
   const [activeTab, setActiveTab] = React.useState(0);
   const [loanEstimateSubTab, setLoanEstimateSubTab] = React.useState(0);
 
@@ -81,6 +84,19 @@ chartColors.push("#8b5cf6");
       },
     },
   };
+
+  const homePrice = parseFloat((inputs?.homePrice || "").replace(/,/g, "")) || 0;
+  const downPaymentPercent =
+    inputs?.downPaymentMode === "percent"
+      ? parseFloat(inputs?.downPaymentPercent || "") || 0
+      : homePrice > 0
+      ? ((parseFloat((inputs?.downPayment || "").replace(/,/g, "")) || 0) / homePrice) * 100
+      : 0;
+  const downPaymentAmount =
+    inputs?.downPaymentMode === "percent"
+      ? (homePrice * downPaymentPercent) / 100
+      : parseFloat((inputs?.downPayment || "").replace(/,/g, "")) || 0;
+  const rate = parseFloat(inputs?.interestRate || "") || 0;
 
   const Legend = () => (
     <Box sx={{ mt: 3, minWidth: '280px' }}>
@@ -178,6 +194,144 @@ chartColors.push("#8b5cf6");
 
   return (
     <Paper sx={{ p: 3, borderRadius: 2 }}>
+      <Box sx={{ mb: 3 }}>
+        <Typography variant="h5" sx={{ fontWeight: 900, letterSpacing: "-0.02em", mb: 0.5 }}>
+          Mortgage Purchase Summary
+        </Typography>
+        <Typography variant="body2" sx={{ color: "text.secondary" }}>
+          Review your estimated loan inputs before diving into the payment breakdown.
+        </Typography>
+      </Box>
+
+      <Grid container spacing={2} sx={{ mb: 3 }}>
+        <Grid item xs={12} sm={4}>
+          <Paper
+            elevation={0}
+            sx={{
+              p: 2.5,
+              borderRadius: 2,
+              border: "1px solid #e7edf3",
+              backgroundColor: "#f8fafc",
+              boxShadow: "0 10px 24px rgba(15,23,42,0.06)",
+              height: "100%",
+            }}
+          >
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
+              <Box
+                sx={{
+                  width: 40,
+                  height: 40,
+              borderRadius: 1,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backgroundColor: "rgba(59,130,246,0.12)",
+                  color: "#1d4ed8",
+                }}
+              >
+                <PaidIcon fontSize="small" />
+              </Box>
+              <Typography variant="subtitle2" sx={{ fontWeight: 700, color: "text.secondary" }}>
+                Full Purchase Price
+              </Typography>
+            </Box>
+            <Typography variant="h5" sx={{ fontWeight: 900 }}>
+              {formatCurrency(homePrice)}
+            </Typography>
+            <Typography variant="caption" sx={{ color: "text.secondary" }}>
+              Entered home price for this scenario
+            </Typography>
+          </Paper>
+        </Grid>
+
+        <Grid item xs={12} sm={4}>
+          <Paper
+            elevation={0}
+            sx={{
+              p: 2.5,
+              borderRadius: 2,
+              border: "1px solid #e7edf3",
+              backgroundColor: "#f8fafc",
+              boxShadow: "0 10px 24px rgba(15,23,42,0.06)",
+              height: "100%",
+            }}
+          >
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
+              <Box
+                sx={{
+                  width: 40,
+                  height: 40,
+              borderRadius: 1,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backgroundColor: "rgba(16,185,129,0.14)",
+                  color: "#0f766e",
+                }}
+              >
+                <SavingsIcon fontSize="small" />
+              </Box>
+              <Typography variant="subtitle2" sx={{ fontWeight: 700, color: "text.secondary" }}>
+                Down Payment
+              </Typography>
+            </Box>
+            <Typography variant="h5" sx={{ fontWeight: 900, display: "flex", alignItems: "baseline", gap: 1 }}>
+              {formatCurrency(downPaymentAmount)}
+              {downPaymentPercent ? (
+                <Typography component="span" variant="subtitle2" sx={{ color: "text.secondary" }}>
+                  ({downPaymentPercent.toFixed(0)}%)
+                </Typography>
+              ) : null}
+            </Typography>
+            <Typography variant="caption" sx={{ color: "text.secondary" }}>
+              <Box component="span" sx={{ color: "#059669", fontWeight: 600 }}>
+                Avoid PMI insurance by paying 20%
+              </Box>
+            </Typography>
+          </Paper>
+        </Grid>
+
+        <Grid item xs={12} sm={4}>
+          <Paper
+            elevation={0}
+            sx={{
+              p: 2.5,
+              borderRadius: 2,
+              border: "1px solid #e7edf3",
+              backgroundColor: "#f8fafc",
+              boxShadow: "0 10px 24px rgba(15,23,42,0.06)",
+              height: "100%",
+            }}
+          >
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
+              <Box
+                sx={{
+                  width: 40,
+                  height: 40,
+              borderRadius: 1,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backgroundColor: "rgba(124,58,237,0.12)",
+                  color: "#6d28d9",
+                }}
+              >
+                <PercentIcon fontSize="small" />
+              </Box>
+              <Typography variant="subtitle2" sx={{ fontWeight: 700, color: "text.secondary" }}>
+                Interest Rate
+              </Typography>
+            </Box>
+            <Typography variant="h5" sx={{ fontWeight: 900 }}>
+              {rate ? `${rate}%` : "--"}
+            </Typography>
+            <Typography variant="caption" sx={{ color: "text.secondary" }}>
+              Fixed rate entered for this loan term
+            </Typography>
+          </Paper>
+        </Grid>
+      </Grid>
+
       <Tabs
         value={activeTab}
         onChange={(e, newValue) => setActiveTab(newValue)}
