@@ -58,8 +58,17 @@ export default function Footer() {
               Learn & Guides
             </Typography>
             <Stack spacing={0.5}>
-              <Link href="/guides" underline="hover" color="text.secondary">
-                Guides (coming soon)
+              <Link href="/articles" underline="hover" color="text.secondary">
+                Guides & Articles
+              </Link>
+              <Link href="/articles/first-time-homebuyer-guide" underline="hover" color="text.secondary">
+                First time home buyers guide
+              </Link>
+              <Link href="/articles/building-credit-tips" underline="hover" color="text.secondary">
+                Building Credit
+              </Link>
+              <Link href="/articles/negotiating-auto-loan" underline="hover" color="text.secondary">
+                Auto Loan Negotiation
               </Link>
               <Link href="/comparisons" underline="hover" color="text.secondary">
                 Comparisons
@@ -101,4 +110,3 @@ export default function Footer() {
     </Box>
   );
 }
-

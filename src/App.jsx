@@ -8,6 +8,7 @@ import About from "./pages/About";
 import Guides from "./pages/Guides";
 import Comparisons from "./pages/Comparisons";
 import ArticlePage from "./pages/ArticlePage";
+import ArticlesIndex from "./pages/ArticlesIndex";
 
 // ?? Lazy-load calculators
 const ExtraPayment = lazy(() => import("./pages/tools/extra_payment"));
@@ -74,6 +75,7 @@ export default function App() {
             <Route path="/about" element={<About />} />
             <Route path="/guides" element={<Guides />} />
             <Route path="/comparisons" element={<Comparisons />} />
+            <Route path="/articles" element={<ArticlesIndex />} />
             <Route path="/articles/:slug" element={<ArticlePage />} />
 
             {/* ?? Individual Tools - canonical kebab-case routes */}

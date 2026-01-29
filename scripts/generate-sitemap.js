@@ -4,8 +4,8 @@ const { pathToFileURL } = require('url');
 
 const ROOT = process.cwd();
 const toolsDir = path.join(ROOT, 'src', 'pages', 'tools');
-const articlesFile = path.join(ROOT, 'src', 'data', 'articles.js');
 const publicDir = path.join(ROOT, 'public');
+const articlesJson = path.join(__dirname, 'articles.sitemap.json');
 
 function toSlug(folder) {
   return folder.replace(/_/g, '-').replace(/^Mortgage/, 'mortgage');
@@ -14,6 +14,7 @@ function toSlug(folder) {
 async function main() {
   const urls = [
     { loc: 'https://www.finworld.live/', priority: 0.8, changefreq: 'weekly' },
+    { loc: 'https://www.finworld.live/articles', priority: 0.7, changefreq: 'weekly' },
   ];
 
   // Tools
@@ -25,24 +26,25 @@ async function main() {
     }
   }
 
-  // Articles
-  if (fs.existsSync(articlesFile)) {
+  // Articles from JSON (CommonJS-safe)
+  if (fs.existsSync(articlesJson)) {
     try {
-      const { articles } = await import(pathToFileURL(articlesFile).href);
-      if (Array.isArray(articles)) {
-        for (const article of articles) {
-          if (article.slug) {
-            urls.push({
-              loc: `https://www.finworld.live/articles/${article.slug}`,
-              priority: 0.8,
-              changefreq: 'weekly',
-            });
-          }
+      const parsed = JSON.parse(fs.readFileSync(articlesJson, 'utf8'));
+      const slugs = Array.isArray(parsed.articles) ? parsed.articles : [];
+      slugs.forEach((slug) => {
+        if (typeof slug === 'string' && slug.trim()) {
+          urls.push({
+            loc: `https://www.finworld.live/articles/${slug.trim()}`,
+            priority: 0.8,
+            changefreq: 'weekly',
+          });
         }
-      }
+      });
     } catch (err) {
-      console.error('⚠️ Unable to load articles for sitemap:', err.message);
+      console.error('⚠️ Unable to load articles.sitemap.json for sitemap:', err.message);
     }
+  } else {
+    console.warn('⚠️ articles.sitemap.json not found; article URLs will be missing from sitemap.');
   }
 
   const xml = [

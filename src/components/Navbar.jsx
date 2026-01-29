@@ -74,7 +74,7 @@ export default function Navbar() {
             <MenuItem component={RouterLink} to="/tools/take-home-pay" onClick={handleCloseTools}>Take-Home Pay Calculator</MenuItem>
           </Menu>
           <Button sx={{ fontWeight: 600 }} component={RouterLink} to="/comparisons">Comparisons</Button>
-          <Button sx={{ fontWeight: 600 }} component={RouterLink} to="/guides">Guides</Button>
+          <Button sx={{ fontWeight: 600 }} component={RouterLink} to="/articles">Guides</Button>
           <Button sx={{ fontWeight: 600 }} component={RouterLink} to="/about">About</Button>
         </Box>
 

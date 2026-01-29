@@ -130,7 +130,7 @@ export default function ArticlePage() {
                 "@type": "ListItem",
                 position: 2,
                 name: "Articles",
-                item: "https://www.finworld.live/guides",
+                item: "https://www.finworld.live/articles",
               },
               {
                 "@type": "ListItem",
@@ -469,6 +469,97 @@ export default function ArticlePage() {
                 ))}
               </Stack>
             </Grid>
+
+            {article.relatedSlugs && article.relatedSlugs.length > 0 && (
+              <Grid item xs={12}>
+                <Divider sx={{ mt: 4, mb: 3, opacity: 0.35 }} />
+                <Stack spacing={2}>
+                  <Typography
+                    variant="h5"
+                    sx={{
+                      fontWeight: 800,
+                      letterSpacing: "-0.012em",
+                    }}
+                  >
+                    Related Guides
+                  </Typography>
+                  <Stack
+                    direction={{ xs: "column", sm: "row" }}
+                    spacing={{ xs: 2, sm: 2.5 }}
+                    useFlexGap
+                    flexWrap="wrap"
+                  >
+                    {article.relatedSlugs
+                      .map((rSlug) => getArticleBySlug(rSlug))
+                      .filter(Boolean)
+                      .map((rel) => (
+                        <Paper
+                          key={rel.slug}
+                          elevation={0}
+                          sx={{
+                            flex: { xs: "1 1 100%", sm: "1 1 280px" },
+                            p: 2.4,
+                            borderRadius: 3,
+                            border: "1px solid",
+                            borderColor: "divider",
+                            background:
+                              "linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.98))",
+                            boxShadow: "0 14px 32px rgba(15,23,42,0.08)",
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: 1,
+                          }}
+                        >
+                          <Box>
+                            <Typography
+                              component={RouterLink}
+                              to={`/articles/${rel.slug}`}
+                              variant="subtitle1"
+                              sx={{
+                                fontWeight: 800,
+                                letterSpacing: "-0.01em",
+                                textDecoration: "none",
+                                color: "text.primary",
+                                "&:hover": { color: "primary.main" },
+                              }}
+                            >
+                              {rel.title}
+                            </Typography>
+                            <Typography
+                              variant="body2"
+                              sx={{ color: "text.secondary", mt: 0.5, lineHeight: 1.55 }}
+                            >
+                              {rel.excerpt}
+                            </Typography>
+                          </Box>
+                          <Stack direction="row" spacing={1.5} sx={{ mt: "auto" }} alignItems="center">
+                            {rel.category && (
+                              <Chip
+                                label={rel.category}
+                                size="small"
+                                sx={{
+                                  borderRadius: "999px",
+                                  fontWeight: 700,
+                                  height: 26,
+                                  backgroundColor: "rgba(20,184,166,0.12)",
+                                  color: "text.primary",
+                                  border: "1px solid",
+                                  borderColor: "divider",
+                                }}
+                              />
+                            )}
+                            {rel.readTime && (
+                              <Typography variant="caption" sx={{ color: "text.secondary" }}>
+                                {rel.readTime}
+                              </Typography>
+                            )}
+                          </Stack>
+                        </Paper>
+                      ))}
+                  </Stack>
+                </Stack>
+              </Grid>
+            )}
           </Grid>
         </Paper>
       </Container>
