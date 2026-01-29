@@ -27,33 +27,37 @@ const tools = [
     status: "Live",
   },
   {
-    title: "Insurance Quote",
+    title: "Insurance Quote (coming Soon)",
     description: "Get a personalized insurance quote.",
-    to: "/tools/take-home-pay",
+    to: null,
     image: takeHomePayImg,
     accent: "#38bdf8",
-    status: "Live",
+    status: "coming Soon",
+    disabled: true,
   },
   {
     title: "Mortgage Rates (Soon)",
     description: "Compare lender rates and fees side by side.",
-    to: "/comparisons",
+    to: null,
     image: mortgageRatesImg,
     accent: "#fbbf24",
     status: "Planned",
+    disabled: true,
   },
   {
     title: "Credit Card Finder (Soon)",
     description: "Match cards to your spending profile.",
-    to: "/guides",
+    to: null,
     image: creditCardImg,
     accent: "#a78bfa",
     status: "Planned",
+    disabled: true,
   },
 ];
 
-const ToolCard = ({ title, description, to, image, accent, status }) => {
+const ToolCard = ({ title, description, to, image, accent, status, disabled }) => {
   const theme = useTheme();
+  const isDisabled = disabled || (status || "").toLowerCase().includes("coming");
   return (
     <Card
       sx={{
@@ -89,15 +93,19 @@ const ToolCard = ({ title, description, to, image, accent, status }) => {
       }}
     >
       <CardActionArea
-        component={RouterLink}
-        to={to}
+        component={!isDisabled && to ? RouterLink : "div"}
+        to={!isDisabled ? to : undefined}
         aria-label={title}
+        disabled={isDisabled}
+        tabIndex={isDisabled ? -1 : 0}
         sx={{
           height: "100%",
           flex: 1,
           display: "flex",
           flexDirection: "column",
           alignItems: "stretch",
+          cursor: isDisabled ? "not-allowed" : "pointer",
+          opacity: isDisabled ? 0.7 : 1,
         }}
       >
         <Box sx={{ position: "relative", width: "100%", pt: "62%" }}>

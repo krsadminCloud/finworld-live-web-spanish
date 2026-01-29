@@ -119,6 +119,50 @@ export default function TopBar({ onMenuClick }) {
           useFlexGap
           sx={{ rowGap: { xs: 1, md: 0 } }}
         >
+          <Button
+            size="small"
+            variant="outlined"
+            component={RouterLink}
+            to="/"
+            sx={{
+              borderRadius: 50,
+              fontWeight: 700,
+              px: { xs: 1.6, md: 2.4 },
+              py: { xs: 0.5, md: 0.9 },
+              whiteSpace: "nowrap",
+              borderColor: "#14B8A6",
+              color: "text.primary",
+              bgcolor: theme.palette.mode === "dark" ? "rgba(20,184,166,0.12)" : "rgba(20,184,166,0.08)",
+              "&:hover": {
+                borderColor: "#0f948a",
+                bgcolor: theme.palette.mode === "dark" ? "rgba(20,184,166,0.18)" : "rgba(20,184,166,0.12)",
+              },
+            }}
+          >
+            Home
+          </Button>
+          <Button
+            size="small"
+            variant="outlined"
+            component={RouterLink}
+            to="/tools"
+            sx={{
+              borderRadius: 50,
+              fontWeight: 700,
+              px: { xs: 1.6, md: 2.4 },
+              py: { xs: 0.5, md: 0.9 },
+              whiteSpace: "nowrap",
+              borderColor: "#38bdf8",
+              color: "text.primary",
+              bgcolor: theme.palette.mode === "dark" ? "rgba(56,189,248,0.12)" : "rgba(56,189,248,0.08)",
+              "&:hover": {
+                borderColor: "#0ea5e9",
+                bgcolor: theme.palette.mode === "dark" ? "rgba(56,189,248,0.18)" : "rgba(56,189,248,0.12)",
+              },
+            }}
+          >
+            Tools
+          </Button>
           <IconButton
             onClick={colorMode.toggleColorMode}
             color="inherit"
