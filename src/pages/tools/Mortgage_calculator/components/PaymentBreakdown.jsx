@@ -16,6 +16,7 @@ import {
   TableRow,
   Grid, // Import Grid component
 } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import PaidIcon from "@mui/icons-material/Paid";
 import SavingsIcon from "@mui/icons-material/Savings";
 import PercentIcon from "@mui/icons-material/Percent";
@@ -26,6 +27,14 @@ import { formatCurrency, formatCurrencyDetailed, calculatePayoffDate, prepareLoa
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, Filler);
 
 export default function PaymentBreakdown({ results, inputs }) {
+  const theme = useTheme();
+  const isDark = theme.palette.mode === "dark";
+  const cardBg = isDark ? "rgba(255,255,255,0.06)" : "#f8fafc";
+  const cardBorder = isDark ? "rgba(255,255,255,0.12)" : "#e7edf3";
+  const iconBg = (color) => (isDark ? `${color}22` : `${color}1f`);
+  const textMuted = isDark ? "rgba(255,255,255,0.75)" : "text.secondary";
+  const accentGreen = isDark ? "#22c55e" : "#059669";
+
   const [activeTab, setActiveTab] = React.useState(0);
   const [loanEstimateSubTab, setLoanEstimateSubTab] = React.useState(0);
 
@@ -198,7 +207,7 @@ chartColors.push("#8b5cf6");
         <Typography variant="h5" sx={{ fontWeight: 900, letterSpacing: "-0.02em", mb: 0.5 }}>
           Mortgage Purchase Summary
         </Typography>
-        <Typography variant="body2" sx={{ color: "text.secondary" }}>
+        <Typography variant="body2" sx={{ color: textMuted }}>
           Review your estimated loan inputs before diving into the payment breakdown.
         </Typography>
       </Box>
@@ -210,9 +219,9 @@ chartColors.push("#8b5cf6");
             sx={{
               p: 2.5,
               borderRadius: 2,
-              border: "1px solid #e7edf3",
-              backgroundColor: "#f8fafc",
-              boxShadow: "0 10px 24px rgba(15,23,42,0.06)",
+              border: `1px solid ${cardBorder}`,
+              backgroundColor: cardBg,
+              boxShadow: isDark ? "0 10px 24px rgba(0,0,0,0.35)" : "0 10px 24px rgba(15,23,42,0.06)",
               height: "100%",
             }}
           >
@@ -221,24 +230,24 @@ chartColors.push("#8b5cf6");
                 sx={{
                   width: 40,
                   height: 40,
-              borderRadius: 1,
+                  borderRadius: 1,
                   display: "inline-flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  backgroundColor: "rgba(59,130,246,0.12)",
+                  backgroundColor: iconBg("#3b82f6"),
                   color: "#1d4ed8",
                 }}
               >
                 <PaidIcon fontSize="small" />
               </Box>
-              <Typography variant="subtitle2" sx={{ fontWeight: 700, color: "text.secondary" }}>
+              <Typography variant="subtitle2" sx={{ fontWeight: 700, color: isDark ? "#e2e8f0" : "text.secondary" }}>
                 Full Purchase Price
               </Typography>
             </Box>
             <Typography variant="h5" sx={{ fontWeight: 900 }}>
               {formatCurrency(homePrice)}
             </Typography>
-            <Typography variant="caption" sx={{ color: "text.secondary" }}>
+            <Typography variant="caption" sx={{ color: textMuted }}>
               Entered home price for this scenario
             </Typography>
           </Paper>
@@ -250,9 +259,9 @@ chartColors.push("#8b5cf6");
             sx={{
               p: 2.5,
               borderRadius: 2,
-              border: "1px solid #e7edf3",
-              backgroundColor: "#f8fafc",
-              boxShadow: "0 10px 24px rgba(15,23,42,0.06)",
+              border: `1px solid ${cardBorder}`,
+              backgroundColor: cardBg,
+              boxShadow: isDark ? "0 10px 24px rgba(0,0,0,0.35)" : "0 10px 24px rgba(15,23,42,0.06)",
               height: "100%",
             }}
           >
@@ -261,17 +270,17 @@ chartColors.push("#8b5cf6");
                 sx={{
                   width: 40,
                   height: 40,
-              borderRadius: 1,
+                  borderRadius: 1,
                   display: "inline-flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  backgroundColor: "rgba(16,185,129,0.14)",
+                  backgroundColor: iconBg("#10b981"),
                   color: "#0f766e",
                 }}
               >
                 <SavingsIcon fontSize="small" />
               </Box>
-              <Typography variant="subtitle2" sx={{ fontWeight: 700, color: "text.secondary" }}>
+              <Typography variant="subtitle2" sx={{ fontWeight: 700, color: isDark ? "#e2e8f0" : "text.secondary" }}>
                 Down Payment
               </Typography>
             </Box>
@@ -283,8 +292,8 @@ chartColors.push("#8b5cf6");
                 </Typography>
               ) : null}
             </Typography>
-            <Typography variant="caption" sx={{ color: "text.secondary" }}>
-              <Box component="span" sx={{ color: "#059669", fontWeight: 600 }}>
+            <Typography variant="caption" sx={{ color: textMuted }}>
+              <Box component="span" sx={{ color: accentGreen, fontWeight: 600 }}>
                 Avoid PMI insurance by paying 20%
               </Box>
             </Typography>
@@ -297,9 +306,9 @@ chartColors.push("#8b5cf6");
             sx={{
               p: 2.5,
               borderRadius: 2,
-              border: "1px solid #e7edf3",
-              backgroundColor: "#f8fafc",
-              boxShadow: "0 10px 24px rgba(15,23,42,0.06)",
+              border: `1px solid ${cardBorder}`,
+              backgroundColor: cardBg,
+              boxShadow: isDark ? "0 10px 24px rgba(0,0,0,0.35)" : "0 10px 24px rgba(15,23,42,0.06)",
               height: "100%",
             }}
           >
@@ -308,24 +317,24 @@ chartColors.push("#8b5cf6");
                 sx={{
                   width: 40,
                   height: 40,
-              borderRadius: 1,
+                  borderRadius: 1,
                   display: "inline-flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  backgroundColor: "rgba(124,58,237,0.12)",
+                  backgroundColor: iconBg("#7c3aed"),
                   color: "#6d28d9",
                 }}
               >
                 <PercentIcon fontSize="small" />
               </Box>
-              <Typography variant="subtitle2" sx={{ fontWeight: 700, color: "text.secondary" }}>
+              <Typography variant="subtitle2" sx={{ fontWeight: 700, color: isDark ? "#e2e8f0" : "text.secondary" }}>
                 Interest Rate
               </Typography>
             </Box>
             <Typography variant="h5" sx={{ fontWeight: 900 }}>
               {rate ? `${rate}%` : "--"}
             </Typography>
-            <Typography variant="caption" sx={{ color: "text.secondary" }}>
+            <Typography variant="caption" sx={{ color: textMuted }}>
               Fixed rate entered for this loan term
             </Typography>
           </Paper>
@@ -382,7 +391,7 @@ chartColors.push("#8b5cf6");
                 textAlign: "center",
               }}
             >
-              <Typography variant="body2" sx={{ color: "text.secondary" }}>
+              <Typography variant="body2" sx={{ color: textMuted }}>
                 Monthly Payment
               </Typography>
               <Typography variant="h4" sx={{ fontWeight: 700 }}>
