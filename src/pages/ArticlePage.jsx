@@ -12,6 +12,7 @@ import {
   Paper,
   Divider,
   Grid,
+  Chip as MuiChip,
 } from "@mui/material";
 import { Helmet } from "react-helmet-async";
 import { getArticleBySlug } from "../data/articles";
@@ -65,19 +66,81 @@ export default function ArticlePage() {
     { title: article.title, paragraphs: article.body || [] },
   ];
 
+  const slugify = (str = "") =>
+    str
+      .toLowerCase()
+      .replace(/[^\w\s-]/g, "")
+      .trim()
+      .replace(/\s+/g, "-");
+
+  const canonical = `https://www.finworld.live/articles/${article.slug}`;
+
+  const sectionAnchors = sections.map((section, idx) => {
+    const base = section.title ? slugify(section.title) : `section-${idx}`;
+    return base || `section-${idx}`;
+  });
+
+  const recommendedTools = [
+    { label: "Home Affordability Calculator", to: "/tools/home-affordability", color: "#22c55e" },
+    { label: "Mortgage Calculator", to: "/tools/mortgage-calculator", color: "#0ea5e9" },
+    { label: "Extra Payment Calculator", to: "/tools/extra-payment", color: "#f97316" },
+  ];
+
   return (
     <Box sx={{ bgcolor: "background.default", minHeight: "100vh" }}>
       <Helmet>
-        <title>{`${article.title} | FinWorld`}</title>
+        <title>{`${article.title} | FinWorld Guides`}</title>
         <meta name="description" content={article.excerpt} />
-        <link
-          rel="canonical"
-          href={
-            typeof window !== "undefined"
-              ? `${window.location.origin}/articles/${article.slug}`
-              : `https://www.finworld.live/articles/${article.slug}`
-          }
-        />
+        <link rel="canonical" href={canonical} />
+        <meta property="og:title" content={article.title} />
+        <meta property="og:description" content={article.excerpt} />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={canonical} />
+        {article.image && <meta property="og:image" content={article.image} />}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={article.title} />
+        <meta name="twitter:description" content={article.excerpt} />
+        {article.image && <meta name="twitter:image" content={article.image} />}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Article",
+            headline: article.title,
+            description: article.excerpt,
+            url: canonical,
+            image: article.image ? [article.image] : undefined,
+            publisher: {
+              "@type": "Organization",
+              name: "FinWorld",
+            },
+          })}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Home",
+                item: "https://www.finworld.live/",
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: "Articles",
+                item: "https://www.finworld.live/guides",
+              },
+              {
+                "@type": "ListItem",
+                position: 3,
+                name: article.title,
+                item: canonical,
+              },
+            ],
+          })}
+        </script>
       </Helmet>
 
       <Box
@@ -257,12 +320,92 @@ export default function ArticlePage() {
             </Grid>
 
             <Grid item xs={12}>
+              <Paper
+                elevation={0}
+                sx={{
+                  p: { xs: 2.5, md: 3 },
+                  borderRadius: 3,
+                  border: "1px solid",
+                  borderColor: "divider",
+                  background:
+                    "linear-gradient(135deg, rgba(20,184,166,0.05), rgba(14,165,233,0.05))",
+                }}
+              >
+                <Stack spacing={2}>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 800, letterSpacing: 0.2 }}>
+                    Recommended tools
+                  </Typography>
+                  <Stack direction={{ xs: "column", sm: "row" }} spacing={1.2} useFlexGap flexWrap="wrap">
+                    {recommendedTools.map((tool) => (
+                      <Button
+                        key={tool.to}
+                        component={RouterLink}
+                        to={tool.to}
+                        variant="contained"
+                        size="small"
+                        sx={{
+                          borderRadius: 999,
+                          fontWeight: 700,
+                          textTransform: "none",
+                          px: 2.4,
+                          py: 0.9,
+                          bgcolor: tool.color,
+                          boxShadow: "0 8px 18px rgba(0,0,0,0.1)",
+                          "&:hover": { opacity: 0.9, bgcolor: tool.color },
+                        }}
+                      >
+                        {tool.label}
+                      </Button>
+                    ))}
+                  </Stack>
+                </Stack>
+              </Paper>
+            </Grid>
+
+            <Grid item xs={12}>
+              <Paper
+                elevation={0}
+                sx={{
+                  p: { xs: 2.5, md: 3 },
+                  borderRadius: 3,
+                  border: "1px solid",
+                  borderColor: "divider",
+                  backgroundColor: "rgba(15,23,42,0.02)",
+                }}
+              >
+                <Typography variant="subtitle2" sx={{ fontWeight: 800, mb: 1.2 }}>
+                  Jump to section
+                </Typography>
+                <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap" rowGap={1}>
+                  {sections.map((section, idx) => (
+                    <MuiChip
+                      key={idx}
+                      component="a"
+                      href={`#${sectionAnchors[idx]}`}
+                      clickable
+                      label={section.title || `Section ${idx + 1}`}
+                      size="small"
+                      sx={{
+                        borderRadius: 999,
+                        fontWeight: 700,
+                        color: "text.primary",
+                        borderColor: "divider",
+                        textDecoration: "none",
+                      }}
+                    />
+                  ))}
+                </Stack>
+              </Paper>
+            </Grid>
+
+            <Grid item xs={12}>
               <Stack spacing={4}>
                 {sections.map((section, idx) => (
                   <Box key={idx}>
                     {section.title && (
                       <Typography
                         variant="h5"
+                        id={sectionAnchors[idx]}
                         sx={{
                           fontWeight: 800,
                           mb: 1.5,
@@ -270,9 +413,9 @@ export default function ArticlePage() {
                           borderLeft: "3px solid rgba(20,184,166,0.6)",
                           pl: 1,
                         }}
-                      >
-                        {section.title}
-                      </Typography>
+                        >
+                          {section.title}
+                        </Typography>
                     )}
                     <Stack component="ul" spacing={1.4} sx={{ listStyle: "none", pl: 0, m: 0 }}>
                       {section.paragraphs.map((paragraph, pIdx) => (
@@ -294,11 +437,33 @@ export default function ArticlePage() {
                             }}
                           />
                           <Typography variant="body1" sx={{ color: "text.primary", lineHeight: 1.7 }}>
-                            {formatParagraph(paragraph)}
+                            {typeof paragraph === "string" ? formatParagraph(paragraph) : paragraph}
                           </Typography>
                         </Stack>
                       ))}
                     </Stack>
+                    {section.ctas && section.ctas.length > 0 && (
+                      <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap" sx={{ mt: 1 }}>
+                        {section.ctas.map((cta, cIdx) => (
+                          <Button
+                            key={cIdx}
+                            component={RouterLink}
+                            to={cta.to}
+                            size="small"
+                            variant="outlined"
+                            sx={{
+                              borderRadius: 999,
+                              fontWeight: 700,
+                              textTransform: "none",
+                              px: 2,
+                              py: 0.6,
+                            }}
+                          >
+                            {cta.label}
+                          </Button>
+                        ))}
+                      </Stack>
+                    )}
                     {idx < sections.length - 1 && <Divider sx={{ mt: 3, mb: 2, opacity: 0.35 }} />}
                   </Box>
                 ))}
