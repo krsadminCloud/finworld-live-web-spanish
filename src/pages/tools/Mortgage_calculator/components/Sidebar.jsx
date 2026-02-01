@@ -46,11 +46,11 @@ export default function Sidebar({
   };
 
   const creditScoreOptions = [
-    "Excellent (740+)",
-    "Good (700-739)",
-    "Fair (650-699)",
-    "Poor (600-649)",
-    "Very Poor (<600)",
+    { value: "excellent", label: t("mortgage.creditScore.excellent") },
+    { value: "good", label: t("mortgage.creditScore.good") },
+    { value: "fair", label: t("mortgage.creditScore.fair") },
+    { value: "poor", label: t("mortgage.creditScore.poor") },
+    { value: "veryPoor", label: t("mortgage.creditScore.veryPoor") },
   ];
 
   const loanTermOptions = ["30", "20", "15", "10"];
@@ -263,8 +263,8 @@ export default function Sidebar({
             onChange={(e) => updateField("creditScore", e.target.value)}
           >
             {creditScoreOptions.map((option) => (
-              <MenuItem key={option} value={option}>
-                {option}
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
               </MenuItem>
             ))}
           </Select>

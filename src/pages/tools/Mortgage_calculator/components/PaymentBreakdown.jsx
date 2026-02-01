@@ -424,8 +424,7 @@ chartColors.push("#8b5cf6");
               {t("mortgage.summary.monthlyPayment")}
             </Typography>
             <Typography variant="h4" sx={{ fontWeight: 700 }}>
-              <Box component="span" sx={{ fontSize: "0.6em", verticalAlign: "super" }}>$</Box>
-              {Math.round(results.totalMonthlyPayment).toLocaleString()}
+              {formatCurrency(results.totalMonthlyPayment)}
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
@@ -433,8 +432,7 @@ chartColors.push("#8b5cf6");
               {t("mortgage.summary.totalInterest")}
             </Typography>
             <Typography variant="h4" sx={{ fontWeight: 700 }}>
-              <Box component="span" sx={{ fontSize: "0.6em", verticalAlign: "super" }}>$</Box>
-              {Math.round(results.totalInterest).toLocaleString()}
+              {formatCurrency(results.totalInterest)}
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
@@ -442,8 +440,7 @@ chartColors.push("#8b5cf6");
               {t("mortgage.summary.totalCost")}
             </Typography>
             <Typography variant="h4" sx={{ fontWeight: 700 }}>
-              <Box component="span" sx={{ fontSize: "0.6em", verticalAlign: "super" }}>$</Box>
-              {Math.round(results.totalCost).toLocaleString()}
+              {formatCurrency(results.totalCost)}
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
@@ -549,7 +546,7 @@ chartColors.push("#8b5cf6");
                   },
                   ticks: {
                     callback: (value) => {
-                      return "$" + (value / 1000).toFixed(0) + "K";
+                      return formatCurrency(value / 1000) + "K";
                     },
                   },
                 },
@@ -561,8 +558,7 @@ chartColors.push("#8b5cf6");
             };
 
             const currentDate = new Date();
-            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-            const currentMonthYear = `${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
+            const currentMonthYear = currentDate.toLocaleDateString(undefined, { month: "long", year: "numeric" });
 
             return (
               <Box>
@@ -603,7 +599,7 @@ chartColors.push("#8b5cf6");
                         <Typography variant="body2">{t("mortgage.loanEstimate.principalPaid")}</Typography>
                       </Box>
                       <Typography variant="body2" sx={{ fontWeight: 600 }}>
-                        ${Math.round(chartData.principalPaidData[0] || 0).toLocaleString()}
+                        {formatCurrency(Math.round(chartData.principalPaidData[0] || 0))}
                       </Typography>
                     </Box>
                     <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 1.5 }}>
@@ -620,7 +616,7 @@ chartColors.push("#8b5cf6");
                         <Typography variant="body2">{t("mortgage.loanEstimate.interestPaid")}</Typography>
                       </Box>
                       <Typography variant="body2" sx={{ fontWeight: 600 }}>
-                        ${Math.round(chartData.interestPaidData[0] || 0).toLocaleString()}
+                        {formatCurrency(Math.round(chartData.interestPaidData[0] || 0))}
                       </Typography>
                     </Box>
                     <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>

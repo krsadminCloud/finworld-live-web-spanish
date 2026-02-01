@@ -1,3 +1,11 @@
+import i18n from "../../../../i18n";
+
+function getLocale() {
+  const lang = i18n.language || "en";
+  if (lang === "es-US" || lang === "es-us" || lang === "es") return "es-US";
+  return "en-US";
+}
+
 export function calculateMortgage({
   homePrice,
   downPayment,
@@ -93,7 +101,7 @@ function generateAmortizationSchedule(
 
 export function formatCurrency(value) {
   if (typeof value !== "number") return "$0";
-  return value.toLocaleString("en-US", {
+  return value.toLocaleString(getLocale(), {
     style: "currency",
     currency: "USD",
     minimumFractionDigits: 0,
@@ -103,7 +111,7 @@ export function formatCurrency(value) {
 
 export function formatCurrencyDetailed(value) {
   if (typeof value !== "number") return "$0.00";
-  return value.toLocaleString("en-US", {
+  return value.toLocaleString(getLocale(), {
     style: "currency",
     currency: "USD",
     minimumFractionDigits: 2,
@@ -116,8 +124,7 @@ export function calculatePayoffDate(loanTerm) {
   const payoffDate = new Date(currentDate);
   payoffDate.setFullYear(payoffDate.getFullYear() + loanTerm);
 
-  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-  return `${monthNames[payoffDate.getMonth()]} ${payoffDate.getFullYear()}`;
+  return payoffDate.toLocaleDateString(getLocale(), { month: "short", year: "numeric" });
 }
 
 export function prepareLoanEstimateChartData(amortizationSchedule, loanAmount) {

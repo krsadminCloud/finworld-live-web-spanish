@@ -127,7 +127,7 @@ export default function AdvancedSection() {
   // Option B helpers: embedded toggle inside the input adornment (not active by default)
   const renderDownPaymentEmbedded = () => (
     <TextField
-      label="Down Payment"
+      label={t("mortgage.advanced.downPayment")}
       value={afford.downMode === 'percent' ? afford.downPercent : formatWithCommas(afford.downAmount)}
       onChange={(e) => {
         const raw = e.target.value;
@@ -169,7 +169,7 @@ export default function AdvancedSection() {
 
   const renderPropertyTaxEmbedded = () => (
     <TextField
-      label="Property Tax"
+      label={t("mortgage.advanced.propertyTax")}
       value={afford.taxMode === 'percent' ? afford.taxRatePct : formatWithCommas(afford.taxAnnual)}
       onChange={(e) => {
         const raw = e.target.value;
@@ -269,10 +269,10 @@ export default function AdvancedSection() {
                 bgcolor: (theme) => (theme.palette.mode === 'dark' ? 'rgba(20,184,166,0.08)' : '#ccfbf1'),
               }}
             >
-              <Typography sx={{ fontWeight: 700, mb: 2 }}>Loan 1</Typography>
+              <Typography sx={{ fontWeight: 700, mb: 2 }}>{t("mortgage.advanced.loan1")}</Typography>
               <Stack spacing={2}>
                 <TextField
-                  label="Loan amount"
+                  label={t("mortgage.advanced.loanAmount")}
                   value={formatWithCommas(loanA.loanAmount)}
                   onChange={(e) => {
                     const val = e.target.value.replace(/,/g, "");
@@ -282,7 +282,7 @@ export default function AdvancedSection() {
                   fullWidth
                 />
                 <TextField
-                  label="Loan term (years)"
+                  label={t("mortgage.advanced.loanTermYears")}
                   value={loanA.loanTerm}
                   onChange={(e) => {
                     const val = e.target.value;
@@ -291,7 +291,7 @@ export default function AdvancedSection() {
                   fullWidth
                 />
                 <TextField
-                  label="Interest rate (%)"
+                  label={t("mortgage.advanced.interestRatePercent")}
                   value={loanA.interestRate}
                   onChange={(e) => {
                     const val = e.target.value;
@@ -303,18 +303,18 @@ export default function AdvancedSection() {
 
                 <Divider sx={{ my: 1 }} />
                 <Box>
-                  <Typography variant="body2" sx={{ color: "text.secondary" }}>Estimated monthly payment</Typography>
+                  <Typography variant="body2" sx={{ color: "text.secondary" }}>{t("mortgage.advanced.estimatedMonthly")}</Typography>
                   <Typography variant="h5" sx={{ fontWeight: 700 }}>
                     {formatCurrency(resultA.monthly)}
                   </Typography>
                 </Box>
                 <Box sx={{ display: 'flex', gap: 3, flexWrap: 'wrap' }}>
                   <Box>
-                    <Typography variant="body2" sx={{ color: "text.secondary" }}>Total interest</Typography>
+                    <Typography variant="body2" sx={{ color: "text.secondary" }}>{t("mortgage.advanced.totalInterest")}</Typography>
                     <Typography sx={{ fontWeight: 700, color: '#14b8a6' }}>{formatCurrency(resultA.totalInterest)}</Typography>
                   </Box>
                   <Box>
-                    <Typography variant="body2" sx={{ color: "text.secondary" }}>Total paid</Typography>
+                    <Typography variant="body2" sx={{ color: "text.secondary" }}>{t("mortgage.advanced.totalPaid")}</Typography>
                     <Typography sx={{ fontWeight: 700, color: '#14b8a6' }}>{formatCurrency(resultA.totalPaid)}</Typography>
                   </Box>
                 </Box>
@@ -334,10 +334,10 @@ export default function AdvancedSection() {
                 bgcolor: (theme) => (theme.palette.mode === 'dark' ? 'rgba(20,184,166,0.08)' : '#e3f2fd'), // teal-100
               }}
             >
-              <Typography sx={{ fontWeight: 700, mb: 2 }}>Loan 2</Typography>
+              <Typography sx={{ fontWeight: 700, mb: 2 }}>{t("mortgage.advanced.loan2")}</Typography>
               <Stack spacing={2}>
                 <TextField
-                  label="Loan amount"
+                  label={t("mortgage.advanced.loanAmount")}
                   value={formatWithCommas(loanB.loanAmount)}
                   onChange={(e) => {
                     const val = e.target.value.replace(/,/g, "");
@@ -347,7 +347,7 @@ export default function AdvancedSection() {
                   fullWidth
                 />
                 <TextField
-                  label="Loan term (years)"
+                  label={t("mortgage.advanced.loanTermYears")}
                   value={loanB.loanTerm}
                   onChange={(e) => {
                     const val = e.target.value;
@@ -356,7 +356,7 @@ export default function AdvancedSection() {
                   fullWidth
                 />
                 <TextField
-                  label="Interest rate (%)"
+                  label={t("mortgage.advanced.interestRatePercent")}
                   value={loanB.interestRate}
                   onChange={(e) => {
                     const val = e.target.value;
@@ -368,18 +368,18 @@ export default function AdvancedSection() {
 
                 <Divider sx={{ my: 1 }} />
                 <Box>
-                  <Typography variant="body2" sx={{ color: "text.secondary" }}>Estimated monthly payment</Typography>
+                  <Typography variant="body2" sx={{ color: "text.secondary" }}>{t("mortgage.advanced.estimatedMonthly")}</Typography>
                   <Typography variant="h5" sx={{ fontWeight: 700 }}>
                     {formatCurrency(resultB.monthly)}
                   </Typography>
                 </Box>
                 <Box sx={{ display: 'flex', gap: 3, flexWrap: 'wrap' }}>
                   <Box>
-                    <Typography variant="body2" sx={{ color: "text.secondary" }}>Total interest</Typography>
+                    <Typography variant="body2" sx={{ color: "text.secondary" }}>{t("mortgage.advanced.totalInterest")}</Typography>
                     <Typography sx={{ fontWeight: 700, color: '#1976d2' }}>{formatCurrency(resultB.totalInterest)}</Typography>
                   </Box>
                   <Box>
-                    <Typography variant="body2" sx={{ color: "text.secondary" }}>Total paid</Typography>
+                    <Typography variant="body2" sx={{ color: "text.secondary" }}>{t("mortgage.advanced.totalPaid")}</Typography>
                     <Typography sx={{ fontWeight: 700, color: '#1976d2' }}>{formatCurrency(resultB.totalPaid)}</Typography>
                   </Box>
                 </Box>
@@ -407,7 +407,7 @@ export default function AdvancedSection() {
               >
                 <Box>
                   <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.95)', fontWeight: 700 }}>
-                    Monthly difference (Loan 2 - Loan 1)
+                    {t("mortgage.advanced.monthlyDifference")}
                   </Typography>
                   <Typography sx={{ fontWeight: 700 }}>
                     {formatCurrency(resultB.monthly - resultA.monthly)}
@@ -415,7 +415,7 @@ export default function AdvancedSection() {
                 </Box>
                 <Box>
                   <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.95)', fontWeight: 700 }}>
-                    Total interest difference
+                    {t("mortgage.advanced.interestDifference")}
                   </Typography>
                   <Typography sx={{ fontWeight: 700 }}>
                     {formatCurrency(resultB.totalInterest - resultA.totalInterest)}
@@ -461,7 +461,7 @@ export default function AdvancedSection() {
             }}
           >
             <Typography sx={{ fontWeight: 700 }}>
-              How Much Home You Can Afford
+              {t("tools.affordability")}
             </Typography>
           </AccordionSummary>
           <AccordionDetails sx={{ borderRadius: 2, ...(OPTION_A_TEAL && { bgcolor: '#E9F9F8' }) }}>
@@ -488,7 +488,7 @@ export default function AdvancedSection() {
                 }}
               >
                 <TextField
-                  label="Annual Gross Income"
+                  label={t("mortgage.advanced.annualGrossIncome")}
                   value={formatWithCommas(afford.incomeAnnual)}
                   onChange={(e) => {
                     const val = e.target.value.replace(/,/g, "");
@@ -499,21 +499,21 @@ export default function AdvancedSection() {
                   fullWidth
                 />
                 <TextField
-                  label="Max Housing Ratio (%)"
+                  label={t("mortgage.advanced.maxHousingRatio")}
                   value={afford.ratioPct}
                   onChange={(e) => { const v=e.target.value; if (allowNumeric(v)) setAfford({ ...afford, ratioPct: v }); }}
                   size="small"
                   fullWidth
                 />
                 <TextField
-                  label="Loan Term (Years)"
+                  label={t("mortgage.advanced.loanTermYearsLabel")}
                   value={afford.termYears}
                   onChange={(e) => { const v=e.target.value; if (allowNumeric(v)) setAfford({ ...afford, termYears: v }); }}
                   size="small"
                   fullWidth
                 />
                 <TextField
-                  label="Interest Rate (%)"
+                  label={t("mortgage.advanced.interestRateLabel")}
                   value={afford.ratePct}
                   onChange={(e) => { const v=e.target.value; if (allowNumeric(v)) setAfford({ ...afford, ratePct: v }); }}
                   InputProps={{ endAdornment: <span style={{ marginLeft: 8 }}>%</span> }}
@@ -522,18 +522,18 @@ export default function AdvancedSection() {
                   fullWidth
                 />
                 <TextField
-                  label="Total Household Debt"
+                  label={t("mortgage.advanced.totalHouseholdDebt")}
                   value={formatWithCommas(afford.debtMonthly)}
                   onChange={(e) => { const v=e.target.value.replace(/,/g,''); if (allowNumeric(v)) setAfford({ ...afford, debtMonthly: v }); }}
                   InputProps={{ startAdornment: <span style={{ marginRight: 8 }}>$</span> }}
-                  placeholder="Sum of monthly payments"
+                  placeholder={t("mortgage.advanced.sumOfMonthlyPayments")}
                   size="small"
                   sx={{ '& .MuiInputBase-input::placeholder': { fontSize: '0.75rem' } }}
                   fullWidth
                 />
                 {renderDownPaymentEmbedded()}
                 <TextField
-                  label="Annual Insurance ($)"
+                  label={t("mortgage.advanced.annualInsurance")}
                   value={formatWithCommas(afford.insuranceAnnual)}
                   onChange={(e) => { const v=e.target.value.replace(/,/g,''); if (allowNumeric(v)) setAfford({ ...afford, insuranceAnnual: v }); }}
                   InputProps={{ startAdornment: <span style={{ marginRight: 8 }}>$</span> }}
@@ -542,7 +542,7 @@ export default function AdvancedSection() {
                 />
                 {renderPropertyTaxEmbedded()}
                 <TextField
-                  label="HOA Fees (Monthly)"
+                  label={t("mortgage.advanced.hoaFeesMonthly")}
                   value={formatWithCommas(afford.hoaMonthly)}
                   onChange={(e) => { const v=e.target.value.replace(/,/g,''); if (allowNumeric(v)) setAfford({ ...afford, hoaMonthly: v }); }}
                   InputProps={{ startAdornment: <span style={{ marginRight: 8 }}>$</span> }}
@@ -577,7 +577,7 @@ export default function AdvancedSection() {
                   }}
                 >
                   <Box sx={{ bgcolor: '#1976d2', color: '#fff', mx: -2, mt: -2, px: 2, py: 1.5 }}>
-                    <Typography sx={{ fontWeight: 700, color: '#fff', mb: 0.5 }}>Maximum Purchase Price</Typography>
+                    <Typography sx={{ fontWeight: 700, color: '#fff', mb: 0.5 }}>{t("mortgage.advanced.maxPurchasePrice")}</Typography>
                     <Typography variant="h4" sx={{ fontWeight: 800, color: '#fff', mb: 0 }}>
                       {formatCurrency(affordability.homePrice)}
                     </Typography>
@@ -588,11 +588,11 @@ export default function AdvancedSection() {
 
                   <Stack direction="row" spacing={4} sx={{ mb: 1, flexWrap: 'wrap' }}>
                     <Box>
-                      <Typography variant="body2" sx={{ color: 'text.secondary' }}>Estimated loan amount</Typography>
+                      <Typography variant="body2" sx={{ color: 'text.secondary' }}>{t("mortgage.advanced.estimatedLoanAmount")}</Typography>
                       <Typography sx={{ fontWeight: 700 }}>{formatCurrency(affordability.loanAmount)}</Typography>
                     </Box>
                     <Box>
-                      <Typography variant="body2" sx={{ color: 'text.secondary' }}>Down payment</Typography>
+                      <Typography variant="body2" sx={{ color: 'text.secondary' }}>{t("mortgage.advanced.downPaymentLabel")}</Typography>
                       <Typography sx={{ fontWeight: 700 }}>
                         {formatCurrency(affordability.downAmount)} ({affordability.downPercent.toFixed(1)}%)
                       </Typography>
@@ -601,27 +601,27 @@ export default function AdvancedSection() {
 
                   <Divider sx={{ my: 1 }} />
 
-                  <Typography sx={{ fontWeight: 700, mb: 1 }}>Estimated Monthly Payment</Typography>
+                  <Typography sx={{ fontWeight: 700, mb: 1 }}>{t("mortgage.advanced.estimatedMonthlyPayment")}</Typography>
                   <Stack spacing={0.5}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <Typography>Principal & Interest</Typography>
+                      <Typography>{t("mortgage.advanced.principalInterest")}</Typography>
                       <Typography sx={{ fontWeight: 700 }}>{formatCurrency(affordability.principalAndInterest)}</Typography>
                     </Box>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <Typography>Taxes</Typography>
+                      <Typography>{t("mortgage.advanced.taxes")}</Typography>
                       <Typography sx={{ fontWeight: 700 }}>{formatCurrency(affordability.monthlyPropertyTax)}</Typography>
                     </Box>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <Typography>Insurance</Typography>
+                      <Typography>{t("mortgage.advanced.insurance")}</Typography>
                       <Typography sx={{ fontWeight: 700 }}>{formatCurrency(affordability.insuranceMonthly)}</Typography>
                     </Box>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <Typography>HOA</Typography>
+                      <Typography>{t("mortgage.advanced.hoa")}</Typography>
                       <Typography sx={{ fontWeight: 700 }}>{formatCurrency(affordability.hoaMonthly)}</Typography>
                     </Box>
                     <Divider sx={{ my: 1 }} />
                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <Typography>Total</Typography>
+                      <Typography>{t("mortgage.advanced.total")}</Typography>
                       <Typography sx={{ fontWeight: 800 }}>{formatCurrency(affordability.totalMonthly)}</Typography>
                     </Box>
                   </Stack>

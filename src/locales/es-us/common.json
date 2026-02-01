@@ -414,8 +414,8 @@
   "tools": {
     "advancedFeatures": "Funciones avanzadas",
     "advancedFeaturesHint": "Haga clic para desplegar",
-    "compareLoans": "Comparar dos pr�stamos",
-    "affordability": "Cu�nto hogar puede pagar"
+    "compareLoans": "Comparar dos préstamos",
+    "affordability": "Cuánto hogar puede pagar"
   },
   "mortgage": {
     "title": "Calculadora de Hipoteca",
@@ -495,6 +495,86 @@
       "principal": "Capital",
       "interest": "Interés",
       "balance": "Saldo"
+    },
+    "advanced": {
+      "loan1": "Préstamo 1",
+      "loan2": "Préstamo 2",
+      "loanAmount": "Monto del préstamo",
+      "loanTermYears": "Plazo del préstamo (años)",
+      "interestRatePercent": "Tasa de interés (%)",
+      "estimatedMonthly": "Pago mensual estimado",
+      "totalInterest": "Interés total",
+      "totalPaid": "Total pagado",
+      "monthlyDifference": "Diferencia mensual (Préstamo 2 - Préstamo 1)",
+      "interestDifference": "Diferencia de interés total",
+      "annualGrossIncome": "Ingreso bruto anual",
+      "maxHousingRatio": "Ratio máximo de vivienda (%)",
+      "loanTermYearsLabel": "Plazo del préstamo (años)",
+      "interestRateLabel": "Tasa de interés (%)",
+      "totalHouseholdDebt": "Deuda total del hogar",
+      "sumOfMonthlyPayments": "Suma de pagos mensuales",
+      "annualInsurance": "Seguro anual ($)",
+      "hoaFeesMonthly": "Cuotas de HOA (mensual)",
+      "maxPurchasePrice": "Precio máximo de compra",
+      "estimatedLoanAmount": "Monto estimado del préstamo",
+      "downPaymentLabel": "Pago inicial",
+      "estimatedMonthlyPayment": "Pago mensual estimado",
+      "principalInterest": "Capital e interés",
+      "taxes": "Impuestos",
+      "insurance": "Seguro",
+      "hoa": "HOA",
+      "total": "Total",
+      "downPayment": "Pago inicial",
+      "propertyTax": "Impuesto a la propiedad"
+    },
+    "lenders": {
+      "title": "Préstamos hipotecarios de nuestros socios",
+      "bestLenders": "Mejores prestamistas",
+      "firstTimeBuyer": "Comprador primerizo",
+      "refinance": "Refinanciar",
+      "heloc": "HELOC",
+      "homeEquityLoans": "Préstamos con garantía hipotecaria",
+      "reviews": "{{count}} reseñas",
+      "nerdwalletRating": "Calificación NerdWallet",
+      "minCredit": "Crédito mín.",
+      "downPmt": "Pago inicial",
+      "checkRate": "Ver tasa",
+      "compareMore": "Comparar más prestamistas"
+    },
+    "rates": {
+      "title": "Tasas hipotecarias",
+      "allRates": "Todas las tasas",
+      "allRatesSubtitle": "Desde 6.25% APR",
+      "allRatesDesc": "Compara tasas de múltiples prestamistas",
+      "thirtyYear": "Tasas a 30 años",
+      "thirtyYearSubtitle": "Desde 6.50% APR",
+      "thirtyYearDesc": "Hipoteca de tasa fija más popular",
+      "fifteenYear": "Tasas a 15 años",
+      "fifteenYearSubtitle": "Desde 5.75% APR",
+      "fifteenYearDesc": "Ahorra en intereses con un plazo más corto",
+      "viewRates": "Ver tasas"
+    },
+    "creditScore": {
+      "excellent": "Excelente (740+)",
+      "good": "Bueno (700-739)",
+      "fair": "Regular (650-699)",
+      "poor": "Bajo (600-649)",
+      "veryPoor": "Muy bajo (<600)"
+    },
+    "theme": {
+      "label": "Tema de fondo",
+      "option1": "Opción 1 – Gris claro frío",
+      "option2": "Opción 2 – Verde azulado pálido",
+      "option3": "Opción 3 – Blanco cálido"
+    },
+    "allrates": {
+      "home": "Inicio",
+      "financialTools": "Herramientas financieras",
+      "mortgageCalculator": "Calculadora de hipoteca",
+      "allRatesLabel": "Todas las tasas",
+      "backToCalculator": "Volver a la calculadora",
+      "compareTitle": "Compara tasas hipotecarias actuales",
+      "compareSubtitle": "Compara tasas de múltiples prestamistas en los 50 estados"
     }
   },
   "tool_home_affordability": {

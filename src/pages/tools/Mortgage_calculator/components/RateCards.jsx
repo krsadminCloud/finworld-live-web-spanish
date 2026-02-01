@@ -3,31 +3,33 @@ import { Box, Paper, Typography } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { useNavigate } from "react-router-dom";
 import { useLanguageNavigate } from "../../../../utils/langRouting";
-
-const rateData = [
-  {
-    title: "All Rates",
-    subtitle: "As low as 6.25% APR",
-    description: "Compare rates from multiple lenders",
-    action: "navigate"
-  },
-  {
-    title: "30-Year Rates",
-    subtitle: "As low as 6.50% APR",
-    description: "Most popular fixed-rate mortgage",
-    action: "none"
-  },
-  {
-    title: "15-Year Rates",
-    subtitle: "As low as 5.75% APR",
-    description: "Save on interest with shorter term",
-    action: "none"
-  },
-];
+import { useTranslation } from "react-i18next";
 
 export default function RateCards() {
   const navigate = useNavigate();
   const langNavigate = useLanguageNavigate(navigate);
+  const { t } = useTranslation();
+
+  const rateData = [
+    {
+      title: t("mortgage.rates.allRates"),
+      subtitle: t("mortgage.rates.allRatesSubtitle"),
+      description: t("mortgage.rates.allRatesDesc"),
+      action: "navigate"
+    },
+    {
+      title: t("mortgage.rates.thirtyYear"),
+      subtitle: t("mortgage.rates.thirtyYearSubtitle"),
+      description: t("mortgage.rates.thirtyYearDesc"),
+      action: "none"
+    },
+    {
+      title: t("mortgage.rates.fifteenYear"),
+      subtitle: t("mortgage.rates.fifteenYearSubtitle"),
+      description: t("mortgage.rates.fifteenYearDesc"),
+      action: "none"
+    },
+  ];
 
   const handleCardClick = (index) => {
     if (rateData[index].action === "navigate") {
@@ -38,7 +40,7 @@ export default function RateCards() {
   return (
     <Box>
       <Typography variant="h6" sx={{ mb: 2, fontWeight: 700 }}>
-        Mortgage Rates
+        {t("mortgage.rates.title")}
       </Typography>
       <Box sx={{ display: "flex", gap: 2, flexWrap: { xs: "wrap", sm: "nowrap" } }}>
         {rateData.map((rate, index) => (
@@ -89,7 +91,7 @@ export default function RateCards() {
                     alignItems: "center",
                   }}
                 >
-                  View Rates <ArrowForwardIcon sx={{ ml: 0.5, fontSize: "1rem" }} />
+                  {t("mortgage.rates.viewRates")} <ArrowForwardIcon sx={{ ml: 0.5, fontSize: "1rem" }} />
                 </Typography>
               </Box>
             )}

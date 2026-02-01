@@ -9,6 +9,7 @@ import {
   Rating,
   Chip,
 } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 const lenderData = {
   best: [
@@ -94,14 +95,15 @@ const lenderData = {
 };
 
 export default function LenderPartners() {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = React.useState(0);
 
   const tabCategories = [
-    { label: "Best Lenders", value: "best" },
-    { label: "First-Time Buyer", value: "first-time" },
-    { label: "Refinance", value: "refinance" },
-    { label: "HELOC", value: "heloc" },
-    { label: "Home Equity Loans", value: "home-equity" },
+    { label: t("mortgage.lenders.bestLenders"), value: "best" },
+    { label: t("mortgage.lenders.firstTimeBuyer"), value: "first-time" },
+    { label: t("mortgage.lenders.refinance"), value: "refinance" },
+    { label: t("mortgage.lenders.heloc"), value: "heloc" },
+    { label: t("mortgage.lenders.homeEquityLoans"), value: "home-equity" },
   ];
 
   const currentCategory = tabCategories[activeTab].value;
@@ -110,7 +112,7 @@ export default function LenderPartners() {
   return (
     <Box>
       <Typography variant="h6" sx={{ mb: 2, fontWeight: 700 }}>
-        Mortgage Loans from Our Partners
+        {t("mortgage.lenders.title")}
       </Typography>
 
       <Paper sx={{ borderRadius: 2, overflow: "hidden" }}>
@@ -180,14 +182,14 @@ export default function LenderPartners() {
                     size="small"
                   />
                   <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                    {lender.rating} ({lender.review_count} reviews)
+                    {lender.rating} ({t("mortgage.lenders.reviews", { count: lender.review_count })})
                   </Typography>
                 </Box>
                 <Typography
                   variant="caption"
                   sx={{ color: "text.secondary", display: "block", mt: 0.5 }}
                 >
-                  NerdWallet rating
+                  {t("mortgage.lenders.nerdwalletRating")}
                 </Typography>
               </Box>
 
@@ -204,7 +206,7 @@ export default function LenderPartners() {
                     variant="caption"
                     sx={{ color: "text.secondary", display: "block" }}
                   >
-                    Min. Credit
+                    {t("mortgage.lenders.minCredit")}
                   </Typography>
                   <Typography sx={{ fontWeight: 600 }}>
                     {lender.min_credit}
@@ -216,7 +218,7 @@ export default function LenderPartners() {
                     variant="caption"
                     sx={{ color: "text.secondary", display: "block" }}
                   >
-                    Down Pmt.
+                    {t("mortgage.lenders.downPmt")}
                   </Typography>
                   <Typography sx={{ fontWeight: 600 }}>
                     {lender.down_payment}
@@ -236,7 +238,7 @@ export default function LenderPartners() {
                   }}
                   onClick={() => window.open(lender.external_url, "_blank")}
                 >
-                  Check Rate
+                  {t("mortgage.lenders.checkRate")}
                 </Button>
               </Box>
             </Paper>
@@ -253,7 +255,7 @@ export default function LenderPartners() {
               fontSize: "1rem",
             }}
           >
-            Compare More Lenders
+            {t("mortgage.lenders.compareMore")}
           </Button>
         </Box>
       </Paper>

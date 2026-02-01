@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Box, Typography, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import AdvancedSection from './AdvancedSection';
 
 export default function AdvancedFeatures() {
+  const { t } = useTranslation();
   const [bgTheme, setBgTheme] = useState('#F5F7FA'); // default Option 1 – Light Cool Gray
   const bgColor = bgTheme;
 
@@ -32,15 +34,15 @@ export default function AdvancedFeatures() {
         }}
       >
         <FormControl size="small" sx={{ minWidth: 220 }}>
-          <InputLabel>Background Theme</InputLabel>
+          <InputLabel>{t("mortgage.theme.label")}</InputLabel>
           <Select
             value={bgTheme}
-            label="Background Theme"
+            label={t("mortgage.theme.label")}
             onChange={handleThemeChange}
           >
-            <MenuItem value="#F5F7FA">Option 1 – Light Cool Gray</MenuItem>
-            <MenuItem value="#E9F9F8">Option 2 – Pale Teal Tint</MenuItem>
-            <MenuItem value="#FAFAF8">Option 3 – Warm Off-White</MenuItem>
+            <MenuItem value="#F5F7FA">{t("mortgage.theme.option1")}</MenuItem>
+            <MenuItem value="#E9F9F8">{t("mortgage.theme.option2")}</MenuItem>
+            <MenuItem value="#FAFAF8">{t("mortgage.theme.option3")}</MenuItem>
           </Select>
         </FormControl>
       </Box>
