@@ -1,7 +1,7 @@
 {
   "language": {
     "english": "English",
-    "spanish": "Español (EE.UU.)"
+    "spanish": "Español"
   },
   "calculators": {
     "takeHomePay": {
@@ -510,7 +510,7 @@
       "annualGrossIncome": "Annual Gross Income",
       "maxHousingRatio": "Max Housing Ratio (%)",
       "loanTermYearsLabel": "Loan Term (Years)",
-      "interestRateLabel": "Interest Rate (%)",
+      "interestRateLabel": "Interest Rate",
       "totalHouseholdDebt": "Total Household Debt",
       "sumOfMonthlyPayments": "Sum of monthly payments",
       "annualInsurance": "Annual Insurance ($)",

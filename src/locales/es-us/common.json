@@ -1,7 +1,7 @@
 {
   "language": {
     "english": "Inglés",
-    "spanish": "Español (EE.UU.)"
+    "spanish": "Español"
   },
   "calculators": {
     "takeHomePay": {
@@ -510,7 +510,7 @@
       "annualGrossIncome": "Ingreso bruto anual",
       "maxHousingRatio": "Ratio máximo de vivienda (%)",
       "loanTermYearsLabel": "Plazo del préstamo (años)",
-      "interestRateLabel": "Tasa de interés (%)",
+      "interestRateLabel": "Tasa de interés",
       "totalHouseholdDebt": "Deuda total del hogar",
       "sumOfMonthlyPayments": "Suma de pagos mensuales",
       "annualInsurance": "Seguro anual ($)",
