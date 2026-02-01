@@ -301,7 +301,7 @@ export default function Sidebar({
         ModalProps={{ keepMounted: true }}
         sx={{
           display: { xs: "block", md: "none" },
-          "& .MuiDrawer-paper": { width: drawerWidth },
+          "& .MuiDrawer-paper": { width: { xs: '85vw', sm: drawerWidth }, maxWidth: drawerWidth },
         }}
       >
         <Toolbar />

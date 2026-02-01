@@ -43,7 +43,7 @@ export default function Layout({ inputs, setInputs, onCalculate, onReset, childr
             alignItems: "center",
             justifyContent: "flex-start",
             gap: { xs: 2, md: 3 },
-            p: { xs: 2, sm: 3, md: 4 },
+            p: { xs: 1.5, sm: 2, md: 4 },
             overflowX: "hidden",
             ml: { xs: 0, md: "340px" },
             // Allow main content to use the full remaining width for better responsiveness

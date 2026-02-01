@@ -189,13 +189,11 @@ export default function MortgageCalculator() {
         <Box
           sx={{
             width: "100%",
-            // Shrink default content width ~30% on medium+ screens
-            // Shrink a further ~15% on md+ screens (now ~55% of page width)
-            maxWidth: { xs: '100%', md: '55%' },
+            maxWidth: { xs: '100%', md: '90%', lg: '70%' },
             mx: "auto",
             display: "flex",
             flexDirection: "column",
-            gap: { xs: 3, sm: 4, md: 6 },
+            gap: { xs: 2, sm: 3, md: 6 },
           }}
         >
           <PaymentBreakdown results={results} inputs={inputs} />

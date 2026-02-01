@@ -110,7 +110,7 @@ chartColors.push("#8b5cf6");
   const rate = parseFloat(inputs?.interestRate || "") || 0;
 
   const Legend = () => (
-    <Box sx={{ mt: 3, minWidth: '280px' }}>
+    <Box sx={{ mt: { xs: 2, sm: 3 }, minWidth: { xs: 'auto', sm: '280px' }, width: { xs: '100%', sm: 'auto' } }}>
       <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 1.5, border: '1px solid #e0e0e0', borderRadius: 1, p: 1.5 }}>
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Box
@@ -353,7 +353,7 @@ chartColors.push("#8b5cf6");
           sx={{
             textTransform: "none",
             fontWeight: 600,
-            fontSize: (theme) => theme.typography.h6.fontSize,
+            fontSize: { xs: '0.85rem', sm: '1rem', md: '1.25rem' },
           }}
         />
         <Tab
@@ -361,7 +361,7 @@ chartColors.push("#8b5cf6");
           sx={{
             textTransform: "none",
             fontWeight: 600,
-            fontSize: (theme) => theme.typography.h6.fontSize,
+            fontSize: { xs: '0.85rem', sm: '1rem', md: '1.25rem' },
           }}
         />
         <Tab
@@ -369,7 +369,7 @@ chartColors.push("#8b5cf6");
           sx={{
             textTransform: "none",
             fontWeight: 600,
-            fontSize: (theme) => theme.typography.h6.fontSize,
+            fontSize: { xs: '0.85rem', sm: '1rem', md: '1.25rem' },
           }}
         />
       </Tabs>
@@ -379,8 +379,9 @@ chartColors.push("#8b5cf6");
           <Box
             sx={{
               position: "relative",
-              maxWidth: 320,
-              mr: 4, // Add margin-right for spacing between chart and legend
+              maxWidth: { xs: 220, sm: 320 },
+              width: '100%',
+              mr: { xs: 0, sm: 4 },
             }}
           >
             <Doughnut data={chartData} options={chartOptions} />
@@ -418,36 +419,36 @@ chartColors.push("#8b5cf6");
 
         <Box sx={{ borderBottom: 1, borderColor: "divider", mb: 3 }} />
 
-        <Grid container spacing={3} sx={{ mb: 4 }}>
-          <Grid item xs={12} sm={6} md={3}>
+        <Grid container spacing={{ xs: 2, sm: 3 }} sx={{ mb: 4 }}>
+          <Grid item xs={6} sm={6} md={3}>
             <Typography variant="body2" sx={{ color: "text.secondary", mb: 0.5 }}>
               {t("mortgage.summary.monthlyPayment")}
             </Typography>
-            <Typography variant="h4" sx={{ fontWeight: 700 }}>
+            <Typography sx={{ fontWeight: 700, fontSize: { xs: '1.25rem', sm: '1.5rem', md: '2.125rem' } }}>
               {formatCurrency(results.totalMonthlyPayment)}
             </Typography>
           </Grid>
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid item xs={6} sm={6} md={3}>
             <Typography variant="body2" sx={{ color: "text.secondary", mb: 0.5 }}>
               {t("mortgage.summary.totalInterest")}
             </Typography>
-            <Typography variant="h4" sx={{ fontWeight: 700 }}>
+            <Typography sx={{ fontWeight: 700, fontSize: { xs: '1.25rem', sm: '1.5rem', md: '2.125rem' } }}>
               {formatCurrency(results.totalInterest)}
             </Typography>
           </Grid>
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid item xs={6} sm={6} md={3}>
             <Typography variant="body2" sx={{ color: "text.secondary", mb: 0.5 }}>
               {t("mortgage.summary.totalCost")}
             </Typography>
-            <Typography variant="h4" sx={{ fontWeight: 700 }}>
+            <Typography sx={{ fontWeight: 700, fontSize: { xs: '1.25rem', sm: '1.5rem', md: '2.125rem' } }}>
               {formatCurrency(results.totalCost)}
             </Typography>
           </Grid>
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid item xs={6} sm={6} md={3}>
             <Typography variant="body2" sx={{ color: "text.secondary", mb: 0.5 }}>
               {t("mortgage.summary.payoffDate")}
             </Typography>
-            <Typography variant="h4" sx={{ fontWeight: 700 }}>
+            <Typography sx={{ fontWeight: 700, fontSize: { xs: '1.25rem', sm: '1.5rem', md: '2.125rem' } }}>
               {calculatePayoffDate(results.amortizationSchedule.length / 12)}
             </Typography>
           </Grid>
@@ -569,14 +570,14 @@ chartColors.push("#8b5cf6");
                   {t("mortgage.loanEstimate.howPaymentsChangeDesc")}
                 </Typography>
 
-                <Box sx={{ display: "flex", gap: 4, flexWrap: "wrap", alignItems: "flex-start" }}>
-                  <Box sx={{ flex: "1 1 400px", minWidth: 0 }}>
+                <Box sx={{ display: "flex", gap: { xs: 2, sm: 4 }, flexWrap: "wrap", alignItems: "flex-start" }}>
+                  <Box sx={{ flex: { xs: "1 1 100%", sm: "1 1 400px" }, minWidth: 0 }}>
                     <Line data={lineChartData} options={lineChartOptions} />
                   </Box>
 
                   <Box sx={{
-                    flex: "0 0 auto",
-                    minWidth: 200,
+                    flex: { xs: "1 1 100%", sm: "0 0 auto" },
+                    minWidth: { xs: 'auto', sm: 200 },
                     border: 1,
                     borderColor: "divider",
                     borderRadius: 1,
@@ -643,7 +644,7 @@ chartColors.push("#8b5cf6");
           })()}
 
           {loanEstimateSubTab === 1 && (
-            <TableContainer sx={{ maxHeight: 500 }}>
+            <TableContainer sx={{ maxHeight: 500, overflowX: "auto" }}>
               <Table stickyHeader size="small">
                 <TableHead>
                   <TableRow>
@@ -682,7 +683,7 @@ chartColors.push("#8b5cf6");
       )}
 
       {activeTab === 2 && (
-        <TableContainer sx={{ maxHeight: 500 }}>
+        <TableContainer sx={{ maxHeight: 500, overflowX: "auto" }}>
           <Table stickyHeader size="small">
             <TableHead>
               <TableRow>

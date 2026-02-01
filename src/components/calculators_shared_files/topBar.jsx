@@ -130,6 +130,7 @@ export default function TopBar({ onMenuClick }) {
             component={RouterLink}
             to={withLang("/")}
             sx={{
+              display: { xs: "none", sm: "inline-flex" },
               borderRadius: 50,
               fontWeight: 700,
               px: { xs: 1.6, md: 2.4 },
@@ -152,6 +153,7 @@ export default function TopBar({ onMenuClick }) {
             component={RouterLink}
             to={withLang("/tools")}
             sx={{
+              display: { xs: "none", sm: "inline-flex" },
               borderRadius: 50,
               fontWeight: 700,
               px: { xs: 1.6, md: 2.4 },

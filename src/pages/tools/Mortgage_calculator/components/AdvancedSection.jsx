@@ -480,9 +480,9 @@ export default function AdvancedSection() {
                   flex: { xs: '1 1 100%', lg: '1 1 500px' },
                   width: { xs: '100%', lg: 'auto' },
                   maxWidth: { lg: 560 },
-                  minWidth: { sm: 280, lg: 360 },
+                  minWidth: { sm: 0, lg: 360 },
                   display: 'grid',
-                  gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, minmax(140px, 1fr))' },
+                  gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, minmax(120px, 1fr))' },
                   columnGap: 2,
                   rowGap: 2,
                 }}

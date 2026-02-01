@@ -170,7 +170,7 @@ export default function LenderPartners() {
                 {lender.logo}
               </Box>
 
-              <Box sx={{ flex: 1, minWidth: 200 }}>
+              <Box sx={{ flex: 1, minWidth: { xs: 0, sm: 200 } }}>
                 <Typography variant="h6" sx={{ fontWeight: 700, mb: 0.5 }}>
                   {lender.name}
                 </Typography>
@@ -196,9 +196,11 @@ export default function LenderPartners() {
               <Box
                 sx={{
                   display: "flex",
-                  gap: 3,
-                  alignItems: "center",
+                  gap: { xs: 1.5, sm: 3 },
+                  alignItems: { xs: "flex-start", sm: "center" },
+                  flexDirection: { xs: "column", sm: "row" },
                   flexWrap: "wrap",
+                  width: { xs: '100%', sm: 'auto' },
                 }}
               >
                 <Box>
@@ -227,11 +229,13 @@ export default function LenderPartners() {
 
                 <Button
                   variant="contained"
+                  fullWidth
                   sx={{
                     bgcolor: "#1976d2",
                     textTransform: "none",
                     fontWeight: 600,
                     px: 3,
+                    maxWidth: { sm: 'fit-content' },
                     "&:hover": {
                       bgcolor: "#1565c0",
                     },
