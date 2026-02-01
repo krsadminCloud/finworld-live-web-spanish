@@ -8,8 +8,10 @@ import Footer from './components/Footer';
 import { Helmet } from 'react-helmet-async';
 import { calculateStandardLoan, calculateAcceleratedLoan } from './utils/loanCalculations';
 import { trackEvent } from '../../../utils/analytics';
+import { useTranslation } from 'react-i18next';
 
 function App() {
+  const { t } = useTranslation();
   // Loan input state
   const [loanInputs, setLoanInputs] = useState({
     amount: 25000,
@@ -61,12 +63,12 @@ function App() {
         accelerated,
         chartData: {
           costBreakdown: [
-            { name: 'Principal', value: loanInputs.amount, color: '#00C1B0' },
-            { name: 'Interest', value: accelerated.totalInterest, color: '#E0F7F5' }
+            { name: t("calculators.autoLoan.chart.principal"), value: loanInputs.amount, color: '#00C1B0' },
+            { name: t("calculators.autoLoan.chart.interest"), value: accelerated.totalInterest, color: '#E0F7F5' }
           ],
           timelineComparison: [
-            { name: 'Standard', months: standard.termMonths, color: '#697586' },
-            { name: 'Accelerated', months: accelerated.actualMonths, color: '#00C1B0' }
+            { name: t("calculators.autoLoan.chart.standard"), months: standard.termMonths, color: '#697586' },
+            { name: t("calculators.autoLoan.chart.accelerated"), months: accelerated.actualMonths, color: '#00C1B0' }
           ]
         }
       });
@@ -106,10 +108,10 @@ function App() {
     <div className="min-h-screen bg-bg-page text-neutral-900">
       <Topbar />
       <Helmet>
-        <title>Auto Loan Early Payoff Calculator | FinWorld</title>
+        <title>{t("calculators.autoLoan.meta.title")}</title>
         <meta
           name="description"
-          content="See how extra payments and different schedules change your auto loan payoff date, interest cost, and savings."
+          content={t("calculators.autoLoan.meta.description")}
         />
         <link
           rel="canonical"
@@ -122,11 +124,11 @@ function App() {
         <meta property="og:type" content="website" />
         <meta
           property="og:title"
-          content="Auto Loan Early Payoff Calculator | FinWorld"
+          content={t("calculators.autoLoan.meta.title")}
         />
         <meta
           property="og:description"
-          content="Compare standard vs accelerated auto loan payoff and visualize how much interest you can save."
+          content={t("calculators.autoLoan.meta.ogDescription")}
         />
         <meta
           property="og:url"
@@ -143,11 +145,11 @@ function App() {
         <meta name="twitter:card" content="summary_large_image" />
         <meta
           name="twitter:title"
-          content="Auto Loan Early Payoff Calculator | FinWorld"
+          content={t("calculators.autoLoan.meta.title")}
         />
         <meta
           name="twitter:description"
-          content="Model extra payments, biweekly schedules, and interest savings on your car loan."
+          content={t("calculators.autoLoan.meta.twitterDescription")}
         />
         <meta
           name="twitter:image"
@@ -164,11 +166,10 @@ function App() {
           transition={{ duration: 0.6 }}
         >
           <h1 className="text-h1 font-bold text-neutral-900 mb-4">
-            Auto Loan Early Payoff Calculator
+            {t("calculators.autoLoan.title")}
           </h1>
           <p className="text-lg text-neutral-500 max-w-2xl mx-auto">
-            See how much you can save in interest and how quickly you can pay off your car loan 
-            by making extra payments toward your principal balance.
+            {t("calculators.autoLoan.subtitle")}
           </p>
           <div className="mt-6 w-24 h-1 bg-primary-500 mx-auto rounded-full" />
         </motion.section>
@@ -201,26 +202,26 @@ function App() {
 
         <section className="mt-10 space-y-3">
           <h2 className="text-xl font-semibold text-neutral-900">
-            How to use this auto loan payoff calculator
+            {t("calculators.autoLoan.info.title")}
           </h2>
           <p className="text-sm text-neutral-600">
-            Enter your loan amount, term, and interest rate, then choose a payment frequency and extra payment strategy. The results panel compares your standard schedule with an accelerated plan so you can see how many months and how much interest you save.
+            {t("calculators.autoLoan.info.p1")}
           </p>
           <p className="text-sm text-neutral-600">
-            Try testing different extra payment amounts or switching between monthly and biweekly payments to find a plan that fits your budget while still paying off the loan faster.
+            {t("calculators.autoLoan.info.p2")}
           </p>
 
           <h3 className="text-lg font-semibold text-neutral-900 mt-4">
-            Related tools
+            {t("calculators.autoLoan.info.related")}
           </h3>
           <p className="text-sm text-neutral-600">
-            Shopping for a car? Compare financing options with the{" "}
+            {t("calculators.autoLoan.info.compareIntro")}{" "}
             <a href="/tools/buy-vs-lease-auto" className="underline">
-              Buy vs Lease Calculator
+              {t("calculators.autoLoan.info.linkBuyVsLease")}
             </a>
-            , or explore broader debt strategies with the{" "}
+            {t("calculators.autoLoan.info.debtIntro")}{" "}
             <a href="/tools/extra-payment" className="underline">
-              Loan Payoff Calculator
+              {t("calculators.autoLoan.info.linkLoanPayoff")}
             </a>{" "}
             and{" "}
             <a href="/tools/take-home-pay" className="underline">

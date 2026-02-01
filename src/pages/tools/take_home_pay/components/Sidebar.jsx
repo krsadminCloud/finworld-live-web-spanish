@@ -18,6 +18,7 @@ import { Tooltip } from './Tooltip';
 import { Accordion } from './Accordion';
 import { STATES_LIST } from '../utils/taxData';
 import { formatNumberWithCommas, parseNumberFromFormattedString } from '../../../../utils/formatNumber';
+import { useTranslation } from 'react-i18next';
 
 const drawerWidth = 320;
 
@@ -30,66 +31,70 @@ export default function Sidebar({
   advancedOpen,
   setAdvancedOpen
 }) {
+  const { t } = useTranslation();
   const content = (
     <Box sx={{ p: 2, overflowY: 'auto', height: '100%' }}>
       <Typography variant="h6" sx={{ mb: 2, fontWeight: 700 }}>
-        Take-Home Pay Calculator
+        {t("calculators.takeHomePay.title")}
       </Typography>
 
       <Stack spacing={2.5}>
         <TextField
           label={
             <Box component="span">
-              Your Gross Annual Income
-              <Tooltip text="Your total income before any deductions or taxes." />
+              {t("calculators.takeHomePay.inputs.yourIncome")}
+              <Tooltip text={t("calculators.takeHomePay.helper.yourIncome")} />
             </Box>
           }
           fullWidth
           value={formatNumberWithCommas(inputs.income)}
           onChange={(e) => onInputChange('income', parseNumberFromFormattedString(e.target.value))}
           placeholder="e.g. 90,000"
+          placeholder={t("calculators.takeHomePay.placeholders.incomeComma")}
           inputProps={{ min: 0, step: 100 }}
         />
 
         <TextField
           label={
             <Box component="span">
-              Spouse's Gross Annual Income
-              <Tooltip text="Your spouse's total income before any deductions or taxes." />
+              {t("calculators.takeHomePay.inputs.spouseIncome")}
+              <Tooltip text={t("calculators.takeHomePay.helper.spouseIncome")} />
             </Box>
           }
           fullWidth
           value={formatNumberWithCommas(inputs.spouseIncome)}
           onChange={(e) => onInputChange('spouseIncome', parseNumberFromFormattedString(e.target.value))}
           placeholder="e.g. 75,000"
+          placeholder={t("calculators.takeHomePay.placeholders.incomeComma")}
           inputProps={{ min: 0, step: 100 }}
         />
 
         <TextField
           label={
             <Box component="span">
-              Tax Year
-              <Tooltip text="The tax year for which calculations are performed." />
+              {t("calculators.takeHomePay.inputs.taxYear")}
+              <Tooltip text={t("calculators.takeHomePay.helper.taxYear")} />
             </Box>
           }
           fullWidth
           value={inputs.year || ''}
           onChange={(e) => onInputChange('year', Number(e.target.value))}
           placeholder="e.g. 2025"
+          placeholder={t("calculators.takeHomePay.placeholders.year")}
           inputProps={{ min: 1900, max: 2100, step: 1 }}
         />
 
         <FormControl fullWidth>
           <InputLabel>
-            State
-            <Tooltip text="Your state of residence for state tax calculations." />
+            {t("calculators.takeHomePay.inputs.state")}
+            <Tooltip text={t("calculators.takeHomePay.helper.state")} />
           </InputLabel>
           <Select
             value={inputs.state}
             onChange={(e) => onInputChange('state', e.target.value)}
-            label="State"
+            label={t("calculators.takeHomePay.inputs.state")}
           >
-            <MenuItem value="">— Select —</MenuItem>
+            <MenuItem value="">{t("calculators.takeHomePay.labels.selectState")}</MenuItem>
             {STATES_LIST.map((state) => (
               <MenuItem key={state} value={state}>
                 {state}
@@ -100,63 +105,63 @@ export default function Sidebar({
 
         <FormControl fullWidth>
           <InputLabel>
-            Filing Status
-            <Tooltip text="Your tax filing status (e.g., Single, Married Filing Jointly)." />
+            {t("calculators.takeHomePay.inputs.filingStatus")}
+            <Tooltip text={t("calculators.takeHomePay.helper.filingStatus")} />
           </InputLabel>
           <Select
             value={inputs.status}
             onChange={(e) => onInputChange('status', e.target.value)}
-            label="Filing Status"
+            label={t("calculators.takeHomePay.inputs.filingStatus")}
           >
-            <MenuItem value="single">Single</MenuItem>
-            <MenuItem value="mfj">Married Filing Jointly</MenuItem>
-            <MenuItem value="mfs">Married Filing Separately</MenuItem>
-            <MenuItem value="hoh">Head of Household</MenuItem>
+            <MenuItem value="single">{t("calculators.takeHomePay.options.single")}</MenuItem>
+            <MenuItem value="mfj">{t("calculators.takeHomePay.options.mfj")}</MenuItem>
+            <MenuItem value="mfs">{t("calculators.takeHomePay.options.mfs")}</MenuItem>
+            <MenuItem value="hoh">{t("calculators.takeHomePay.options.hoh")}</MenuItem>
           </Select>
         </FormControl>
 
-        <Accordion title="Your 401(k) Contributions" tooltip="Pre-tax contributions to your 401(k) retirement plan.">
+        <Accordion title={t("calculators.takeHomePay.sections.your401")} tooltip={t("calculators.takeHomePay.helper.your401")}>
           <TextField
-            label="Percent of your income"
+            label={t("calculators.takeHomePay.inputs.your401Percent")}
             type="number"
             fullWidth
             value={inputs.k401Percent || ''}
             onChange={(e) => onInputChange('k401Percent', Number(e.target.value))}
-            placeholder="e.g. 10"
+            placeholder={t("calculators.takeHomePay.placeholders.percent")}
             inputProps={{ min: 0, max: 100, step: 0.5 }}
           />
         </Accordion>
 
-        <Accordion title="Spouse's 401(k) Contributions" tooltip="Spouse's pre-tax contributions to their 401(k) retirement plan.">
+        <Accordion title={t("calculators.takeHomePay.sections.spouse401")} tooltip={t("calculators.takeHomePay.helper.spouse401")}>
           <TextField
-            label="Percent of spouse's income"
+            label={t("calculators.takeHomePay.inputs.spouse401Percent")}
             type="number"
             fullWidth
             value={inputs.spouseK401Percent || ''}
             onChange={(e) => onInputChange('spouseK401Percent', Number(e.target.value))}
-            placeholder="e.g. 8"
+            placeholder={t("calculators.takeHomePay.placeholders.percent")}
             inputProps={{ min: 0, max: 100, step: 0.5 }}
           />
         </Accordion>
 
-        <Accordion title="Your Roth IRA (Post-tax)" tooltip="Post-tax contributions to your Roth IRA retirement plan.">
+        <Accordion title={t("calculators.takeHomePay.sections.yourRoth")} tooltip={t("calculators.takeHomePay.helper.yourRoth")}>
           <TextField
-          label="Your annual amount ($)"
+          label={t("calculators.takeHomePay.inputs.yourRothAmount")}
           fullWidth
           value={formatNumberWithCommas(inputs.rothAmount)}
           onChange={(e) => onInputChange('rothAmount', parseNumberFromFormattedString(e.target.value))}
-          placeholder="e.g. 7,000"
+          placeholder={t("calculators.takeHomePay.placeholders.amountComma")}
           inputProps={{ min: 0, step: 100 }}
           />
         </Accordion>
 
-        <Accordion title="Spouse's Roth IRA (Post-tax)" tooltip="Spouse's post-tax contributions to their Roth IRA retirement plan.">
+        <Accordion title={t("calculators.takeHomePay.sections.spouseRoth")} tooltip={t("calculators.takeHomePay.helper.spouseRoth")}>
           <TextField
-          label="Spouse's annual amount ($)"
+          label={t("calculators.takeHomePay.inputs.spouseRothAmount")}
           fullWidth
           value={formatNumberWithCommas(inputs.spouseRothAmount)}
           onChange={(e) => onInputChange('spouseRothAmount', parseNumberFromFormattedString(e.target.value))}
-          placeholder="e.g. 7,000"
+          placeholder={t("calculators.takeHomePay.placeholders.amountComma")}
           inputProps={{ min: 0, step: 100 }}
           />
         </Accordion>

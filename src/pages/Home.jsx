@@ -14,9 +14,13 @@ import { Helmet } from "react-helmet-async";
 import { useTheme } from "@mui/material/styles";
 import FeaturedTools from "../components/FeaturedTools";
 import ArticlesGrid from "../components/ArticlesGrid";
+import { useLanguageRouting } from "../utils/langRouting";
+import { useTranslation } from "react-i18next";
 
 export default function Home() {
   const theme = useTheme();
+  const { withLang } = useLanguageRouting();
+  const { t } = useTranslation();
 
   return (
     <Box sx={{ bgcolor: "background.default" }}>
@@ -86,13 +90,13 @@ export default function Home() {
             <Stack spacing={2.5} alignItems="center">
               <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
                 <Chip
-                  label="Fresh & trusted"
+                  label={t("common.badge.fresh")}
                   color="success"
                   size="small"
                   sx={{ fontWeight: 700, borderRadius: "999px", backgroundColor: "#22c55e" }}
                 />
                 <Chip
-                  label="No sign-up needed"
+                  label={t("common.badge.nosignup.short")}
                   variant="outlined"
                   size="small"
                   sx={{
@@ -116,7 +120,7 @@ export default function Home() {
                     "0 14px 32px rgba(0,0,0,0.6), 0 1px 0 rgba(0,0,0,0.45), 0 0 18px rgba(20,184,166,0.25)",
                 }}
               >
-                Make Smart Money Moves
+                {t("home.hero.title")}
               </Typography>
 
               <Typography
@@ -131,8 +135,7 @@ export default function Home() {
                   textShadow: "0 10px 28px rgba(0,0,0,0.55)",
                 }}
               >
-                Get personalized insights and calculators to reach your financial goals with
-                confidence, tuned with the same rhythm as our calculators hub.
+                {t("home.hero.subtitle")}
               </Typography>
 
               {/* CTA Buttons */}
@@ -143,7 +146,7 @@ export default function Home() {
               >
                 <Button
                   component={RouterLink}
-                  to="/tools"
+                  to={withLang("/tools")}
                   variant="contained"
                   size="large"
                   sx={{
@@ -157,11 +160,11 @@ export default function Home() {
                     boxShadow: "0 12px 24px rgba(20,184,166,0.35)",
                   }}
                 >
-                  Explore calculators
+                  {t("home.cta.explore")}
                 </Button>
                 <Button
                   component={RouterLink}
-                  to="/guides"
+                  to={withLang("/guides")}
                   variant="outlined"
                   size="large"
                   sx={{
@@ -178,7 +181,7 @@ export default function Home() {
                     },
                   }}
                 >
-                  Read guides
+                  {t("home.cta.guides")}
                 </Button>
               </Stack>
 
@@ -196,7 +199,7 @@ export default function Home() {
                       backgroundColor: "#22c55e",
                     }}
                   />
-                  <span>Live tools with no sign-in</span>
+                  <span>{t("home.stat.liveTools")}</span>
                 </Stack>
                 <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
                   <Box
@@ -207,7 +210,7 @@ export default function Home() {
                       backgroundColor: "#38bdf8",
                     }}
                   />
-                  <span>Built to power your Personal Finance</span>
+                  <span>{t("home.stat.personalFinance")}</span>
                 </Stack>
               </Stack>
             </Stack>
@@ -226,7 +229,7 @@ export default function Home() {
             color: "text.primary",
           }}
         >
-          Featured Tools
+          {t("home.featured.title")}
         </Typography>
         <FeaturedTools />
       </Container>
@@ -243,7 +246,7 @@ export default function Home() {
               color: "text.primary",
             }}
           >
-            Latest Articles
+            {t("home.articles.title")}
           </Typography>
           <ArticlesGrid />
         </Container>

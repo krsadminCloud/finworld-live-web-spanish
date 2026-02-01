@@ -4,18 +4,19 @@ FinWorld is a comprehensive financial calculator web application built with Reac
 
 ## Project Overview
 
-This project is a modular React app with calculators under `src/pages/tools/`:
+Multilingual React (Vite + MUI + Tailwind) app with language‑prefixed routing (`/:lang/*`, default `en`, also `es-us`). Core experiences:
 
-- Extra Payment Calculator — loan payoff acceleration
-- Take‑Home Pay Calculator — tax and deductions
-- Mortgage Calculator — payment and amortization
-- Home Affordability — home purchase affordability
-- All Rates Comparison — mortgage rate comparison
-- Auto Loan Calculator — auto financing payment and schedule
-- Compounding Calculator — growth with compounding
-- Buy vs Lease (Auto) — cost comparison over term
-- Retirement Calculator — savings growth and shortfall
-- Rental Property Calculator — cash flow, cap rate, ROI analysis
+- Home + Learn pages: `/about`, `/guides`, `/comparisons`, `/articles`, `/articles/:slug`
+- Tools hub plus calculators under `/:lang/tools/*`:
+  - Extra Payment — loan payoff acceleration
+  - Take‑Home Pay — tax and deductions
+  - Mortgage — payment, amortization, all‑rates view
+  - Home Affordability — price + payment guardrails
+  - Auto Loan — auto financing payment and schedule
+  - Compounding — growth with flexible cadence
+  - Buy vs Lease (Auto) — cost comparison
+  - Retirement — savings growth and shortfall
+  - Rental Property — cash flow, cap rate, ROI
 
 ## Tech Stack
 
@@ -34,26 +35,25 @@ This project is a modular React app with calculators under `src/pages/tools/`:
 
 ```
 /src
-  index.jsx                    # React entry point
-  App.jsx                      # Routes and lazy-loaded calculators
+  index.jsx                    # React entry point (bootstraps theme + i18n)
+  App.jsx                      # Language-prefixed routes and lazy-loaded calculators
   createEmotionCache.js        # Emotion cache for MUI
   theme.js                     # MUI theme + color mode hook
   index.css                    # Global styles (Tailwind + custom)
   /assets/images               # App images
-  /components                  # Shared UI components
-    ArticlesGrid.jsx
-    CalculatorCard.jsx
-    FeaturedTools.jsx
-    Footer.jsx
-    Navbar.jsx
+  /components                  # Shared UI components (ArticlesGrid, CalculatorCard, FeaturedTools, Footer, Navbar)
     /calculators_shared_files
       /all_rates               # Rate comparison components + API helpers
   /context
     ColorModeContext.js        # Theme context
+  /data
+    articles.js                # Article metadata (slugs, CTAs, summaries)
   /features/rental             # Rental calculator building blocks
     ...                        # inputs, results, tuning, export, state
   /pages
     Home.jsx                   # Landing page
+    About.jsx | Guides.jsx | Comparisons.jsx
+    ArticlesIndex.jsx | ArticlePage.jsx
     /tools                     # Calculator pages
       index.jsx                # Tools directory page
       /extra_payment
@@ -69,6 +69,7 @@ This project is a modular React app with calculators under `src/pages/tools/`:
   /utils
     formatCurrency.js          # Currency formatting
     formatNumber.js            # Number formatting
+    langRouting.js             # Helpers for language-aware navigation
 ```
 
 Additional public assets used by calculators:
@@ -95,25 +96,29 @@ Commands:
 ### Routing
 - File: `src/App.jsx`
 - Framework: React Router v6
-- Routes (lazy-loaded):
-  - `/` — Home
-  - `/tools` — Calculators hub
-  - `/tools/extra_payment`
-  - `/tools/take_home_pay`
-  - `/tools/mortgage_calculator`
-  - `/tools/mortgage_calculator/allrates`
-  - `/tools/home_affordability`
-  - `/tools/auto_loan_calculator`
-  - `/tools/compounding_calculator`
-  - `/tools/buy_vs_lease_auto`
-  - `/tools/retirement_calculator`
-  - `/tools/rental_property_calculator`
+- Language prefix: all pages live under `/:lang/*` where `lang` is `en` or `es-us`; root `/` redirects to `/en`.
+- Routes (lazy-loaded under `/:lang/`):
+  - `` — Home
+  - `tools` — Calculators hub
+  - `tools/extra-payment`
+  - `tools/take-home-pay`
+  - `tools/mortgage-calculator`
+  - `tools/mortgage-calculator/allrates`
+  - `tools/home-affordability`
+  - `tools/auto-loan-calculator`
+  - `tools/compounding-calculator`
+  - `tools/buy-vs-lease-auto`
+  - `tools/retirement-calculator`
+  - `tools/rental-property-calculator`
+  - Learn pages: `about`, `guides`, `comparisons`, `articles`, `articles/:slug`
+- Legacy underscore/kebab paths are client-redirected to the canonical hyphenated versions to preserve inbound links.
 
 ### Global Layout & Styling
 - BrowserRouter + Suspense fallback
 - Material-UI + TailwindCSS
 - Theme: `src/theme.js`; color mode: `src/context/ColorModeContext.js`
 - Global styles in `src/index.css`
+- Language-aware navigation helpers: `src/utils/langRouting.js` ensure links include the active `/:lang` prefix
 
 #### Per-Tool Theme Overrides (Take-Home Pay)
 - The Take-Home Pay calculator uses page-scoped light/dark CSS files loaded at runtime so its styles can diverge slightly from the global palette without affecting other pages.
@@ -135,6 +140,7 @@ Commands:
 ### SEO
 - `index.html` includes base meta tags
 - Per‑page SEO available via `react-helmet-async`
+- Helmet usage is language-aware via `i18n` and route prefixes; ensure canonical/hreflang tags use the prefixed URLs.
 
 ## Calculator Modules (Highlights)
 
@@ -167,6 +173,11 @@ Path: `src/pages/tools/rental_property_calculator/`
 - Inputs: Property, Loan, Income, Expenses
 - Outputs: Results summary, ROI charts, export actions
 
+## Articles
+- Data source: `src/data/articles.js` (slug, excerpt, sections, CTAs)
+- Routes: `/:lang/articles` (index) and `/:lang/articles/:slug` (detail)
+- Components: `ArticlesIndex.jsx`, `ArticlePage.jsx`, `ArticlesGrid.jsx`
+
 ## Shared Components & Utilities
 
 - Components: `ArticlesGrid.jsx`, `CalculatorCard.jsx`, `FeaturedTools.jsx`, `Navbar.jsx`, `Footer.jsx`
@@ -178,6 +189,12 @@ Path: `src/pages/tools/rental_property_calculator/`
 ### Vite
 - Config: `vite.config.js` (React plugin, PostCSS, hashed assets)
 - Scripts: `dev`, `build`, `preview`
+
+### Sitemap & Robots
+- Scripts: `scripts/generate-sitemap.js` (scans routes) and `scripts/copy-static.js` (moves assets to dist).
+- Execution: Runs automatically as part of the `npm run build` command.
+- Output: Generates `sitemap.xml` and copies `robots.txt` to the build output.
+- TODO: `generate-sitemap.js` currently emits unprefixed URLs; update it to emit `/:lang/*` variants (or hreflang entries) to match the i18n routing scheme before shipping multilingual sitemaps.
 
 ### TailwindCSS
 - Config: `tailwind.config.js`; works alongside Material‑UI components
@@ -204,6 +221,7 @@ Path: `src/pages/tools/rental_property_calculator/`
 - Add unit tests for calculation utilities under `src/pages/tools/**/utils`
 - Wire optional Supabase integration if persisting scenarios is desired
 - Continue performance tuning (charts, lazy loading, code splitting)
+- Housekeeping: `src/App.js` is legacy; keep `src/App.jsx` as the active entry or remove the JS file to avoid confusion.
 
 Data checks (Take-Home Pay):
 - 2024 federal standard deduction values are correct in `src/pages/tools/take_home_pay/utils/taxData.js`.
@@ -216,3 +234,52 @@ Data checks (Take-Home Pay):
 - On feature additions or layout changes, update relevant sections (Structure, Routing, Mobile Responsiveness) in the same PR.
 - Keep file references current and prefer workspace-relative paths.
  - For Take-Home Pay styling changes, prefer editing `public/thp-themes/*.css` to keep overrides page-scoped.
+
+
+
+### Internationalization (i18n) Strategy (SEO-first)
+
+FinWorld uses language-prefixed routes for all pages:
+
+English: /en/...
+
+Spanish (US): /es-us/...
+
+Future languages follow the same pattern (e.g., /fr/..., /bn/...).
+
+Language is global and persistent:
+
+Selecting a language updates the entire site going forward.
+
+Preference is stored in localStorage.
+Storage key: `finworld.lang`; changes also update `<html lang>` at runtime.
+
+Switching language preserves the current page path when possible:
+
+Example: /en/tools/mortgage ⇄ /es-us/tools/mortgage.
+
+Translation system
+
+Use i18next + react-i18next.
+
+Translations stored under src/locales/{lang}/...json.
+
+English is the source language; other languages map to the same keys.
+
+SEO requirements
+
+Each language page must have:
+
+Correct <html lang="..."> attribute (en, es-US, etc.)
+
+Self-referencing canonical for that language URL
+
+hreflang alternates linking all available language versions
+
+Sitemaps:
+
+A single combined sitemap.xml includes all language-prefixed URLs (English + all translations).
+
+Hosting / Routing
+
+Azure Static Web Apps must rewrite /en/* and /es-us/* routes to index.html to support SPA routing.

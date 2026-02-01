@@ -7,16 +7,18 @@ import {
   Paper,
   Chip,
 } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { articles } from "../data/articles";
+import { useLanguageRouting } from "../utils/langRouting";
+import { useTranslation } from "react-i18next";
 
 const sortedArticles = () => {
   // If featured flag existed we could sort; fallback to original order
   return articles.slice();
 };
 
-function ArticleCard({ article }) {
+function ArticleCard({ article, withLang }) {
   return (
     <Paper
       elevation={0}
@@ -58,7 +60,7 @@ function ArticleCard({ article }) {
 
       <Typography
         component={RouterLink}
-        to={`/articles/${article.slug}`}
+        to={withLang(`/articles/${article.slug}`)}
         variant="h6"
         sx={{
           fontWeight: 800,
@@ -79,6 +81,12 @@ function ArticleCard({ article }) {
 
 export default function ArticlesIndex() {
   const list = sortedArticles();
+  const location = useLocation();
+  const { withLang } = useLanguageRouting();
+  const origin = typeof window !== "undefined" ? window.location.origin : "https://www.finworld.live";
+  const canonicalPath = location.pathname || "/en/articles";
+  const canonical = `${origin}${canonicalPath}`;
+  const { t } = useTranslation();
 
   return (
     <Box sx={{ bgcolor: "background.default", minHeight: "100vh" }}>
@@ -88,21 +96,21 @@ export default function ArticlesIndex() {
           name="description"
           content="Practical personal finance guides on credit, auto loans, and buying a home—plus calculators to help you run the numbers with confidence."
         />
-        <link rel="canonical" href="https://www.finworld.live/articles" />
+        <link rel="canonical" href={canonical} />
         <meta property="og:title" content="FinWorld Guides & Articles" />
         <meta
           property="og:description"
           content="Practical personal finance guides on credit, auto loans, and buying a home—plus calculators to help you run the numbers with confidence."
         />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://www.finworld.live/articles" />
+        <meta property="og:url" content={canonical} />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "BreadcrumbList",
             itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Home", item: "https://www.finworld.live/" },
-              { "@type": "ListItem", position: 2, name: "Articles", item: "https://www.finworld.live/articles" },
+              { "@type": "ListItem", position: 1, name: "Home", item: `${origin}/` },
+              { "@type": "ListItem", position: 2, name: "Articles", item: canonical },
             ],
           })}
         </script>
@@ -113,7 +121,7 @@ export default function ArticlesIndex() {
             itemListElement: list.map((a, idx) => ({
               "@type": "ListItem",
               position: idx + 1,
-              url: `https://www.finworld.live/articles/${a.slug}`,
+              url: `${origin}${withLang(`/articles/${a.slug}`)}`,
               name: a.title,
             })),
           })}
@@ -123,11 +131,10 @@ export default function ArticlesIndex() {
       <Container maxWidth="lg" sx={{ pt: { xs: 6, md: 8 }, pb: { xs: 6, md: 10 } }}>
         <Stack spacing={3} sx={{ mb: 4 }}>
           <Typography variant="h3" sx={{ fontWeight: 900, letterSpacing: "-0.02em" }}>
-            Guides & Articles
+            {t("articles.title")}
           </Typography>
           <Typography variant="body1" sx={{ color: "text.secondary", maxWidth: 820, lineHeight: 1.7 }}>
-            Practical, beginner-friendly walkthroughs on credit, auto loans, and buying a home—paired with FinWorld
-            calculators so you can check affordability and payments before you commit.
+            {t("articles.intro")}
           </Typography>
         </Stack>
 
@@ -138,9 +145,9 @@ export default function ArticlesIndex() {
             gap: { xs: 2, md: 3 },
           }}
         >
-          {list.map((article) => (
-            <ArticleCard key={article.slug} article={article} />
-          ))}
+            {list.map((article) => (
+              <ArticleCard key={article.slug} article={article} withLang={withLang} />
+            ))}
         </Box>
       </Container>
     </Box>

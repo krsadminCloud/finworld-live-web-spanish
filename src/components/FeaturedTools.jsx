@@ -11,46 +11,48 @@ import {
   useTheme,
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
+import { useLanguageRouting } from "../utils/langRouting";
+import { useTranslation } from "react-i18next";
 
 import extraPaymentImg from "../assets/images/extra_payment.jpg";
 import takeHomePayImg from "../assets/images/take_home_pay.jpg";
 import mortgageRatesImg from "../assets/images/mortgage_rates.jpg";
 import creditCardImg from "../assets/images/credit_card.jpg";
 
-const tools = [
+const buildTools = (t) => [
   {
-    title: "Financial Calculators",
-    description: "Explore our full library of financial calculators.",
+    title: t("home.featured.card1.title"),
+    description: t("home.featured.card1.desc"),
     to: "/tools",
     image: extraPaymentImg,
     accent: "#14B8A6",
-    status: "Live",
+    status: t("common.label.popular"),
   },
   {
-    title: "Insurance Quote (coming Soon)",
-    description: "Get a personalized insurance quote.",
+    title: t("home.featured.card2.title"),
+    description: t("home.featured.card2.desc"),
     to: null,
     image: takeHomePayImg,
     accent: "#38bdf8",
-    status: "coming Soon",
+    status: t("common.label.comingSoon"),
     disabled: true,
   },
   {
-    title: "Mortgage Rates (Soon)",
-    description: "Compare lender rates and fees side by side.",
+    title: t("home.featured.card3.title"),
+    description: t("home.featured.card3.desc"),
     to: null,
     image: mortgageRatesImg,
     accent: "#fbbf24",
-    status: "Planned",
+    status: t("common.label.comingSoon"),
     disabled: true,
   },
   {
-    title: "Credit Card Finder (Soon)",
-    description: "Match cards to your spending profile.",
+    title: t("home.featured.card4.title"),
+    description: t("home.featured.card4.desc"),
     to: null,
     image: creditCardImg,
     accent: "#a78bfa",
-    status: "Planned",
+    status: t("common.label.comingSoon"),
     disabled: true,
   },
 ];
@@ -189,6 +191,9 @@ const ToolCard = ({ title, description, to, image, accent, status, disabled }) =
 };
 
 export default function FeaturedTools() {
+  const { withLang } = useLanguageRouting();
+  const { t } = useTranslation();
+  const tools = React.useMemo(() => buildTools(t), [t]);
   return (
     <Stack spacing={3} sx={{ mt: 2 }}>
       <Box
@@ -206,7 +211,7 @@ export default function FeaturedTools() {
       >
         {tools.map((tool) => (
           <Box key={tool.title} sx={{ display: "flex" }}>
-            <ToolCard {...tool} />
+            <ToolCard {...tool} to={tool.to ? withLang(tool.to) : null} />
           </Box>
         ))}
       </Box>

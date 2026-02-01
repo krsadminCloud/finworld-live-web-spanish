@@ -19,6 +19,7 @@ import {
 } from "@mui/material";
 // Removed expand icon as Taxes/Insurance/HOA is no longer collapsible
 import { STATES } from "../../../../components/calculators_shared_files/all_rates/api";
+import { useTranslation } from "react-i18next";
 
 const drawerWidth = 340;
 
@@ -30,6 +31,7 @@ export default function Sidebar({
   onCalculate,
   onReset,
 }) {
+  const { t } = useTranslation();
   const allowNumeric = (val) => val === "" || /^[0-9]*\.?[0-9]*$/.test(val);
 
   const updateField = (field, value) => {
@@ -70,12 +72,12 @@ export default function Sidebar({
       }}
     >
       <Typography variant="h6" sx={{ mb: 2, fontWeight: 700 }}>
-        Mortgage Calculator
+        {t("mortgage.title")}
       </Typography>
 
       <Stack spacing={2.5}>
         <TextField
-          label="Home Price"
+          label={t("mortgage.inputs.homePrice")}
           value={formatWithCommas(inputs.homePrice)}
           onChange={(e) => {
             const val = e.target.value.replace(/,/g, "");
@@ -89,7 +91,7 @@ export default function Sidebar({
 
         <Box>
           <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 1 }}>
-            <Typography sx={{ fontWeight: 600 }}>Down Payment</Typography>
+            <Typography sx={{ fontWeight: 600 }}>{t("mortgage.inputs.downPayment")}</Typography>
             <ToggleButtonGroup
               size="small"
               color="primary"
@@ -106,7 +108,7 @@ export default function Sidebar({
 
           {inputs.downPaymentMode === "percent" ? (
             <TextField
-              label="Down Payment (%)"
+              label={t("mortgage.inputs.downPaymentPercent")}
               value={inputs.downPaymentPercent}
               onChange={(e) => {
                 const val = e.target.value;
@@ -116,12 +118,16 @@ export default function Sidebar({
                 endAdornment: <span style={{ marginLeft: 8 }}>%</span>,
               }}
               fullWidth
-              helperText={inputs.homePrice ? "Enter percentage of home price" : "Enter home price for % to apply"}
+              helperText={
+                inputs.homePrice
+                  ? t("mortgage.inputs.downPaymentPercentHelper")
+                  : t("mortgage.inputs.downPaymentPercentHelperMissingPrice")
+              }
             />
           ) : (
             <TextField
-              label="Down Payment Amount"
-              placeholder="Enter Dollar Amount"
+              label={t("mortgage.inputs.downPaymentAmount")}
+              placeholder={t("mortgage.inputs.downPaymentAmountPlaceholder")}
               value={formatWithCommas(inputs.downPayment)}
               onChange={(e) => {
                 const val = e.target.value.replace(/,/g, "");
@@ -137,22 +143,22 @@ export default function Sidebar({
 
         <Box sx={{ display: "flex", gap: 2 }}>
           <FormControl sx={{ flex: 1 }}>
-            <InputLabel>Loan Term</InputLabel>
+            <InputLabel>{t("mortgage.inputs.loanTerm")}</InputLabel>
             <Select
               value={inputs.loanTerm}
-              label="Loan Term"
+              label={t("mortgage.inputs.loanTerm")}
               onChange={(e) => updateField("loanTerm", e.target.value)}
             >
               {loanTermOptions.map((term) => (
                 <MenuItem key={term} value={term}>
-                  {term} Years
+                  {t("mortgage.inputs.loanTermYears", { years: term })}
                 </MenuItem>
               ))}
             </Select>
           </FormControl>
 
           <TextField
-            label="Interest Rate"
+            label={t("mortgage.inputs.interestRate")}
             value={inputs.interestRate}
             onChange={(e) => {
               const val = e.target.value;
@@ -168,13 +174,13 @@ export default function Sidebar({
         <Accordion expanded>
           <AccordionSummary>
             <Typography sx={{ fontWeight: 600 }}>
-              Taxes, Insurance & HOA
+              {t("mortgage.inputs.taxesInsuranceHoa")}
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
             <Stack spacing={2}>
               <TextField
-                label="Property Tax"
+                label={t("mortgage.inputs.propertyTax")}
                 value={formatWithCommas(inputs.propertyTax)}
                 onChange={(e) => {
                   const val = e.target.value.replace(/,/g, "");
@@ -184,11 +190,11 @@ export default function Sidebar({
                   startAdornment: <span style={{ marginRight: 8 }}>$</span>,
                 }}
                 fullWidth
-                helperText="Annual property tax"
+                helperText={t("mortgage.inputs.propertyTaxHelper")}
               />
 
               <TextField
-                label="Home Insurance"
+                label={t("mortgage.inputs.homeInsurance")}
                 value={formatWithCommas(inputs.homeInsurance)}
                 onChange={(e) => {
                   const val = e.target.value.replace(/,/g, "");
@@ -198,11 +204,11 @@ export default function Sidebar({
                   startAdornment: <span style={{ marginRight: 8 }}>$</span>,
                 }}
                 fullWidth
-                helperText="Annual home insurance premium"
+                helperText={t("mortgage.inputs.homeInsuranceHelper")}
               />
 
               <TextField
-                label="PMI (if applicable)"
+                label={t("mortgage.inputs.pmi")}
                 value={formatWithCommas(inputs.pmi)}
                 onChange={(e) => {
                   const val = e.target.value.replace(/,/g, "");
@@ -212,11 +218,11 @@ export default function Sidebar({
                   startAdornment: <span style={{ marginRight: 8 }}>$</span>,
                 }}
                 fullWidth
-                helperText="Monthly PMI payment"
+                helperText={t("mortgage.inputs.pmiHelper")}
               />
 
               <TextField
-                label="HOA Fees"
+                label={t("mortgage.inputs.hoaFees")}
                 value={formatWithCommas(inputs.hoaFees)}
                 onChange={(e) => {
                   const val = e.target.value.replace(/,/g, "");
@@ -226,7 +232,7 @@ export default function Sidebar({
                   startAdornment: <span style={{ marginRight: 8 }}>$</span>,
                 }}
                 fullWidth
-                helperText="Monthly HOA fees"
+                helperText={t("mortgage.inputs.hoaFeesHelper")}
               />
             </Stack>
           </AccordionDetails>
@@ -234,13 +240,13 @@ export default function Sidebar({
 
         {/* State dropdown moved to be right before Credit Score */}
         <FormControl fullWidth>
-          <InputLabel>State (Optional)</InputLabel>
+          <InputLabel>{t("mortgage.inputs.stateOptional")}</InputLabel>
           <Select
             value={inputs.state}
-            label="State (Optional)"
+            label={t("mortgage.inputs.stateOptional")}
             onChange={(e) => updateField("state", e.target.value)}
           >
-            <MenuItem value="">— Select —</MenuItem>
+            <MenuItem value="">{t("mortgage.inputs.stateSelectPlaceholder")}</MenuItem>
             {Object.entries(STATES).map(([abbr, name]) => (
               <MenuItem key={abbr} value={abbr}>
                 {name} ({abbr})
@@ -250,10 +256,10 @@ export default function Sidebar({
         </FormControl>
 
         <FormControl fullWidth>
-          <InputLabel>Credit Score</InputLabel>
+          <InputLabel>{t("mortgage.inputs.creditScore")}</InputLabel>
           <Select
             value={inputs.creditScore}
-            label="Credit Score"
+            label={t("mortgage.inputs.creditScore")}
             onChange={(e) => updateField("creditScore", e.target.value)}
           >
             {creditScoreOptions.map((option) => (
@@ -280,7 +286,7 @@ export default function Sidebar({
             },
           }}
         >
-          Reset
+          {t("mortgage.actions.reset")}
         </Button>
       </Stack>
     </Box>

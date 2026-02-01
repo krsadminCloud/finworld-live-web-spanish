@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Box, useTheme } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -15,6 +16,7 @@ export function TaxChart({
   netPay
 }) {
   const theme = useTheme();
+  const { t } = useTranslation();
   const isDark = theme.palette.mode === 'dark';
   const [chartKey, setChartKey] = useState(0);
 
@@ -23,7 +25,15 @@ export function TaxChart({
   }, [isDark]);
 
   const data = {
-    labels: ['Federal Tax', 'State Tax', 'FICA Tax', 'Local Tax', 'Pre-Tax Deductions', 'Roth Contributions', 'Net Pay'],
+    labels: [
+      t("calculators.takeHomePay.chart.federal"),
+      t("calculators.takeHomePay.chart.state"),
+      t("calculators.takeHomePay.chart.fica"),
+      t("calculators.takeHomePay.chart.local"),
+      t("calculators.takeHomePay.chart.preTax"),
+      t("calculators.takeHomePay.chart.roth"),
+      t("calculators.takeHomePay.chart.netPay")
+    ],
     datasets: [
       {
         data: [federalTax, stateTax, ficaTax, localTax, preTaxDeductions, rothContributions, netPay],
@@ -48,7 +58,7 @@ export function TaxChart({
       },
       title: {
         display: true,
-        text: 'Income Allocation Breakdown',
+        text: t("calculators.takeHomePay.chart.title"),
         color: isDark ? '#FFFFFF' : '#374151',
         font: {
           size: 14,

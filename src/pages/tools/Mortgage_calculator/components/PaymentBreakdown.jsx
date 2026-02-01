@@ -23,11 +23,13 @@ import PercentIcon from "@mui/icons-material/Percent";
 import { Doughnut, Line } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, Filler } from "chart.js";
 import { formatCurrency, formatCurrencyDetailed, calculatePayoffDate, prepareLoanEstimateChartData } from "../utils/mortgageCalculations";
+import { useTranslation } from "react-i18next";
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, Filler);
 
 export default function PaymentBreakdown({ results, inputs }) {
   const theme = useTheme();
+  const { t } = useTranslation();
   const isDark = theme.palette.mode === "dark";
   const cardBg = isDark ? "rgba(255,255,255,0.06)" : "#f8fafc";
   const cardBorder = isDark ? "rgba(255,255,255,0.12)" : "#e7edf3";
@@ -41,12 +43,12 @@ export default function PaymentBreakdown({ results, inputs }) {
   if (!results) {
     return (
       <Paper sx={{ p: 3, borderRadius: 2 }}>
-        <Typography>Enter values to see payment breakdown</Typography>
+        <Typography>{t("mortgage.empty.prompt")}</Typography>
       </Paper>
     );
   }
 
-  const chartLabels = ["Principal & Interest", "Taxes", "Insurance"];
+  const chartLabels = [t("mortgage.chart.principalInterest"), t("mortgage.chart.taxes"), t("mortgage.chart.insurance")];
   const chartDataValues = [
     results.principalAndInterest,
     results.monthlyPropertyTax,
@@ -55,13 +57,13 @@ export default function PaymentBreakdown({ results, inputs }) {
   const chartColors = ["#1976d2", "#16a34a", "#bdbdbd"];
 
 if (results.monthlyPMI > 0) {
-chartLabels.push("PMI");
+chartLabels.push(t("mortgage.chart.pmi"));
 chartDataValues.push(results.monthlyPMI / 12);
 chartColors.push("#f59e0b");
 }
 
 if (results.monthlyHOA > 0) {
-chartLabels.push("HOA");
+chartLabels.push(t("mortgage.chart.hoa"));
 chartDataValues.push(results.monthlyHOA / 12);
 chartColors.push("#8b5cf6");
 }
@@ -120,7 +122,7 @@ chartColors.push("#8b5cf6");
               mr: 1,
             }}
           />
-          <Typography>Principal & Interest</Typography>
+          <Typography>{t("mortgage.chart.principalInterest")}</Typography>
         </Box>
         <Typography sx={{ fontWeight: 600, ml: 2 }}>
           {formatCurrency(results.principalAndInterest)}
@@ -137,7 +139,7 @@ chartColors.push("#8b5cf6");
               mr: 1,
             }}
           />
-          <Typography>Taxes</Typography>
+          <Typography>{t("mortgage.chart.taxes")}</Typography>
         </Box>
         <Typography sx={{ fontWeight: 600, ml: 2 }}>
           {formatCurrency(results.monthlyPropertyTax)}
@@ -154,7 +156,7 @@ chartColors.push("#8b5cf6");
               mr: 1,
             }}
           />
-          <Typography>Insurance</Typography>
+          <Typography>{t("mortgage.chart.insurance")}</Typography>
         </Box>
         <Typography sx={{ fontWeight: 600, ml: 2 }}>
           {formatCurrency(results.monthlyInsurance)}
@@ -172,7 +174,7 @@ chartColors.push("#8b5cf6");
                 mr: 1,
               }}
             />
-            <Typography>PMI</Typography>
+            <Typography>{t("mortgage.chart.pmi")}</Typography>
           </Box>
           <Typography sx={{ fontWeight: 600, ml: 2 }}>
             {formatCurrency(results.monthlyPMI)}
@@ -191,7 +193,7 @@ chartColors.push("#8b5cf6");
                 mr: 1,
               }}
             />
-            <Typography>HOA</Typography>
+            <Typography>{t("mortgage.chart.hoa")}</Typography>
           </Box>
           <Typography sx={{ fontWeight: 600, ml: 2 }}>
             {formatCurrency(results.monthlyHOA)}
@@ -205,10 +207,10 @@ chartColors.push("#8b5cf6");
     <Paper sx={{ p: 3, borderRadius: 2 }}>
       <Box sx={{ mb: 3 }}>
         <Typography variant="h5" sx={{ fontWeight: 900, letterSpacing: "-0.02em", mb: 0.5 }}>
-          Mortgage Purchase Summary
+          {t("mortgage.summary.title")}
         </Typography>
         <Typography variant="body2" sx={{ color: textMuted }}>
-          Review your estimated loan inputs before diving into the payment breakdown.
+          {t("mortgage.summary.subtitle")}
         </Typography>
       </Box>
 
@@ -241,14 +243,14 @@ chartColors.push("#8b5cf6");
                 <PaidIcon fontSize="small" />
               </Box>
               <Typography variant="subtitle2" sx={{ fontWeight: 700, color: isDark ? "#e2e8f0" : "text.secondary" }}>
-                Full Purchase Price
+                {t("mortgage.summary.fullPrice")}
               </Typography>
             </Box>
             <Typography variant="h5" sx={{ fontWeight: 900 }}>
               {formatCurrency(homePrice)}
             </Typography>
             <Typography variant="caption" sx={{ color: textMuted }}>
-              Entered home price for this scenario
+              {t("mortgage.summary.fullPriceDesc")}
             </Typography>
           </Paper>
         </Grid>
@@ -281,7 +283,7 @@ chartColors.push("#8b5cf6");
                 <SavingsIcon fontSize="small" />
               </Box>
               <Typography variant="subtitle2" sx={{ fontWeight: 700, color: isDark ? "#e2e8f0" : "text.secondary" }}>
-                Down Payment
+                {t("mortgage.summary.downPayment")}
               </Typography>
             </Box>
             <Typography variant="h5" sx={{ fontWeight: 900, display: "flex", alignItems: "baseline", gap: 1 }}>
@@ -292,11 +294,11 @@ chartColors.push("#8b5cf6");
                 </Typography>
               ) : null}
             </Typography>
-            <Typography variant="caption" sx={{ color: textMuted }}>
-              <Box component="span" sx={{ color: accentGreen, fontWeight: 600 }}>
-                Avoid PMI insurance by paying 20%
-              </Box>
-            </Typography>
+              <Typography variant="caption" sx={{ color: textMuted }}>
+                <Box component="span" sx={{ color: accentGreen, fontWeight: 600 }}>
+                  {t("mortgage.summary.downPaymentDesc")}
+                </Box>
+              </Typography>
           </Paper>
         </Grid>
 
@@ -328,14 +330,14 @@ chartColors.push("#8b5cf6");
                 <PercentIcon fontSize="small" />
               </Box>
               <Typography variant="subtitle2" sx={{ fontWeight: 700, color: isDark ? "#e2e8f0" : "text.secondary" }}>
-                Interest Rate
+                {t("mortgage.summary.interestRate")}
               </Typography>
             </Box>
             <Typography variant="h5" sx={{ fontWeight: 900 }}>
               {rate ? `${rate}%` : "--"}
             </Typography>
             <Typography variant="caption" sx={{ color: textMuted }}>
-              Fixed rate entered for this loan term
+              {t("mortgage.summary.interestRateDesc")}
             </Typography>
           </Paper>
         </Grid>
@@ -347,7 +349,7 @@ chartColors.push("#8b5cf6");
         sx={{ borderBottom: 1, borderColor: "divider", mb: 3 }}
       >
         <Tab
-          label="Payment Breakdown"
+          label={t("mortgage.tabs.paymentBreakdown")}
           sx={{
             textTransform: "none",
             fontWeight: 600,
@@ -355,7 +357,7 @@ chartColors.push("#8b5cf6");
           }}
         />
         <Tab
-          label="Loan Estimate"
+          label={t("mortgage.tabs.loanEstimate")}
           sx={{
             textTransform: "none",
             fontWeight: 600,
@@ -363,7 +365,7 @@ chartColors.push("#8b5cf6");
           }}
         />
         <Tab
-          label="Amortization"
+          label={t("mortgage.tabs.amortization")}
           sx={{
             textTransform: "none",
             fontWeight: 600,
@@ -392,7 +394,7 @@ chartColors.push("#8b5cf6");
               }}
             >
               <Typography variant="body2" sx={{ color: textMuted }}>
-                Monthly Payment
+                {t("mortgage.payment.monthlyPayment")}
               </Typography>
               <Typography variant="h4" sx={{ fontWeight: 700 }}>
                 {formatCurrency(results.totalMonthlyPayment)}
@@ -405,54 +407,54 @@ chartColors.push("#8b5cf6");
 
       {activeTab === 1 && (
         <Box>
-          <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
-            <Typography variant="body2" sx={{ fontWeight: 600, letterSpacing: 1 }}>
-              SUMMARY
-            </Typography>
-            <Typography variant="body2" sx={{ color: "text.secondary" }}>
-              Number of payments: {results.amortizationSchedule.length}
-            </Typography>
-          </Box>
+        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
+          <Typography variant="body2" sx={{ fontWeight: 600, letterSpacing: 1 }}>
+            {t("mortgage.summary.sectionTitle")}
+          </Typography>
+          <Typography variant="body2" sx={{ color: "text.secondary" }}>
+            {t("mortgage.summary.numPayments", { count: results.amortizationSchedule.length })}
+          </Typography>
+        </Box>
 
-          <Box sx={{ borderBottom: 1, borderColor: "divider", mb: 3 }} />
+        <Box sx={{ borderBottom: 1, borderColor: "divider", mb: 3 }} />
 
-          <Grid container spacing={3} sx={{ mb: 4 }}>
-            <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="body2" sx={{ color: "text.secondary", mb: 0.5 }}>
-                Monthly payment
-              </Typography>
-              <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                <Box component="span" sx={{ fontSize: "0.6em", verticalAlign: "super" }}>$</Box>
-                {Math.round(results.totalMonthlyPayment).toLocaleString()}
-              </Typography>
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="body2" sx={{ color: "text.secondary", mb: 0.5 }}>
-                Total interest paid
-              </Typography>
-              <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                <Box component="span" sx={{ fontSize: "0.6em", verticalAlign: "super" }}>$</Box>
-                {Math.round(results.totalInterest).toLocaleString()}
-              </Typography>
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="body2" sx={{ color: "text.secondary", mb: 0.5 }}>
-                Total cost of loan
-              </Typography>
-              <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                <Box component="span" sx={{ fontSize: "0.6em", verticalAlign: "super" }}>$</Box>
-                {Math.round(results.totalCost).toLocaleString()}
-              </Typography>
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <Typography variant="body2" sx={{ color: "text.secondary", mb: 0.5 }}>
-                Payoff date
-              </Typography>
-              <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                {calculatePayoffDate(results.amortizationSchedule.length / 12)}
-              </Typography>
-            </Grid>
+        <Grid container spacing={3} sx={{ mb: 4 }}>
+          <Grid item xs={12} sm={6} md={3}>
+            <Typography variant="body2" sx={{ color: "text.secondary", mb: 0.5 }}>
+              {t("mortgage.summary.monthlyPayment")}
+            </Typography>
+            <Typography variant="h4" sx={{ fontWeight: 700 }}>
+              <Box component="span" sx={{ fontSize: "0.6em", verticalAlign: "super" }}>$</Box>
+              {Math.round(results.totalMonthlyPayment).toLocaleString()}
+            </Typography>
           </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <Typography variant="body2" sx={{ color: "text.secondary", mb: 0.5 }}>
+              {t("mortgage.summary.totalInterest")}
+            </Typography>
+            <Typography variant="h4" sx={{ fontWeight: 700 }}>
+              <Box component="span" sx={{ fontSize: "0.6em", verticalAlign: "super" }}>$</Box>
+              {Math.round(results.totalInterest).toLocaleString()}
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <Typography variant="body2" sx={{ color: "text.secondary", mb: 0.5 }}>
+              {t("mortgage.summary.totalCost")}
+            </Typography>
+            <Typography variant="h4" sx={{ fontWeight: 700 }}>
+              <Box component="span" sx={{ fontSize: "0.6em", verticalAlign: "super" }}>$</Box>
+              {Math.round(results.totalCost).toLocaleString()}
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <Typography variant="body2" sx={{ color: "text.secondary", mb: 0.5 }}>
+              {t("mortgage.summary.payoffDate")}
+            </Typography>
+            <Typography variant="h4" sx={{ fontWeight: 700 }}>
+              {calculatePayoffDate(results.amortizationSchedule.length / 12)}
+            </Typography>
+          </Grid>
+        </Grid>
 
           <Tabs
             value={loanEstimateSubTab}
@@ -469,8 +471,8 @@ chartColors.push("#8b5cf6");
               }
             }}
           >
-            <Tab label="Chart" />
-            <Tab label="Schedule" />
+            <Tab label={t("mortgage.tabs.chart")} />
+            <Tab label={t("mortgage.tabs.schedule")} />
           </Tabs>
 
           {loanEstimateSubTab === 0 && (() => {
@@ -481,7 +483,7 @@ chartColors.push("#8b5cf6");
               labels: chartData.years,
               datasets: [
                 {
-                  label: "Principal paid",
+                  label: t("mortgage.loanEstimate.principalPaid"),
                   data: chartData.principalPaidData,
                   borderColor: "#60a5fa",
                   backgroundColor: "rgba(96, 165, 250, 0.1)",
@@ -492,7 +494,7 @@ chartColors.push("#8b5cf6");
                   borderWidth: 2,
                 },
                 {
-                  label: "Interest paid",
+                  label: t("mortgage.loanEstimate.interestPaid"),
                   data: chartData.interestPaidData,
                   borderColor: "#4ade80",
                   backgroundColor: "rgba(74, 222, 128, 0.1)",
@@ -503,7 +505,7 @@ chartColors.push("#8b5cf6");
                   borderWidth: 2,
                 },
                 {
-                  label: "Loan balance",
+                  label: t("mortgage.loanEstimate.loanBalance"),
                   data: chartData.loanBalanceData,
                   borderColor: "#1e40af",
                   backgroundColor: "rgba(30, 64, 175, 0.1)",
@@ -565,10 +567,10 @@ chartColors.push("#8b5cf6");
             return (
               <Box>
                 <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
-                  How payments change over the life of a {loanTermYears}-year loan
+                  {t("mortgage.loanEstimate.howPaymentsChange", { years: loanTermYears })}
                 </Typography>
                 <Typography variant="body2" sx={{ color: "text.secondary", mb: 3 }}>
-                  As the term of your mortgage progresses, a larger share of your payment goes toward paying down the principal until the loan is paid in full at the end of your term.
+                  {t("mortgage.loanEstimate.howPaymentsChangeDesc")}
                 </Typography>
 
                 <Box sx={{ display: "flex", gap: 4, flexWrap: "wrap", alignItems: "flex-start" }}>
@@ -585,7 +587,7 @@ chartColors.push("#8b5cf6");
                     p: 2
                   }}>
                     <Typography variant="body2" sx={{ fontWeight: 600, mb: 2 }}>
-                      As of {currentMonthYear}
+                      {t("mortgage.loanEstimate.asOf", { date: currentMonthYear })}
                     </Typography>
                     <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 1.5 }}>
                       <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -598,7 +600,7 @@ chartColors.push("#8b5cf6");
                             mr: 1,
                           }}
                         />
-                        <Typography variant="body2">Principal paid</Typography>
+                        <Typography variant="body2">{t("mortgage.loanEstimate.principalPaid")}</Typography>
                       </Box>
                       <Typography variant="body2" sx={{ fontWeight: 600 }}>
                         ${Math.round(chartData.principalPaidData[0] || 0).toLocaleString()}
@@ -615,7 +617,7 @@ chartColors.push("#8b5cf6");
                             mr: 1,
                           }}
                         />
-                        <Typography variant="body2">Interest paid</Typography>
+                        <Typography variant="body2">{t("mortgage.loanEstimate.interestPaid")}</Typography>
                       </Box>
                       <Typography variant="body2" sx={{ fontWeight: 600 }}>
                         ${Math.round(chartData.interestPaidData[0] || 0).toLocaleString()}
@@ -632,7 +634,7 @@ chartColors.push("#8b5cf6");
                             mr: 1,
                           }}
                         />
-                        <Typography variant="body2">Loan balance</Typography>
+                        <Typography variant="body2">{t("mortgage.loanEstimate.loanBalance")}</Typography>
                       </Box>
                       <Typography variant="body2" sx={{ fontWeight: 600 }}>
                         {formatCurrency(results.loanAmount)}
@@ -649,15 +651,15 @@ chartColors.push("#8b5cf6");
               <Table stickyHeader size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell sx={{ fontWeight: 700 }}>Month</TableCell>
+                    <TableCell sx={{ fontWeight: 700 }}>{t("mortgage.table.month")}</TableCell>
                     <TableCell align="right" sx={{ fontWeight: 700 }}>
-                      Principal
+                      {t("mortgage.table.principal")}
                     </TableCell>
                     <TableCell align="right" sx={{ fontWeight: 700 }}>
-                      Interest
+                      {t("mortgage.table.interest")}
                     </TableCell>
                     <TableCell align="right" sx={{ fontWeight: 700 }}>
-                      Balance
+                      {t("mortgage.table.balance")}
                     </TableCell>
                   </TableRow>
                 </TableHead>
@@ -688,15 +690,15 @@ chartColors.push("#8b5cf6");
           <Table stickyHeader size="small">
             <TableHead>
               <TableRow>
-                <TableCell sx={{ fontWeight: 700 }}>Month</TableCell>
+                <TableCell sx={{ fontWeight: 700 }}>{t("mortgage.table.month")}</TableCell>
                 <TableCell align="right" sx={{ fontWeight: 700 }}>
-                  Principal
+                  {t("mortgage.table.principal")}
                 </TableCell>
                 <TableCell align="right" sx={{ fontWeight: 700 }}>
-                  Interest
+                  {t("mortgage.table.interest")}
                 </TableCell>
                 <TableCell align="right" sx={{ fontWeight: 700 }}>
-                  Balance
+                  {t("mortgage.table.balance")}
                 </TableCell>
               </TableRow>
             </TableHead>

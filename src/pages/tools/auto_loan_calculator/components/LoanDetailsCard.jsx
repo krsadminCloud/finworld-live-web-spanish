@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { DollarSign, Calendar, Percent } from 'lucide-react';
 import { formatCurrency, formatPercentage } from '../utils/loanCalculations';
+import { useTranslation } from 'react-i18next';
 
 const LoanDetailsCard = ({ loanInputs, onInputChange }) => {
   const handleSliderChange = (field, value) => {
@@ -27,6 +28,7 @@ const LoanDetailsCard = ({ loanInputs, onInputChange }) => {
     const numericValue = parseFloat(interestRateInput) || 0;
     onInputChange('rate', numericValue / 100);
   };
+  const { t } = useTranslation();
 
   return (
     <motion.div
@@ -36,14 +38,14 @@ const LoanDetailsCard = ({ loanInputs, onInputChange }) => {
     >
       <h2 className="text-2xl font-bold text-neutral-900 mb-4 flex items-center gap-2">
         <DollarSign className="w-6 h-6 text-teal-500" />
-        Loan Details
+        {t("calculators.autoLoan.sections.loanDetails")}
       </h2>
       
       <div className="space-y-6">
         {/* Loan Amount */}
         <div>
           <label className="block text-sm font-medium text-neutral-700 mb-2">
-            Loan Amount
+            {t("calculators.autoLoan.inputs.amount")}
           </label>
           <div className="space-y-3">
             <div className="flex items-center">
@@ -68,8 +70,8 @@ const LoanDetailsCard = ({ loanInputs, onInputChange }) => {
   className="slider"
 />
 <div className="flex justify-between mt-2">
-  <span className="text-sm text-neutral-500">$0k</span>
-  <span className="text-sm text-neutral-500">$100k</span>
+  <span className="text-sm text-neutral-500">{t("calculators.autoLoan.labels.zeroK")}</span>
+  <span className="text-sm text-neutral-500">{t("calculators.autoLoan.labels.hundredK")}</span>
 </div>
           </div>
         </div>
@@ -77,7 +79,7 @@ const LoanDetailsCard = ({ loanInputs, onInputChange }) => {
         {/* Loan Term */}
         <div>
           <label className="block text-sm font-medium text-neutral-700 mb-2">
-            Loan Term
+            {t("calculators.autoLoan.inputs.termYears")}
           </label>
           <div className="space-y-3">
             <div className="flex items-center">
@@ -100,8 +102,8 @@ const LoanDetailsCard = ({ loanInputs, onInputChange }) => {
   className="slider"
 />
 <div className="flex justify-between mt-2">
-  <span className="text-sm text-neutral-500">0 Yrs</span>
-  <span className="text-sm text-neutral-500">10 Yrs</span>
+  <span className="text-sm text-neutral-500">{t("calculators.autoLoan.labels.zeroYears")}</span>
+  <span className="text-sm text-neutral-500">{t("calculators.autoLoan.labels.tenYears")}</span>
 </div>
           </div>
         </div>
@@ -110,7 +112,7 @@ const LoanDetailsCard = ({ loanInputs, onInputChange }) => {
         <div>
           <label className="block text-sm font-medium text-neutral-700 mb-2 flex items-center gap-2">
             <Percent className="w-4 h-4" />
-            Interest Rate (APR)
+            {t("calculators.autoLoan.inputs.interestRate")}
           </label>
           <input
             type="number"
@@ -124,7 +126,7 @@ const LoanDetailsCard = ({ loanInputs, onInputChange }) => {
             placeholder="6.50"
           />
           <div className="mt-1 text-sm text-neutral-400">
-            Current average: {formatPercentage(0.065)} (6.5%)
+            {t("calculators.autoLoan.helper.currentAverage", { rate: formatPercentage(0.065) })}
           </div>
         </div>
 
@@ -132,7 +134,7 @@ const LoanDetailsCard = ({ loanInputs, onInputChange }) => {
         <div>
           <label className="block text-sm font-medium text-neutral-700 mb-2 flex items-center gap-2">
             <Calendar className="w-4 h-4" />
-            Loan Start Date
+            {t("calculators.autoLoan.inputs.startDate")}
           </label>
           <input
             type="date"

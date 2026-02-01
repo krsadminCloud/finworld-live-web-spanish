@@ -1,0 +1,593 @@
+{
+  "language": {
+    "english": "Inglés",
+    "spanish": "Español (EE.UU.)"
+  },
+  "calculators": {
+    "takeHomePay": {
+      "title": "Calculadora de Sueldo Neto",
+      "inputs": {
+        "yourIncome": "Tus ingresos brutos anuales",
+        "spouseIncome": "Ingresos brutos anuales de tu cónyuge",
+        "taxYear": "Año fiscal",
+        "state": "Estado",
+        "filingStatus": "Estatus de declaración",
+        "your401Percent": "Porcentaje de tu ingreso",
+        "spouse401Percent": "Porcentaje del ingreso del cónyuge",
+        "yourRothAmount": "Tu monto anual ($)",
+        "spouseRothAmount": "Monto anual del cónyuge ($)",
+        "overrideState": "Tasa estatal efectiva (anulación) (%)"
+      },
+      "sections": {
+        "your401": "Tus aportes 401(k)",
+        "spouse401": "Aportes 401(k) del cónyuge",
+        "yourRoth": "Tu Roth IRA (post‑impuestos)",
+        "spouseRoth": "Roth IRA del cónyuge (post‑impuestos)",
+        "advanced": "Opciones avanzadas"
+      },
+      "helper": {
+        "yourIncome": "Tu ingreso total antes de deducciones o impuestos.",
+        "spouseIncome": "Ingreso total del cónyuge antes de deducciones o impuestos.",
+        "taxYear": "Año fiscal para el que se calculan los impuestos.",
+        "state": "Tu estado de residencia para impuestos estatales.",
+        "filingStatus": "Tu estatus de declaración (ej., soltero, casado conjunto).",
+        "your401": "Aportes pre‑impuestos a tu plan 401(k).",
+        "spouse401": "Aportes pre‑impuestos del cónyuge a su 401(k).",
+        "yourRoth": "Aportes post‑impuestos a tu Roth IRA.",
+        "spouseRoth": "Aportes post‑impuestos del cónyuge a su Roth IRA.",
+        "overrideState": "Define manualmente una tasa estatal para anular el cálculo por defecto."
+      },
+      "placeholders": {
+        "income": "ej. 90000",
+        "incomeComma": "ej. 90,000",
+        "percent": "ej. 10",
+        "amount": "ej. 7000",
+        "amountComma": "ej. 7,000",
+        "year": "ej. 2025",
+        "override": "Déjalo vacío para usar la tabla"
+      },
+      "labels": {
+        "selectState": "— Selecciona —",
+        "optional": "(opcional)"
+      },
+      "options": {
+        "single": "Soltero",
+        "mfj": "Casados conjunto",
+        "mfs": "Casados separado",
+        "hoh": "Jefe de hogar"
+      },
+      "chart": {
+        "title": "Desglose de asignación del ingreso",
+        "federal": "Impuesto federal",
+        "state": "Impuesto estatal",
+        "fica": "Impuesto FICA",
+        "local": "Impuesto local",
+        "preTax": "Deducciones antes de impuestos",
+        "roth": "Aportes Roth",
+        "netPay": "Sueldo neto"
+      },
+      "summary": {
+        "netAfterTaxes": "Neto después de impuestos",
+        "finalNet": "Neto final (después de Roth)",
+        "finalNetWeekly": "Neto final (semanal)",
+        "finalNetBiweekly": "Neto final (quincenal)",
+        "finalNetMonthly": "Neto final (mensual)"
+      },
+      "results": {
+        "annualTitle": "Sueldo neto anual",
+        "primaryState": "Estado principal:",
+        "stdDeduction": "Deducción estándar",
+        "federalTaxable": "Base imponible federal",
+        "federalMarginal": "Marginal federal",
+        "k401PerPaycheck": "401(k) por cheque",
+        "stateMarginal": "Marginal estatal",
+        "stateTaxable": "Base imponible estatal",
+        "stateDeduction": "Deducción estatal"
+      },
+      "breakdown": {
+        "title": "Desglose",
+        "grossIncome": "Ingreso bruto",
+        "incomeDetails": "Detalles de ingresos",
+        "hideDetails": "Ocultar detalles",
+        "preTaxTotal": "Total de deducciones antes de impuestos",
+        "details": "Detalles",
+        "adjustedIncome": "Ingreso ajustado",
+        "totalTax": "Impuesto total",
+        "federalTax": "Impuesto federal",
+        "stateTax": "Impuesto estatal",
+        "ficaTax": "Impuesto FICA",
+        "localTax": "Impuesto local",
+        "rothContributions": "Contribuciones Roth",
+        "federalDetails": "Impuesto federal = ingreso ajustado ({{adjusted}}) menos deducción estándar ({{std}}) = {{taxable}}; calculado a tasa marginal {{marginal}}%.",
+        "stateDetails": "Impuesto estatal = ingreso ajustado ({{adjusted}}) menos deducción estatal ({{deduction}}) = {{taxable}}; {{info}}",
+        "stateInfoDefault": "Impuesto calculado usando las tablas estatales configuradas.",
+        "ficaDetails": "Seguro Social: {{ss}} (6.2% de los primeros {{ssLimit}}); Medicare: {{medicare}} (1.45% del ingreso total); Medicare adicional: {{addlMedicare}} (0.9% sobre {{addlThreshold}}).",
+        "localDetails": "Impuesto local = ingreso ajustado ({{adjusted}}) × tasa ({{rate}}%).",
+        "income": {
+          "baseSelf": "Tu ingreso base",
+          "bonusSelf": "Tu bono anual",
+          "baseSpouse": "Ingreso base del cónyuge",
+          "bonusSpouse": "Bono anual del cónyuge"
+        }
+      },
+      "compare": {
+        "title": "Comparar estados",
+        "selectState": "Selecciona estado",
+        "pickTwo": "Elige hasta dos estados para comparar.",
+        "stateTax": "Impuesto estatal",
+        "netAnnual": "Neto (anual)",
+        "afterRothAnnual": "Después de Roth (anual)",
+        "monthly": "Mensual",
+        "biweekly": "Quincenal",
+        "weekly": "Semanal"
+      },
+      "cta": {},
+      "advanced": {
+        "preTax": {
+          "hsa": "HSA",
+          "hsaHelp": "Ingresa tus aportes anuales pre‑impuesto al HSA (monto).",
+          "traditionalIra": "IRA tradicional",
+          "traditionalIraHelp": "Ingresa tus aportes anuales pre‑impuesto a una IRA tradicional (monto).",
+          "studentLoanInterest": "Interés de préstamos estudiantiles",
+          "studentLoanInterestHelp": "Ingresa el interés anual de préstamos estudiantiles elegible para ajuste (monto).",
+          "fsaContribution": "Aporte FSA",
+          "fsaContributionHelp": "Ingresa tus aportes anuales pre‑impuesto al FSA (monto).",
+          "otherDeductions": "Otras deducciones pre‑impuesto",
+          "otherDeductionsHelp": "Ingresa otras deducciones anuales pre‑impuesto no listadas arriba (monto)."
+        }
+      },
+      "credits": {
+        "childTaxCredit": "Crédito Tributario por Hijos",
+        "childTaxCreditHelp": "Ingresa tu crédito tributario por hijos anual a aplicar (monto).",
+        "dependentCareCredit": "Crédito por Cuidado de Dependientes",
+        "dependentCareCreditHelp": "Ingresa tu crédito anual por cuidado de dependientes a aplicar (monto)."
+      },
+      "inline": {
+        "labels": {
+          "yourIncome": "Ingresos brutos anuales",
+          "spouseIncome": "Ingresos brutos anuales del cónyuge",
+          "yourBonus": "Tu bono anual",
+          "spouseBonus": "Bono anual del cónyuge",
+          "taxYear": "Año fiscal",
+          "filingStatus": "Estatus de declaración",
+          "state": "Estado",
+          "overrideState": "Tasa efectiva estatal (anular) (%)",
+          "optional": "(opcional)",
+          "localTax": "Tasa de impuesto local (%)",
+          "your401": "Contribuciones a tu 401(k)",
+          "apply401": "Aplicar 401(k) a",
+          "spouse401": "Contribuciones 401(k) del cónyuge",
+          "hideAdvanced": "Ocultar opciones avanzadas",
+          "showAdvanced": "Mostrar opciones avanzadas",
+          "yourRoth": "Tu Roth IRA (post‑impuesto)",
+          "spouseRoth": "Roth IRA del cónyuge (post‑impuesto)",
+          "healthInsurance": "Seguro médico"
+        },
+        "placeholders": {
+          "income": "ej. 90000",
+          "incomeSpouse": "ej. 75000",
+          "yourBonus": "ej. 10000",
+          "spouseBonus": "ej. 5000",
+          "overrideState": "Anula la tasa calculada del estado",
+          "localTaxExample": "ej. 1.5",
+          "percentIncome": "Porcentaje del ingreso",
+          "rothExample": "ej. 3000"
+        },
+        "help": {
+          "localTax": "Ingresa la tasa de impuesto local sobre ingresos (porcentaje).",
+          "your401": "Ingresa el porcentaje de ingreso que aportas antes de impuestos a un 401(k).",
+          "spouse401": "Ingresa el porcentaje del ingreso de tu cónyuge que aporta antes de impuestos a un 401(k).",
+          "yourRoth": "Ingresa tus aportes anuales post‑impuesto a una Roth IRA (monto).",
+          "spouseRoth": "Ingresa los aportes anuales post‑impuesto de tu cónyuge a una Roth IRA (monto).",
+          "healthInsurance": "Ingresa tus primas anuales de seguro médico pre‑impuesto (monto)."
+        },
+        "options": {
+          "single": "Soltero",
+          "mfj": "Casados conjunto",
+          "mfs": "Casados separado",
+          "hoh": "Jefe de hogar",
+          "selectState": "Selecciona estado",
+          "salaryOnly": "Solo salario",
+          "salaryPlusBonus": "Salario + bono"
+        }
+      },
+      "autoLoan": {
+        "meta": {
+          "title": "Calculadora de Pago Anticipado de Préstamo Auto | FinWorld",
+          "description": "Observa cómo los pagos extra y distintos calendarios cambian la fecha de liquidación, el costo de intereses y tus ahorros en el préstamo de auto.",
+          "ogDescription": "Compara el pago estándar vs acelerado del préstamo de auto y visualiza cuánto interés puedes ahorrar.",
+          "twitterDescription": "Modela pagos extra, calendarios bisemanales y ahorros de interés en tu préstamo de auto."
+        },
+        "title": "Calculadora de Pago Anticipado de Préstamo Auto",
+        "subtitle": "Mira cuánto puedes ahorrar en intereses y qué tan rápido puedes liquidar tu préstamo de auto haciendo pagos extra al principal.",
+        "sections": {
+          "loanDetails": "Detalles del préstamo",
+          "extraPayments": "Pagos extra"
+        },
+        "inputs": {
+          "amount": "Monto del préstamo",
+          "termYears": "Plazo del préstamo",
+          "interestRate": "Tasa de interés (APR)",
+          "startDate": "Fecha de inicio del préstamo",
+          "extraPayment": "Monto de pago extra",
+          "extraPaymentFrequency": "Frecuencia del pago extra",
+          "quickAdd": "Agregar pago extra rápido",
+          "paymentFrequency": "Frecuencia de pago regular"
+        },
+        "labels": {
+          "zeroK": "$0k",
+          "hundredK": "$100k",
+          "zeroYears": "0 años",
+          "tenYears": "10 años",
+          "plusAmount": "+${{amount}}"
+        },
+        "options": {
+          "monthly": "Mensual",
+          "biweekly": "Bisemanales (cada 2 semanas)"
+        },
+        "helper": {
+          "currentAverage": "Promedio actual: {{rate}} (6.5%)",
+          "extraPayment": "Agrega este monto sobre tu pago regular",
+          "extraPaymentFrequency": "Qué tan seguido harás el pago extra",
+          "paymentFrequency": "Tu calendario de pagos regular"
+        },
+        "empty": {
+          "title": "Listo para calcular",
+          "body": "Ingresa los datos de tu préstamo y los pagos extra para ver tus ahorros."
+        },
+        "summary": {
+          "title": "Tu resumen de pago",
+          "newPayoffDate": "Nueva fecha de liquidación",
+          "monthsSooner": "({{months}} meses antes)",
+          "interestSaved": "Interés ahorrado",
+          "lessInterest": "{{percent}}% menos interés",
+          "loanShortened": "Préstamo reducido en",
+          "months": "{{months}} meses",
+          "years": "{{years}} años",
+          "savingInterest": "💡 ¡Ahorras {{amount}} en intereses!",
+          "savingDetails": "Con solo agregar {{extra}} extra por mes, liquidarás tu préstamo {{months}} meses antes y ahorrarás dinero en intereses."
+        },
+        "cost": {
+          "title": "Desglose del costo del préstamo",
+          "principal": "Principal",
+          "interest": "Interés",
+          "percentOfTotal": "{{percent}}% del total",
+          "totalCost": "Costo total",
+          "withExtras": "Con pagos extra:",
+          "originalInterest": "Interés original: {{amount}}",
+          "newInterest": "Nuevo interés: {{amount}}",
+          "youSave": "Ahorra: {{amount}}!"
+        },
+        "timeline": {
+          "title": "Comparación de línea de tiempo de pago",
+          "standard": "Estándar",
+          "accelerated": "Acelerado",
+          "duration": "Duración",
+          "months": "{{months}} meses",
+          "monthsYears": "{{months}} meses ({{years}} años)",
+          "payoffDate": "Fecha de liquidación",
+          "totalCost": "Costo total",
+          "recommended": "Recomendado",
+          "youSave": "💡 Ahorras {{months}} meses y {{amount}}!",
+          "monthsLabel": "Meses"
+        },
+        "amort": {
+          "title": "Calendario de amortización acelerado",
+          "hide": "Ocultar detalles",
+          "show": "Mostrar detalles",
+          "exportCsv": "Exportar CSV",
+          "paymentNumber": "Pago #",
+          "date": "Fecha",
+          "regularPayment": "Pago regular",
+          "extraPayment": "Pago extra",
+          "totalPayment": "Pago total",
+          "principal": "Principal",
+          "interest": "Interés",
+          "balance": "Saldo",
+          "showingFirst": "Mostrando primeros 12 meses de {{total}} pagos totales",
+          "exportPrompt": "Exporta el calendario completo para ver todos los pagos",
+          "paymentSummaryTitle": "Resumen de pagos",
+          "totalPayments": "Pagos totales: {{count}}",
+          "regularPaymentLabel": "Pago regular: {{amount}}",
+          "totalExtraPayments": "Pagos extra totales: {{amount}}",
+          "finalPaymentDate": "Fecha del pago final: {{date}}"
+        },
+        "chart": {
+          "principal": "Principal",
+          "interest": "Interés",
+          "standard": "Estándar",
+          "accelerated": "Acelerado"
+        },
+        "info": {
+          "title": "Cómo usar esta calculadora de pago anticipado de auto",
+          "p1": "Ingresa el monto del préstamo, plazo y tasa de interés; luego elige frecuencia de pago y una estrategia de pago extra. El panel de resultados compara tu plan estándar con uno acelerado para ver cuántos meses y cuánto interés ahorras.",
+          "p2": "Prueba distintos montos de pago extra o cambia entre pagos mensuales y quincenales para encontrar un plan que se ajuste a tu presupuesto y liquide el préstamo más rápido.",
+          "related": "Herramientas relacionadas",
+          "compareIntro": "¿Buscas un auto? Compara opciones de financiamiento con la",
+          "linkBuyVsLease": "Calculadora Comprar vs Arrendar",
+          "debtIntro": ", o explora estrategias de deuda con la",
+          "linkLoanPayoff": "Calculadora de Pago de Préstamo"
+        }
+      }
+    }
+  },
+  "nav": {
+    "home": "Inicio",
+    "tools": "Herramientas Financieras",
+    "comparisons": "Comparaciones",
+    "guides": "Guías",
+    "articles": "Artículos",
+    "about": "Acerca de",
+    "account": "Mi cuenta",
+    "searchPlaceholder": "Buscar…",
+    "tool_extra_payment": "Calculadora de Pago de Préstamos",
+    "tool_take_home_pay": "Calculadora de Sueldo Neto"
+  },
+  "footer": {
+    "tagline": "Herramientas financieras prácticas que se mantienen frescas y precisas.",
+    "rights": "(c) 2025 FinCalc. Todos los derechos reservados.",
+    "about": "Sobre nosotros",
+    "contact": "Contacto",
+    "help": "Ayuda y Guías",
+    "terms": "Términos del servicio",
+    "disclaimer_main": "© 2025 FinWorld Project. Esta calculadora solo proporciona estimaciones. Consulta a profesionales financieros para obtener asesoramiento personalizado.",
+    "disclaimer_sub": "Cálculos basados en pautas estándar de suscripción hipotecaria. Los términos reales del préstamo pueden variar según el prestamista y el perfil crediticio."
+  },
+  "common": {
+    "btn.browse": "Explorar calculadoras",
+    "btn.guides": "Leer guías",
+    "btn.open": "Abrir calculadora",
+    "btn.openNamed": "Abrir {{name}}",
+    "btn.notify": "Avísame",
+    "btn.clearFilters": "Filtros activos",
+    "badge.fresh": "Fresca y confiable",
+    "badge.nosignup": "Sin registro",
+    "badge.nosignup.short": "Sin necesidad de registro",
+    "label.results": "{{count}} resultados",
+    "label.showing": "Mostrando {{shown}} de {{total}} calculadoras activas",
+    "label.popular": "Populares",
+    "label.planned": "Calculadoras planeadas",
+    "label.plannedCount": "{{count}} planeadas",
+    "label.showPlanned": "Mostrar planeadas",
+    "label.hidePlanned": "Ocultar planeadas",
+    "label.comingSoon": "Próximamente",
+    "label.filtersActive": "Filtros activos",
+    "label.noMatchTitle": "Ninguna calculadora coincide con tus filtros.",
+    "label.noMatchBody": "Prueba borrando filtros o cambiando de categoría."
+  },
+  "home": {
+    "hero.title": "Toma decisiones inteligentes con tu dinero",
+    "hero.subtitle": "Obtén ideas y calculadoras para lograr tus metas financieras con confianza, al ritmo de nuestro hub de calculadoras.",
+    "cta.explore": "Explorar calculadoras",
+    "cta.guides": "Leer guías",
+    "stat.liveTools": "Herramientas activas sin iniciar sesión",
+    "stat.personalFinance": "Diseñadas para tus finanzas personales",
+    "featured.title": "Herramientas destacadas",
+    "featured.card1.title": "Calculadoras financieras",
+    "featured.card1.desc": "Explora toda nuestra biblioteca de calculadoras.",
+    "featured.card2.title": "Cotización de seguro (próximamente)",
+    "featured.card2.desc": "Obtén una cotización de seguro personalizada.",
+    "featured.card3.title": "Tasas hipotecarias (próximamente)",
+    "featured.card3.desc": "Compara tasas y comisiones de prestamistas.",
+    "featured.card4.title": "Buscador de tarjetas (próximamente)",
+    "featured.card4.desc": "Encuentra tarjetas según tu perfil de gasto.",
+    "articles.title": "Últimos artículos"
+  },
+  "guides": {
+    "title": "Aprende con las Guías de FinWorld",
+    "intro": "Aquí encontrarás guías paso a paso que combinan preguntas financieras reales con calculadoras interactivas. Mientras escribimos los artículos largos, ya puedes usar estas herramientas para explorar tus escenarios.",
+    "card1.title": "¿Cuánta casa puedo realmente pagar?",
+    "card1.desc": "Combina las calculadoras de Asequibilidad y de Hipoteca para entender pagos cómodos, DTI y el costo total de intereses.",
+    "card2.title": "Calcular tu sueldo neto en un nuevo trabajo",
+    "card2.desc": "Usa la calculadora de Sueldo Neto para comparar ofertas entre estados, estados civiles y beneficios antes de negociar.",
+    "card3.title": "Planificando inversión y retiro a largo plazo",
+    "card3.desc": "Usa las calculadoras de Interés Compuesto y Retiro para ver cómo las decisiones de ahorro de hoy se convierten en ingresos futuros."
+  },
+  "comparisons": {
+    "title": "Comparaciones financieras",
+    "intro": "Muchas decisiones clave son intercambios: rentar vs comprar, arrendar vs financiar un auto, pagar deudas vs invertir más. Esta sección destaca calculadoras útiles para comparar esas opciones.",
+    "card1.title": "Comprar vs Arrendar un auto",
+    "card1.desc": "Usa la calculadora Comprar vs Arrendar Auto para comparar el costo total, incluyendo depreciación, cuotas de arrendamiento, APR y millas.",
+    "card1.cta": "Abrir calculadora Comprar vs Arrendar",
+    "card2.title": "Pagar deuda vs Invertir",
+    "card2.desc": "Combina las calculadoras de Pago Anticipado y de Interés Compuesto para ver cómo se compara pagar deuda con invertir la misma cantidad.",
+    "card3.title": "Rentar vs ser propietario",
+    "card3.desc": "Usa las calculadoras de Asequibilidad y Propiedad en Renta para entender el flujo mensual y la equidad a largo plazo."
+  },
+  "about": {
+    "title": "Acerca de FinWorld",
+    "p1": "FinWorld es una colección de calculadoras financieras enfocadas y de alta calidad para modelar decisiones reales: qué casa puedes pagar, cuánto recibes después de impuestos, cuán rápido aceleran el pago los abonos extra y cómo crecen tus inversiones con el interés compuesto.",
+    "p2": "Cada calculadora es transparente y educativa. En lugar de ocultar las matemáticas, mostramos cómo se combinan los números para que pruebes supuestos y entiendas los compromisos detrás de cada decisión.",
+    "start.title": "Comienza con estas calculadoras",
+    "cta.explore": "Explorar todas las calculadoras",
+    "cta.guides": "Leer guías próximas"
+  },
+  "articles": {
+    "title": "Guías y Artículos",
+    "intro": "Guías prácticas para principiantes sobre crédito, autos y compra de casa, junto con calculadoras FinWorld para verificar asequibilidad y pagos antes de decidir.",
+    "breadcrumb.home": "Inicio",
+    "breadcrumb.guides": "Guías",
+    "empty": "Artículo no encontrado",
+    "empty.desc": "No pudimos encontrar ese artículo. Vuelve a las guías para explorar más recursos.",
+    "empty.cta": "Ver todas las guías"
+  },
+  "tools": {
+    "advancedFeatures": "Funciones avanzadas",
+    "advancedFeaturesHint": "Haga clic para desplegar",
+    "compareLoans": "Comparar dos pr�stamos",
+    "affordability": "Cu�nto hogar puede pagar"
+  },
+  "mortgage": {
+    "title": "Calculadora de Hipoteca",
+    "inputs": {
+      "homePrice": "Precio de la vivienda",
+      "downPayment": "Pago inicial",
+      "downPaymentPercent": "Pago inicial (%)",
+      "downPaymentPercentHelper": "Ingresa el porcentaje del precio",
+      "downPaymentPercentHelperMissingPrice": "Ingresa el precio para aplicar el %",
+      "downPaymentAmount": "Monto de pago inicial",
+      "downPaymentAmountPlaceholder": "Ingresa el monto en dólares",
+      "loanTerm": "Plazo del préstamo",
+      "loanTermYears": "{{years}} años",
+      "interestRate": "Tasa de interés",
+      "taxesInsuranceHoa": "Impuestos, seguro y HOA",
+      "propertyTax": "Impuesto a la propiedad",
+      "propertyTaxHelper": "Impuesto anual a la propiedad",
+      "homeInsurance": "Seguro de hogar",
+      "homeInsuranceHelper": "Prima anual del seguro de hogar",
+      "pmi": "PMI (si aplica)",
+      "pmiHelper": "Pago mensual de PMI",
+      "hoaFees": "Cuotas de HOA",
+      "hoaFeesHelper": "Cuotas mensuales de HOA",
+      "stateOptional": "Estado (opcional)",
+      "stateSelectPlaceholder": "— Selecciona —",
+      "creditScore": "Puntaje de crédito"
+    },
+    "actions": {
+      "reset": "Reiniciar"
+    },
+    "empty": {
+      "prompt": "Ingresa valores para ver el desglose de pagos"
+    },
+    "chart": {
+      "principalInterest": "Capital e Interés",
+      "taxes": "Impuestos",
+      "insurance": "Seguro",
+      "pmi": "PMI",
+      "hoa": "HOA"
+    },
+    "summary": {
+      "title": "Resumen de compra hipotecaria",
+      "subtitle": "Revisa tus valores estimados antes de ver el desglose de pagos.",
+      "fullPrice": "Precio total de compra",
+      "fullPriceDesc": "Precio de la vivienda ingresado para este escenario",
+      "downPayment": "Pago inicial",
+      "downPaymentDesc": "Evita el seguro PMI pagando el 20%",
+      "interestRate": "Tasa de interés",
+      "interestRateDesc": "Tasa fija ingresada para este plazo",
+      "sectionTitle": "RESUMEN",
+      "numPayments": "Número de pagos: {{count}}",
+      "monthlyPayment": "Pago mensual",
+      "totalInterest": "Interés total pagado",
+      "totalCost": "Costo total del préstamo",
+      "payoffDate": "Fecha de liquidación"
+    },
+    "tabs": {
+      "paymentBreakdown": "Desglose de pago",
+      "loanEstimate": "Estimación del préstamo",
+      "amortization": "Amortización",
+      "chart": "Gráfica",
+      "schedule": "Calendario"
+    },
+    "payment": {
+      "monthlyPayment": "Pago mensual"
+    },
+    "loanEstimate": {
+      "howPaymentsChange": "Cómo cambian los pagos en un préstamo de {{years}} años",
+      "howPaymentsChangeDesc": "A medida que avanza tu hipoteca, una mayor parte del pago se destina al capital hasta liquidar el préstamo.",
+      "asOf": "Al {{date}}",
+      "principalPaid": "Capital pagado",
+      "interestPaid": "Interés pagado",
+      "loanBalance": "Saldo del préstamo"
+    },
+    "table": {
+      "month": "Mes",
+      "principal": "Capital",
+      "interest": "Interés",
+      "balance": "Saldo"
+    }
+  },
+  "tool_home_affordability": {
+    "meta": {
+      "title": "Calculadora de Asequibilidad de Vivienda | FinWorld",
+      "desc": "Estima cuánta casa puedes pagar según tus ingresos, deudas y pago inicial. Ve un desglose completo de PITI y compara escenarios."
+    },
+    "hero": {
+      "title": "Calculadora de Asequibilidad de Vivienda",
+      "subtitle": "Calcula cuánta casa puedes pagar cómodamente basándote en tus ingresos, deudas y pago inicial, y mira cómo te verían los prestamistas."
+    },
+    "sections": {
+      "overview_title": "Descripción General de la Calculadora",
+      "overview_p1": "La Calculadora de Asequibilidad de FinWorld está diseñada para responder una de las preguntas más importantes al comprar casa: \"¿Cuánta casa puedo realmente pagar?\" Al combinar tus ingresos, deudas mensuales, pago inicial y supuestos hipotecarios, la herramienta estima un precio de compra que encaja con las pautas comunes de los prestamistas.",
+      "overview_p2": "En lugar de enfocarse solo en el precio de venta, esta calculadora desglosa tu pago en capital e intereses, impuestos a la propiedad, seguro de hogar y cuotas de HOA. Ver todos estos componentes juntos facilita equilibrar tus objetivos de vivienda con otras prioridades como el retiro o el pago de deudas.",
+      "how_to_title": "Cómo Usar Esta Calculadora",
+      "how_to_p1": "Comienza ingresando tu ingreso anual del hogar y tus pagos mensuales de deuda (autos, préstamos estudiantiles, tarjetas). Luego elige un pago inicial y ajusta la tasa de interés, el plazo, la tasa de impuestos y el seguro para que coincidan con lo que ves en el mercado local.",
+      "how_to_p2": "A medida que actualizas estos datos, la calculadora recalcula tu precio máximo estimado y el pago mensual, junto con un desglose PITI. Puedes ajustar los ratios DTI (front-end y back-end) para reflejar estándares más conservadores o flexibles.",
+      "examples_title": "Ejemplos de Asequibilidad",
+      "examples_p1": "Considera un hogar que gana $120,000 al año con $500 en deudas mensuales. Usando un DTI de 28%/36%, la calculadora podría mostrar un rango de pago cómodo, traduciéndose en un precio objetivo según las tasas e impuestos.",
+      "examples_p2": "En una ciudad costosa con impuestos altos y cuotas de HOA, el mismo perfil de ingresos podría soportar un precio máximo más bajo. Al ajustar los impuestos y el seguro hacia arriba, verás cómo estos costos reducen la asequibilidad.",
+      "examples_p3": "Finalmente, imagina un escenario donde tus ingresos son estables pero tienes una deuda estudiantil significativa. La calculadora mostrará cómo las obligaciones mensuales reducen tu capacidad de endeudamiento.",
+      "mistakes_title": "Errores Comunes",
+      "mistakes_p1": "Un error frecuente es basarse en el monto máximo que un banco aprueba en lugar de lo que se ajusta a tu presupuesto diario. Que un préstamo sea aprobado no significa que sea cómodo una vez que sumas gastos de vida, transporte y cuidado de niños.",
+      "mistakes_p2": "Otro error es subestimar costos variables como impuestos y seguros, o asumir que no subirán. Estos rubros pueden aumentar más rápido que los ingresos. Crear un margen de seguridad usando estimaciones más altas mantiene tu plan resiliente.",
+      "terms_title": "Entendiendo los Términos Clave",
+      "terms_p1": "Tu <strong>DTI front-end</strong> (ratio deuda-ingreso) mira los costos de vivienda como porcentaje de tu ingreso bruto, mientras que tu <strong>DTI back-end</strong> incluye vivienda más otras deudas. Muchos prestamistas usan umbrales como 28% y 36%.",
+      "terms_p2": "<strong>PITI</strong> significa capital, intereses, impuestos y seguro, y representa tu pago principal. Si vives en una comunidad con <strong>cuotas de HOA</strong>, se suman encima. Un <strong>pago inicial</strong> mayor reduce el préstamo y puede eliminar el PMI.",
+      "faq_title": "Preguntas Frecuentes",
+      "related_title": "Herramientas Relacionadas en FinWorld",
+      "related_p1": "¿Planeando comprar casa? Prueba la <1>Calculadora de Hipotecas</1> para modelar préstamos específicos, tasas y tablas de amortización una vez que tengas un rango de precio.",
+      "related_p2": "Si piensas en pagar deudas más rápido, la <1>Calculadora de Pago de Préstamos</1> puede mostrarte cómo redirigir flujo de caja puede liberar espacio en tu presupuesto.",
+      "related_p3": "Para inversores, la <1>Calculadora de Propiedades en Renta</1> ayuda a evaluar ingresos potenciales, mientras que la <1>Calculadora de Interés Compuesto</1> ilustra cómo el ahorro a largo plazo complementa tu compra."
+    },
+    "faq": {
+      "q1": "¿Cuánta casa puedo pagar?",
+      "a1": "Esta calculadora analiza tus ingresos, deudas, pago inicial y ratios de suscripción para estimar un precio máximo cómodo. Puedes ajustar los supuestos para que coincidan con tu prestamista.",
+      "q2": "¿Qué ratios deuda-ingreso usa esta herramienta?",
+      "a2": "Por defecto, usa ratios comunes como 28% para vivienda y 36% para deuda total. Puedes ajustarlos para ver cómo pautas más estrictas o flexibles cambian lo que puedes pagar.",
+      "q3": "¿Incluye impuestos, seguro y HOA?",
+      "a3": "Sí. Los impuestos a la propiedad, el seguro de hogar y las cuotas de HOA se incluyen en el desglose PITI para que tu pago estimado se alinee mejor con una cotización real.",
+      "q4": "¿Cómo afecta mi pago inicial a la asequibilidad?",
+      "a4": "Un pago inicial mayor reduce el monto del préstamo, lo que puede bajar tu mensualidad y eliminar el PMI. Esta herramienta te permite experimentar con diferentes montos.",
+      "q5": "¿Puede ayudarme a mantenerme en rangos seguros de DTI?",
+      "a5": "Sí. Al combinar tus ingresos y deudas con objetivos DTI, la calculadora estima un precio que encaja dentro de pautas comunes para evitar sobreendeudarte.",
+      "q6": "¿Qué pasa si los impuestos o seguros son más altos en mi área?",
+      "a6": "Los costos varían mucho por ubicación. Puedes ajustar ambos valores para que coincidan con cotizaciones locales, y la calculadora mostrará cómo esos cambios afectan tu precio asequible."
+    }
+  },
+  "tools_mortgage": {
+    "meta": {
+      "title": "Calculadora de Hipotecas FinWorld | Pagos, Amortización e Interés Total",
+      "desc": "Usa la calculadora de hipotecas de FinWorld para estimar pagos mensuales, intereses totales, impuestos, seguros y PMI. Ve un calendario de amortización completo y compara escenarios antes de comprar o refinanciar."
+    },
+    "guide_link": "📘 Ver la Guía Completa de la Calculadora de Hipotecas",
+    "sections": {
+      "overview_title": "Descripción General de la Calculadora de Hipotecas FinWorld",
+      "overview_p1": "La calculadora de hipotecas de FinWorld está diseñada para ayudar a compradores de vivienda, propietarios actuales y quienes buscan refinanciar a entender rápidamente cómo podría ser un pago hipotecario antes de hablar con un prestamista. Al combinar las piezas clave de un pago hipotecario—capital, intereses, impuestos a la propiedad, seguro de hogar, PMI y cuotas de HOA—esta herramienta te da una imagen más clara de tu costo mensual total de vivienda, no solo del monto base del préstamo. Puedes explorar diferentes precios de vivienda, pagos iniciales, plazos de préstamo y tasas de interés para ver cómo cada elección afecta la asequibilidad y el interés total a lo largo del tiempo.",
+      "overview_p2": "Ya sea que estés comparando una hipoteca de 15 años contra una de 30, decidiendo cuánto dar de pago inicial o pensando en refinanciar, esta calculadora está construida para soportar escenarios comparativos. Úsala temprano en tu búsqueda para establecer expectativas realistas, luego revísala a medida que recibas cotizaciones de tasas, ajustes tu presupuesto o consideres propiedades alternativas. El objetivo no es reemplazar el asesoramiento profesional, sino darte una forma estructurada de analizar los números y sentirte más seguro en las decisiones que lleves a tu prestamista o asesor financiero.",
+      "howto_title": "Cómo Usar Esta Calculadora de Hipotecas",
+      "howto_p1": "Comienza ingresando el precio estimado de la vivienda y tu pago inicial planeado. Puedes cambiar entre ingresar un monto en dólares o un porcentaje, lo que facilita probar escenarios como \"¿Qué pasa si doy el 20% de pago inicial en lugar del 10%?\" Luego, elige un plazo de préstamo, como 15 o 30 años, e ingresa la tasa de interés que esperas basándote en cotizaciones de prestamistas o promedios actuales del mercado.",
+      "howto_p2": "Después de eso, refina la estimación incluyendo impuestos a la propiedad, seguro de hogar y cualquier cuota de HOA que esperes para la propiedad. Si tu pago inicial es menor al 20%, puedes agregar una estimación para el PMI para ver cómo afecta tu pago mensual total. Una vez que tus datos se vean correctos, revisa el desglose del pago mensual, los detalles de amortización y el interés total durante la vida del préstamo. Ajusta un dato a la vez—como la tasa, el plazo o el pago inicial—para entender qué factores hacen la mayor diferencia tanto en la asequibilidad hoy como en los costos a largo plazo.",
+      "examples_title": "Ejemplos de Cálculo de Hipoteca",
+      "examples_p1": "Imagina a un comprador de vivienda por primera vez adquiriendo una casa de $400,000 con un 10% de pago inicial, un plazo de 30 años y una tasa de interés del 6.5%. Después de incluir impuestos estimados, seguro y PMI, la calculadora podría mostrar un pago mensual más alto de lo esperado, con una gran parte destinada a intereses en los primeros años. Este escenario puede resaltar cuánto tiempo toma construir equidad y cuán sensible es el pago a los cambios en las tasas de interés.",
+      "examples_p2": "En un segundo escenario, considera un comprador con un presupuesto similar pero capaz de dar un 20% de pago inicial en la misma casa de $400,000. Al eliminar el PMI y reducir el monto del préstamo, el pago mensual baja y el interés total durante 30 años disminuye significativamente. La calculadora facilita ver cómo la inversión inicial mayor puede valer la pena con el tiempo.",
+      "examples_p3": "Finalmente, piensa en un propietario comparando un refinanciamiento de una hipoteca de 30 años al 6.5% a una nueva hipoteca de 15 años a una tasa más baja. El pago mensual puede aumentar, pero el interés total pagado durante la vida del préstamo podría caer dramáticamente. Al ingresar tanto el préstamo actual como los términos potenciales de refinanciamiento en la calculadora, puedes ver rápidamente si el intercambio entre pagos mensuales más altos y costos a largo plazo más bajos tiene sentido para tu situación.",
+      "mistakes_title": "Errores Comunes en Hipotecas a Evitar",
+      "mistakes_p1": "Uno de los errores más comunes es enfocarse solo en la parte de capital e intereses del pago e ignorar impuestos, seguros, PMI y cuotas de HOA. Esto puede llevar a subestimar tu verdadero costo mensual de vivienda y estirar demasiado tu presupuesto. Otro error es basar la asequibilidad únicamente en el monto máximo que un prestamista está dispuesto a aprobar en lugar de lo que se ajusta cómodamente a tu plan financiero más amplio.",
+      "mistakes_p2": "Muchos prestatarios también fijan una tasa sin comparar múltiples ofertas de prestamistas, lo que puede significar pagar más en intereses durante la vida del préstamo de lo necesario. No entender cómo las compras de tasa, los puntos y los costos de cierre afectan el punto de equilibrio es otro descuido frecuente. Usa esta calculadora para probar diferentes escenarios de tasas y niveles de pago antes de comprometerte, y revisa tus números si tus ingresos, deudas o ahorros cambian durante el proceso de compra de vivienda.",
+      "terms_title": "Entendiendo Términos Clave de Hipotecas",
+      "terms_p1": "La <strong>tasa de interés</strong> es el costo que pagas por pedir dinero prestado, expresado como un porcentaje del saldo del préstamo. La <strong>APR</strong> (tasa porcentual anual) es una medida más amplia que puede incluir ciertas tarifas del prestamista además de la tasa base. Aunque esta calculadora se enfoca en la tasa que ingresas para los cálculos de pago, sigue siendo útil comparar APRs al revisar ofertas de prestamistas.",
+      "terms_p2": "<strong>PMI</strong> (seguro hipotecario privado) generalmente se requiere cuando tu pago inicial es menor al 20% y es un costo mensual extra además de tu pago base. <strong>Escrow</strong> se refiere a la cuenta que tu prestamista puede usar para recolectar y retener pagos de impuestos a la propiedad y seguros, agrupándolos en tu pago mensual. Tu <strong>DTI</strong> (ratio deuda-ingreso) es el porcentaje de tu ingreso bruto que se destina a pagos de deuda, incluyendo tu hipoteca. Los prestamistas usan el DTI para evaluar cuánto puedes permitirte pedir prestado razonablemente.",
+      "faq_title": "Preguntas Frecuentes",
+      "related_title": "Herramientas Relacionadas en FinWorld",
+      "related_p1": "Una vez que entiendas tu pago hipotecario potencial, puedes explorar otras herramientas de FinWorld para completar tu toma de decisiones. La <1>Calculadora de Asequibilidad de Vivienda</1> te ayuda a estimar un rango de precios cómodo basado en tus ingresos y deudas.",
+      "related_p2": "Para explorar estrategias de pago, prueba la <1>Calculadora de Pago de Préstamos y Pagos Extra</1>, que modela cómo los pagos adicionales al capital pueden acortar tu plazo y reducir intereses. Si estás evaluando una propiedad como inversión, la <1>Calculadora de Propiedades en Renta</1> te permite proyectar flujo de caja y retornos.",
+      "related_p3": "Para una planificación más amplia, usa la <1>Calculadora de Interés Compuesto</1> para ver cómo crecen tus ahorros con el tiempo, o la <1>Calculadora de Comprar vs Arrendar Auto</1> para comparar decisiones de endeudamiento en otras partes de tu vida financiera. Juntas, estas herramientas te ayudan a ver cómo tu hipoteca encaja en tu panorama financiero general."
+    },
+    "faq": {
+      "q1": "¿Cómo se calculan los pagos hipotecarios?",
+      "a1": "Los pagos hipotecarios se calculan usando una fórmula de amortización que considera el monto del préstamo, la tasa de interés y el plazo. El resultado es un pago mensual fijo que cubre tanto capital como intereses, con la mezcla cambiando con el tiempo a medida que pagas el préstamo.",
+      "q2": "¿Qué es el PMI y cuándo aplica?",
+      "a2": "El PMI generalmente aplica cuando das menos del 20% de pago inicial en una hipoteca convencional. Protege al prestamista en caso de incumplimiento y agrega un costo mensual adicional hasta que alcanzas cierto umbral de equidad o refinancias.",
+      "q3": "¿Cuál es un buen ratio deuda-ingreso (DTI) para una hipoteca?",
+      "a3": "Muchos prestamistas prefieren un DTI total en o por debajo de aproximadamente 43%, aunque algunos programas permiten más dependiendo del crédito, reservas y otros factores. Un DTI más bajo generalmente te da más flexibilidad y puede mejorar las probabilidades de aprobación del préstamo.",
+      "q4": "¿Cómo cambian mi hipoteca los pagos extra?",
+      "a4": "Los pagos extra reducen tu capital más rápido, lo que puede acortar el plazo de tu préstamo y reducir el interés total. Incluso pequeños pagos extra recurrentes pueden hacer una diferencia notable en 15 o 30 años.",
+      "q5": "¿Es siempre una buena idea refinanciar?",
+      "a5": "Refinanciar puede ser beneficioso si aseguras una tasa más baja o un plazo que se ajuste mejor a tus objetivos, pero también conlleva costos de cierre y una nueva línea de tiempo. Usa esta calculadora para comparar tu pago actual y calendario de pago con opciones potenciales de refinanciamiento.",
+      "q6": "¿Cómo afecta un plazo más corto al interés total?",
+      "a6": "Plazos más cortos, como hipotecas de 15 años, concentran los pagos en una ventana más pequeña, lo que aumenta los pagos mensuales pero típicamente resulta en mucho menos interés total pagado en comparación con plazos más largos como 30 años.",
+      "q7": "¿Cómo cambian mi pago los impuestos a la propiedad, seguros y cuotas de HOA?",
+      "a7": "Los impuestos a la propiedad, el seguro de hogar y las cuotas de HOA se suman a tu capital e intereses para formar tu pago mensual total de vivienda. La calculadora te permite ingresar estimaciones para cada uno para que puedas ver un costo mensual más realista en lugar de solo el pago base del préstamo."
+    }
+  }
+}

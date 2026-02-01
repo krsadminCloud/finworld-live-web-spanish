@@ -17,10 +17,15 @@ import {
   CalculateOutlined as CalculatorIcon,
 } from "@mui/icons-material";
 import { ColorModeContext } from "../../context/ColorModeContext";
+import { useLanguageRouting } from "../../utils/langRouting";
+import { useTranslation } from "react-i18next";
+import LanguageSwitcher from "../LanguageSwitcher";
 
 export default function TopBar({ onMenuClick }) {
   const theme = useTheme();
   const colorMode = React.useContext(ColorModeContext);
+  const { withLang } = useLanguageRouting();
+  const { t } = useTranslation();
 
   return (
     <AppBar
@@ -94,7 +99,7 @@ export default function TopBar({ onMenuClick }) {
           {/* Left: Brand */}
           <Box
             component={RouterLink}
-            to="/"
+            to={withLang("/")}
             sx={{ display: "flex", alignItems: "center", textDecoration: "none", gap: 0.75 }}
           >
             <CalculatorIcon sx={{ color: "#14B8A6" }} />
@@ -123,7 +128,7 @@ export default function TopBar({ onMenuClick }) {
             size="small"
             variant="outlined"
             component={RouterLink}
-            to="/"
+            to={withLang("/")}
             sx={{
               borderRadius: 50,
               fontWeight: 700,
@@ -139,13 +144,13 @@ export default function TopBar({ onMenuClick }) {
               },
             }}
           >
-            Home
+            {t("nav.home")}
           </Button>
           <Button
             size="small"
             variant="outlined"
             component={RouterLink}
-            to="/tools"
+            to={withLang("/tools")}
             sx={{
               borderRadius: 50,
               fontWeight: 700,
@@ -161,8 +166,21 @@ export default function TopBar({ onMenuClick }) {
               },
             }}
           >
-            Tools
+            {t("nav.tools")}
           </Button>
+          <LanguageSwitcher
+            buttonProps={{
+              size: "small",
+              variant: "outlined",
+              sx: {
+                borderRadius: 50,
+                fontWeight: 700,
+                px: { xs: 1.25, md: 2 },
+                py: { xs: 0.5, md: 0.9 },
+                whiteSpace: "nowrap",
+              },
+            }}
+          />
           <IconButton
             onClick={colorMode.toggleColorMode}
             color="inherit"
@@ -188,7 +206,7 @@ export default function TopBar({ onMenuClick }) {
               },
             }}
           >
-            My Account
+            {t("nav.account")}
           </Button>
         </Stack>
       </Toolbar>

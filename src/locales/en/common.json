@@ -1,0 +1,593 @@
+{
+  "language": {
+    "english": "English",
+    "spanish": "Español (EE.UU.)"
+  },
+  "calculators": {
+    "takeHomePay": {
+      "title": "Take-Home Pay Calculator",
+      "inputs": {
+        "yourIncome": "Your Gross Annual Income",
+        "spouseIncome": "Spouse's Gross Annual Income",
+        "taxYear": "Tax Year",
+        "state": "State",
+        "filingStatus": "Filing Status",
+        "your401Percent": "Percent of your income",
+        "spouse401Percent": "Percent of spouse's income",
+        "yourRothAmount": "Your annual amount ($)",
+        "spouseRothAmount": "Spouse's annual amount ($)",
+        "overrideState": "Override State Effective Rate (%)"
+      },
+      "sections": {
+        "your401": "Your 401(k) Contributions",
+        "spouse401": "Spouse's 401(k) Contributions",
+        "yourRoth": "Your Roth IRA (Post-tax)",
+        "spouseRoth": "Spouse's Roth IRA (Post-tax)",
+        "advanced": "Advanced Options"
+      },
+      "helper": {
+        "yourIncome": "Your total income before any deductions or taxes.",
+        "spouseIncome": "Your spouse's total income before any deductions or taxes.",
+        "taxYear": "The tax year for which calculations are performed.",
+        "state": "Your state of residence for state tax calculations.",
+        "filingStatus": "Your tax filing status (e.g., Single, Married Filing Jointly).",
+        "your401": "Pre-tax contributions to your 401(k) retirement plan.",
+        "spouse401": "Spouse's pre-tax contributions to their 401(k) retirement plan.",
+        "yourRoth": "Post-tax contributions to your Roth IRA retirement plan.",
+        "spouseRoth": "Spouse's post-tax contributions to their Roth IRA retirement plan.",
+        "overrideState": "Manually set a state tax rate to override the default calculation."
+      },
+      "placeholders": {
+        "income": "e.g. 90000",
+        "incomeComma": "e.g. 90,000",
+        "percent": "e.g. 10",
+        "amount": "e.g. 7000",
+        "amountComma": "e.g. 7,000",
+        "year": "e.g. 2025",
+        "override": "Leave blank to use table"
+      },
+      "labels": {
+        "selectState": "— Select —",
+        "optional": "(optional)"
+      },
+      "options": {
+        "single": "Single",
+        "mfj": "Married Filing Jointly",
+        "mfs": "Married Filing Separately",
+        "hoh": "Head of Household"
+      },
+      "chart": {
+        "title": "Income Allocation Breakdown",
+        "federal": "Federal Tax",
+        "state": "State Tax",
+        "fica": "FICA Tax",
+        "local": "Local Tax",
+        "preTax": "Pre-Tax Deductions",
+        "roth": "Roth Contributions",
+        "netPay": "Net Pay"
+      },
+      "summary": {
+        "netAfterTaxes": "Net After Taxes",
+        "finalNet": "Final Net (After Roth)",
+        "finalNetWeekly": "Final Net (Weekly)",
+        "finalNetBiweekly": "Final Net (Biweekly)",
+        "finalNetMonthly": "Final Net (Monthly)"
+      },
+      "results": {
+        "annualTitle": "Annual Take-Home Pay",
+        "primaryState": "Primary State:",
+        "stdDeduction": "Std Deduction",
+        "federalTaxable": "Federal Taxable",
+        "federalMarginal": "Federal Marginal",
+        "k401PerPaycheck": "401(k) per paycheck",
+        "stateMarginal": "State Marginal",
+        "stateTaxable": "State Taxable",
+        "stateDeduction": "State Deduction"
+      },
+      "breakdown": {
+        "title": "Breakdown",
+        "grossIncome": "Gross Income",
+        "incomeDetails": "Income details",
+        "hideDetails": "Hide details",
+        "preTaxTotal": "Total Pre-Tax Deductions",
+        "details": "Details",
+        "adjustedIncome": "Adjusted Income",
+        "totalTax": "Total Tax",
+        "federalTax": "Federal Tax",
+        "stateTax": "State Tax",
+        "ficaTax": "FICA Tax",
+        "localTax": "Local Tax",
+        "rothContributions": "Roth Contributions",
+        "federalDetails": "Federal taxable = adjusted income ({{adjusted}}) minus standard deduction ({{std}}) = {{taxable}}; tax computed at marginal {{marginal}}%.",
+        "stateDetails": "State taxable = adjusted income ({{adjusted}}) minus state deduction ({{deduction}}) = {{taxable}}; {{info}}",
+        "stateInfoDefault": "Tax calculated via the configured state brackets.",
+        "ficaDetails": "Social Security: {{ss}} (6.2% of the first {{ssLimit}}); Medicare: {{medicare}} (1.45% of total income); Additional Medicare: {{addlMedicare}} (0.9% above {{addlThreshold}}).",
+        "localDetails": "Local tax = adjusted income ({{adjusted}}) × rate ({{rate}}%).",
+        "income": {
+          "baseSelf": "Your Base Income",
+          "bonusSelf": "Your Annual Bonus",
+          "baseSpouse": "Spouse Base Income",
+          "bonusSpouse": "Spouse's Annual Bonus"
+        }
+      },
+      "compare": {
+        "title": "Compare States",
+        "selectState": "Select state",
+        "pickTwo": "Pick up to two states to compare.",
+        "stateTax": "State tax",
+        "netAnnual": "Net (annual)",
+        "afterRothAnnual": "After Roth (annual)",
+        "monthly": "Monthly",
+        "biweekly": "Biweekly",
+        "weekly": "Weekly"
+      },
+      "cta": {},
+      "advanced": {
+        "preTax": {
+          "hsa": "HSA",
+          "hsaHelp": "Enter annual pre-tax HSA contributions (amount).",
+          "traditionalIra": "Traditional IRA",
+          "traditionalIraHelp": "Enter annual pre-tax Traditional IRA contributions (amount).",
+          "studentLoanInterest": "Student Loan Interest",
+          "studentLoanInterestHelp": "Enter annual student loan interest eligible for adjustment (amount).",
+          "fsaContribution": "FSA Contribution",
+          "fsaContributionHelp": "Enter your annual pre-tax FSA contributions (amount).",
+          "otherDeductions": "Other Pre-Tax Deductions",
+          "otherDeductionsHelp": "Enter other annual pre-tax deductions not listed above (amount)."
+        }
+      },
+      "credits": {
+        "childTaxCredit": "Child Tax Credit",
+        "childTaxCreditHelp": "Enter your total annual Child Tax Credit to apply (amount).",
+        "dependentCareCredit": "Dependent Care Credit",
+        "dependentCareCreditHelp": "Enter your total annual Dependent Care Credit to apply (amount)."
+      },
+      "inline": {
+        "labels": {
+          "yourIncome": "Your Gross Annual Income",
+          "spouseIncome": "Spouse's Gross Annual Income",
+          "yourBonus": "Your Annual Bonus",
+          "spouseBonus": "Spouse's Annual Bonus",
+          "taxYear": "Tax Year",
+          "filingStatus": "Filing Status",
+          "state": "State",
+          "overrideState": "Override State Effective Rate (%)",
+          "optional": "(optional)",
+          "localTax": "Local Tax Rate (%)",
+          "your401": "Your 401(k) Contributions",
+          "apply401": "Apply 401(k) to",
+          "spouse401": "Spouse's 401(k) Contributions",
+          "hideAdvanced": "Hide Advanced Options",
+          "showAdvanced": "Show Advanced Options",
+          "yourRoth": "Your Roth IRA (Post-tax)",
+          "spouseRoth": "Spouse's Roth IRA (Post-tax)",
+          "healthInsurance": "Health Insurance"
+        },
+        "placeholders": {
+          "income": "e.g. 90000",
+          "incomeSpouse": "e.g. 75000",
+          "yourBonus": "e.g. 10000",
+          "spouseBonus": "e.g. 5000",
+          "overrideState": "Overrides State Calculated Rate",
+          "localTaxExample": "e.g. 1.5",
+          "percentIncome": "Percent of income",
+          "rothExample": "e.g. 3000"
+        },
+        "help": {
+          "localTax": "Enter your local income tax rate (percent).",
+          "your401": "Enter the percent of income you contribute pre-tax to a 401(k).",
+          "spouse401": "Enter the percent of your spouse's income contributed pre-tax to a 401(k).",
+          "yourRoth": "Enter your annual post-tax Roth IRA contributions (amount).",
+          "spouseRoth": "Enter your spouse's annual post-tax Roth IRA contributions (amount).",
+          "healthInsurance": "Enter your annual pre-tax health insurance premiums (amount)."
+        },
+        "options": {
+          "single": "Single",
+          "mfj": "Married Filing Jointly",
+          "mfs": "Married Filing Separately",
+          "hoh": "Head of Household",
+          "selectState": "Select state",
+          "salaryOnly": "Salary only",
+          "salaryPlusBonus": "Salary + Bonus"
+        }
+      },
+      "autoLoan": {
+        "meta": {
+          "title": "Auto Loan Early Payoff Calculator | FinWorld",
+          "description": "See how extra payments and different schedules change your auto loan payoff date, interest cost, and savings.",
+          "ogDescription": "Compare standard vs accelerated auto loan payoff and visualize how much interest you can save.",
+          "twitterDescription": "Model extra payments, biweekly schedules, and interest savings on your car loan."
+        },
+        "title": "Auto Loan Early Payoff Calculator",
+        "subtitle": "See how much you can save in interest and how quickly you can pay off your car loan by making extra payments toward your principal balance.",
+        "sections": {
+          "loanDetails": "Loan Details",
+          "extraPayments": "Extra Payments"
+        },
+        "inputs": {
+          "amount": "Loan Amount",
+          "termYears": "Loan Term",
+          "interestRate": "Interest Rate (APR)",
+          "startDate": "Loan Start Date",
+          "extraPayment": "Extra Payment Amount",
+          "extraPaymentFrequency": "Extra Payment Frequency",
+          "quickAdd": "Quick Add Extra Payment",
+          "paymentFrequency": "Regular Payment Frequency"
+        },
+        "labels": {
+          "zeroK": "$0k",
+          "hundredK": "$100k",
+          "zeroYears": "0 Yrs",
+          "tenYears": "10 Yrs",
+          "plusAmount": "+${{amount}}"
+        },
+        "options": {
+          "monthly": "Monthly",
+          "biweekly": "Bi-weekly (every 2 weeks)"
+        },
+        "helper": {
+          "currentAverage": "Current average: {{rate}} (6.5%)",
+          "extraPayment": "Add this amount on top of your regular payment",
+          "extraPaymentFrequency": "How often you'll make the extra payment",
+          "paymentFrequency": "Your regular loan payment schedule"
+        },
+        "empty": {
+          "title": "Ready to Calculate",
+          "body": "Enter your loan details and extra payment information to see your savings."
+        },
+        "summary": {
+          "title": "Your Payoff Summary",
+          "newPayoffDate": "New Payoff Date",
+          "monthsSooner": "({{months}} months sooner)",
+          "interestSaved": "Interest Saved",
+          "lessInterest": "{{percent}}% less interest",
+          "loanShortened": "Loan Shortened By",
+          "months": "{{months}} months",
+          "years": "{{years}} years",
+          "savingInterest": "💡 You're saving {{amount}} in interest!",
+          "savingDetails": "By adding just {{extra}} extra per month, you'll pay off your loan {{months}} months early and save money on interest."
+        },
+        "cost": {
+          "title": "Loan Cost Breakdown",
+          "principal": "Principal",
+          "interest": "Interest",
+          "percentOfTotal": "{{percent}}% of total",
+          "totalCost": "Total Cost",
+          "withExtras": "With Extra Payments:",
+          "originalInterest": "Original interest: {{amount}}",
+          "newInterest": "New interest: {{amount}}",
+          "youSave": "You save: {{amount}}!"
+        },
+        "timeline": {
+          "title": "Payoff Timeline Comparison",
+          "standard": "Standard",
+          "accelerated": "Accelerated",
+          "duration": "Duration",
+          "months": "{{months}} months",
+          "monthsYears": "{{months}} months ({{years}} years)",
+          "payoffDate": "Payoff Date",
+          "totalCost": "Total Cost",
+          "recommended": "Recommended",
+          "youSave": "💡 You save {{months}} months and {{amount}}!",
+          "monthsLabel": "Months"
+        },
+        "amort": {
+          "title": "Accelerated Amortization Schedule",
+          "hide": "Hide Details",
+          "show": "Show Details",
+          "exportCsv": "Export CSV",
+          "paymentNumber": "Payment #",
+          "date": "Date",
+          "regularPayment": "Regular Payment",
+          "extraPayment": "Extra Payment",
+          "totalPayment": "Total Payment",
+          "principal": "Principal",
+          "interest": "Interest",
+          "balance": "Balance",
+          "showingFirst": "Showing first 12 months of {{total}} total payments",
+          "exportPrompt": "Export the complete schedule to see all payments",
+          "paymentSummaryTitle": "Payment Summary",
+          "totalPayments": "Total payments: {{count}}",
+          "regularPaymentLabel": "Regular payment: {{amount}}",
+          "totalExtraPayments": "Total extra payments: {{amount}}",
+          "finalPaymentDate": "Final payment date: {{date}}"
+        },
+        "chart": {
+          "principal": "Principal",
+          "interest": "Interest",
+          "standard": "Standard",
+          "accelerated": "Accelerated"
+        },
+        "info": {
+          "title": "How to use this auto loan payoff calculator",
+          "p1": "Enter your loan amount, term, and interest rate, then choose a payment frequency and extra payment strategy. The results panel compares your standard schedule with an accelerated plan so you can see how many months and how much interest you save.",
+          "p2": "Try testing different extra payment amounts or switching between monthly and biweekly payments to find a plan that fits your budget while still paying off the loan faster.",
+          "related": "Related tools",
+          "compareIntro": "Shopping for a car? Compare financing options with the",
+          "linkBuyVsLease": "Buy vs Lease Calculator",
+          "debtIntro": ", or explore broader debt strategies with the",
+          "linkLoanPayoff": "Loan Payoff Calculator"
+        }
+      }
+    }
+  },
+  "nav": {
+    "home": "Home",
+    "tools": "Financial Tools",
+    "comparisons": "Comparisons",
+    "guides": "Guides",
+    "articles": "Articles",
+    "about": "About",
+    "account": "My Account",
+    "searchPlaceholder": "Search…",
+    "tool_extra_payment": "Loan Payoff Calculator",
+    "tool_take_home_pay": "Take-Home Pay Calculator"
+  },
+  "footer": {
+    "tagline": "Practical finance tools that stay fresh and accurate.",
+    "rights": "(c) 2025 FinCalc. All Rights Reserved.",
+    "about": "About Us",
+    "contact": "Contact",
+    "help": "Help & Guidance",
+    "terms": "Terms of Service",
+    "disclaimer_main": "© 2025 FinWorld Project. This calculator provides estimates only. Consult with financial professionals for personalized advice.",
+    "disclaimer_sub": "Calculations based on standard mortgage underwriting guidelines. Actual loan terms may vary by lender and credit profile."
+  },
+  "common": {
+    "btn.browse": "Browse calculators",
+    "btn.guides": "Read guides",
+    "btn.open": "Open calculator",
+    "btn.openNamed": "Open {{name}}",
+    "btn.notify": "Notify me",
+    "btn.clearFilters": "Filters active",
+    "badge.fresh": "Fresh & trusted",
+    "badge.nosignup": "No sign-up",
+    "badge.nosignup.short": "No sign-up needed",
+    "label.results": "{{count}} results",
+    "label.showing": "Showing {{shown}} of {{total}} live calculators",
+    "label.popular": "Popular",
+    "label.planned": "Planned calculators",
+    "label.plannedCount": "{{count}} planned",
+    "label.showPlanned": "Show planned",
+    "label.hidePlanned": "Hide planned",
+    "label.comingSoon": "Coming soon",
+    "label.filtersActive": "Filters active",
+    "label.noMatchTitle": "No calculators match your filters.",
+    "label.noMatchBody": "Try clearing filters or switching categories."
+  },
+  "home": {
+    "hero.title": "Make Smart Money Moves",
+    "hero.subtitle": "Get personalized insights and calculators to reach your financial goals with confidence, tuned with the same rhythm as our calculators hub.",
+    "cta.explore": "Explore calculators",
+    "cta.guides": "Read guides",
+    "stat.liveTools": "Live tools with no sign-in",
+    "stat.personalFinance": "Built to power your Personal Finance",
+    "featured.title": "Featured Tools",
+    "featured.card1.title": "Financial Calculators",
+    "featured.card1.desc": "Explore our full library of financial calculators.",
+    "featured.card2.title": "Insurance Quote (coming soon)",
+    "featured.card2.desc": "Get a personalized insurance quote.",
+    "featured.card3.title": "Mortgage Rates (soon)",
+    "featured.card3.desc": "Compare lender rates and fees side by side.",
+    "featured.card4.title": "Credit Card Finder (soon)",
+    "featured.card4.desc": "Match cards to your spending profile.",
+    "articles.title": "Latest articles"
+  },
+  "guides": {
+    "title": "Learn with FinWorld Guides",
+    "intro": "This section will host step-by-step guides that pair real-world money questions with interactive calculators. While the long-form articles are still being written, you can already use the tools below to start exploring your own scenarios.",
+    "card1.title": "How much house can I really afford?",
+    "card1.desc": "Combine the Home Affordability and Mortgage calculators to understand comfortable payment ranges, DTI ratios, and long-term interest costs.",
+    "card2.title": "Estimating take-home pay on a new job",
+    "card2.desc": "Use the Take-Home Pay calculator to compare offers across states, filing statuses, and benefit assumptions before you negotiate.",
+    "card3.title": "Planning long-term investing and retirement",
+    "card3.desc": "Pair the Compounding and Retirement calculators to see how today's savings decisions translate into future retirement income."
+  },
+  "tools": {
+    "advancedFeatures": "Advanced Features",
+    "advancedFeaturesHint": "Click dropdown",
+    "compareLoans": "Compare Two Loans",
+    "affordability": "How Much Home You Can Afford"
+  },
+  "comparisons": {
+    "title": "Financial Comparisons",
+    "intro": "Some of the most important money decisions are trade-offs: renting vs buying, leasing vs financing a car, paying down debt vs investing more. This section highlights calculators that are especially useful for comparing those choices side by side.",
+    "card1.title": "Buy vs Lease a Car",
+    "card1.desc": "Use the Buy vs Lease Auto Calculator to compare total cost of ownership, including depreciation, lease fees, APR, and miles.",
+    "card1.cta": "Open Buy vs Lease Calculator",
+    "card2.title": "Pay Off Debt vs Invest",
+    "card2.desc": "Combine the Loan Payoff and Compounding calculators to see how extra payments compare to investing the same dollars over time.",
+    "card3.title": "Renting vs Owning a Home",
+    "card3.desc": "Use the Home Affordability and Rental Property calculators together to understand the trade-offs between renting and owning, including monthly cash flow and long-term equity."
+  },
+  "about": {
+    "title": "About FinWorld",
+    "p1": "FinWorld is a collection of focused, high-quality financial calculators designed to help you model real-world decisions: which home you can afford, how much you actually take home after taxes, how quickly extra payments speed up a loan payoff, and how your investments grow with compounding.",
+    "p2": "Every calculator is built to be transparent and educational. Rather than hiding the math, we show you how the numbers come together so you can stress-test assumptions and understand the trade-offs behind each choice.",
+    "start.title": "Start with these calculators",
+    "cta.explore": "Explore all calculators",
+    "cta.guides": "Read upcoming guides"
+  },
+  "articles": {
+    "title": "Guides & Articles",
+    "intro": "Practical, beginner-friendly walkthroughs on credit, auto loans, and buying a home—paired with FinWorld calculators so you can check affordability and payments before you commit.",
+    "breadcrumb.home": "Home",
+    "breadcrumb.guides": "Guides",
+    "empty": "Article not found",
+    "empty.desc": "We couldn’t find that article. Head back to the guides to explore more resources.",
+    "empty.cta": "View all guides"
+  },
+  "mortgage": {
+    "title": "Mortgage Calculator",
+    "inputs": {
+      "homePrice": "Home Price",
+      "downPayment": "Down Payment",
+      "downPaymentPercent": "Down Payment (%)",
+      "downPaymentPercentHelper": "Enter percentage of home price",
+      "downPaymentPercentHelperMissingPrice": "Enter home price for % to apply",
+      "downPaymentAmount": "Down Payment Amount",
+      "downPaymentAmountPlaceholder": "Enter dollar amount",
+      "loanTerm": "Loan Term",
+      "loanTermYears": "{{years}} Years",
+      "interestRate": "Interest Rate",
+      "taxesInsuranceHoa": "Taxes, Insurance & HOA",
+      "propertyTax": "Property Tax",
+      "propertyTaxHelper": "Annual property tax",
+      "homeInsurance": "Home Insurance",
+      "homeInsuranceHelper": "Annual home insurance premium",
+      "pmi": "PMI (if applicable)",
+      "pmiHelper": "Monthly PMI payment",
+      "hoaFees": "HOA Fees",
+      "hoaFeesHelper": "Monthly HOA fees",
+      "stateOptional": "State (Optional)",
+      "stateSelectPlaceholder": "— Select —",
+      "creditScore": "Credit Score"
+    },
+    "actions": {
+      "reset": "Reset"
+    },
+    "empty": {
+      "prompt": "Enter values to see payment breakdown"
+    },
+    "chart": {
+      "principalInterest": "Principal & Interest",
+      "taxes": "Taxes",
+      "insurance": "Insurance",
+      "pmi": "PMI",
+      "hoa": "HOA"
+    },
+    "summary": {
+      "title": "Mortgage Purchase Summary",
+      "subtitle": "Review your estimated loan inputs before diving into the payment breakdown.",
+      "fullPrice": "Full Purchase Price",
+      "fullPriceDesc": "Entered home price for this scenario",
+      "downPayment": "Down Payment",
+      "downPaymentDesc": "Avoid PMI insurance by paying 20%",
+      "interestRate": "Interest Rate",
+      "interestRateDesc": "Fixed rate entered for this loan term",
+      "sectionTitle": "SUMMARY",
+      "numPayments": "Number of payments: {{count}}",
+      "monthlyPayment": "Monthly payment",
+      "totalInterest": "Total interest paid",
+      "totalCost": "Total cost of loan",
+      "payoffDate": "Payoff date"
+    },
+    "tabs": {
+      "paymentBreakdown": "Payment Breakdown",
+      "loanEstimate": "Loan Estimate",
+      "amortization": "Amortization",
+      "chart": "Chart",
+      "schedule": "Schedule"
+    },
+    "payment": {
+      "monthlyPayment": "Monthly Payment"
+    },
+    "loanEstimate": {
+      "howPaymentsChange": "How payments change over the life of a {{years}}-year loan",
+      "howPaymentsChangeDesc": "As the term of your mortgage progresses, a larger share of your payment goes toward paying down the principal until the loan is paid in full at the end of your term.",
+      "asOf": "As of {{date}}",
+      "principalPaid": "Principal paid",
+      "interestPaid": "Interest paid",
+      "loanBalance": "Loan balance"
+    },
+    "table": {
+      "month": "Month",
+      "principal": "Principal",
+      "interest": "Interest",
+      "balance": "Balance"
+    }
+  },
+  "tool_home_affordability": {
+    "meta": {
+      "title": "Home Affordability Calculator | FinWorld",
+      "desc": "Estimate how much house you can afford based on your income, debts, down payment, and mortgage assumptions. See a full PITI breakdown and compare scenarios."
+    },
+    "hero": {
+      "title": "Home Affordability Calculator",
+      "subtitle": "Calculate how much home you can comfortably afford based on your income, debts, and down payment—then see how lenders might view the same numbers."
+    },
+    "sections": {
+      "overview_title": "Home Affordability Calculator Overview",
+      "overview_p1": "The FinWorld Home Affordability Calculator is designed to help you answer one of the most important questions in the homebuying process: \"How much house can I really afford?\" By combining your income, existing monthly debts, down payment, and key mortgage assumptions, the tool estimates a purchase price that fits within common lender guidelines while still giving you a realistic picture of your monthly payment.",
+      "overview_p2": "Instead of focusing only on the sticker price of a home, this calculator breaks your payment down into principal and interest, property taxes, homeowners insurance, and HOA fees. Seeing all of these components together can make it easier to balance your housing goals with other priorities like saving for retirement, paying down debt, or building an emergency fund.",
+      "how_to_title": "How to Use This Home Affordability Calculator",
+      "how_to_p1": "Start by entering your annual household income and your total monthly debt payments, such as auto loans, student loans, and credit cards. Then choose a target down payment amount and adjust the interest rate, loan term, property tax rate, and insurance estimate to match what you are seeing from lenders and local listings.",
+      "how_to_p2": "As you update these inputs, the calculator recomputes your estimated maximum home price and monthly payment, along with a PITI breakdown. You can fine-tune the front-end and back-end DTI ratios to reflect more conservative or more flexible underwriting standards, then use the comparison chart to test different price points or interest rate scenarios before you start touring homes.",
+      "examples_title": "Home Affordability Examples",
+      "examples_p1": "Consider a household earning $120,000 per year with $500 in monthly non-housing debt. Using a 28% front-end DTI and 36% back-end DTI, the calculator might show that a payment around a certain range is considered comfortable, translating into a target price band for homes in your area depending on rates and taxes.",
+      "examples_p2": "In a higher-cost metro with elevated property taxes and HOA fees, the same income and debt profile may support a lower maximum home price. By adjusting the tax and insurance assumptions upward, you'll see how these location-driven costs compress affordability and why two similarly priced homes can produce very different monthly payments.",
+      "examples_p3": "Finally, imagine a scenario where your income is stable but you carry significant student loan or auto debt. The calculator will show how higher monthly obligations eat into your debt-to-income capacity, and how paying down certain loans first could expand the price range you can comfortably afford in the future.",
+      "mistakes_title": "Common Home Affordability Mistakes",
+      "mistakes_p1": "A frequent mistake is anchoring on the maximum amount a lender is willing to approve rather than what fits your day-to-day budget. Just because a loan is technically approved does not mean it will feel comfortable once you layer in childcare, transportation, and other living expenses. This calculator is meant to help you pick a target below your absolute maximum if that aligns better with your financial goals.",
+      "mistakes_p2": "Another pitfall is underestimating variable costs like property taxes, insurance, and HOA dues, or assuming they will stay flat over time. These line items can rise, sometimes faster than income. Building in a buffer by using slightly higher estimates can keep your plan resilient if rates or local tax assessments change.",
+      "terms_title": "Understanding Key Terms",
+      "terms_p1": "Your <strong>front-end DTI</strong> (debt-to-income ratio) looks at housing costs as a percentage of your gross income, while your <strong>back-end DTI</strong> includes housing plus other debts. Many lenders use thresholds such as 28% and 36%, but actual guidelines vary by program and credit profile.",
+      "terms_p2": "<strong>PITI</strong> stands for principal, interest, taxes, and insurance and represents your core housing payment. If you live in a community with <strong>HOA fees</strong>, those dues are added on top. A larger <strong>down payment</strong> typically lowers your loan amount and may reduce or eliminate PMI, which helps stretch your budget further.",
+      "faq_title": "Frequently Asked Questions",
+      "related_title": "Related Tools at FinWorld",
+      "related_p1": "Planning a home purchase? Try the <1>Mortgage Calculator</1> to model specific loan amounts, rates, and amortization schedules once you have a target price range.",
+      "related_p2": "If you're thinking about paying off debt faster, the <1>Loan Payoff & Extra Payment Calculator</1> can show how redirecting cash flow might free up room in your housing budget over time.",
+      "related_p3": "For investors, the <1>Rental Property Calculator</1> helps evaluate potential income properties, while the <1>Compounding Calculator</1> illustrates how long-term savings and investments complement your home purchase decisions."
+    },
+    "faq": {
+      "q1": "How much house can I afford?",
+      "a1": "This calculator looks at your income, debts, down payment, and underwriting ratios to estimate a comfortable maximum home price. You can tune assumptions to match your lender.",
+      "q2": "What debt-to-income ratios does this tool use?",
+      "a2": "By default, the calculator uses common front-end and back-end DTI ratios, such as 28% for housing and 36% for total debt. You can adjust both to see how tighter or looser guidelines change what you can afford.",
+      "q3": "Does this include taxes, insurance, and HOA fees?",
+      "a3": "Yes. Property taxes, homeowners insurance, and HOA dues are included in the PITI breakdown so your estimated payment aligns more closely with a real mortgage quote.",
+      "q4": "How does my down payment affect affordability?",
+      "a4": "A larger down payment reduces the loan amount, which can lower your monthly payment and may remove PMI requirements. This calculator lets you experiment with different down payment amounts to see how they change the maximum home price you can afford.",
+      "q5": "Can this tool help me stay within safe DTI ranges?",
+      "a5": "Yes. By combining your income and monthly debts with lender-style DTI targets, the calculator estimates a home price that fits within common underwriting guidelines so you can avoid overextending your budget.",
+      "q6": "What if property taxes or insurance are higher in my area?",
+      "a6": "Property tax and insurance costs vary widely by location. You can adjust both values to more closely match local quotes, and the calculator will show how those changes affect your affordable price and total monthly payment."
+    }
+  },
+  "tools_mortgage": {
+    "meta": {
+      "title": "FinWorld Mortgage Calculator | Payments, Amortization & Total Interest",
+      "desc": "Use the FinWorld mortgage calculator to estimate monthly payments, total interest, taxes, insurance, and PMI. See a full amortization schedule and compare scenarios before you buy or refinance."
+    },
+    "guide_link": "📘 View the Full Mortgage Calculator Guide",
+    "sections": {
+      "overview_title": "FinWorld Mortgage Calculator Overview",
+      "overview_p1": "The FinWorld mortgage calculator is designed to help homebuyers, current homeowners, and refinancers quickly understand what a mortgage payment could look like before talking to a lender. By combining the core pieces of a mortgage payment—principal, interest, property taxes, homeowners insurance, PMI, and HOA fees—this tool gives you a clearer picture of your full monthly housing cost, not just the base loan amount. You can explore different home prices, down payments, loan terms, and interest rates to see how each choice affects affordability and total interest over time.",
+      "overview_p2": "Whether you are comparing a 15-year versus 30-year mortgage, deciding how much to put down, or thinking about refinancing, this calculator is built to support side-by-side what-if scenarios. Use it early in your search to set realistic expectations, then revisit it as you receive rate quotes, adjust your budget, or consider alternative properties. The goal is not to replace professional advice, but to give you a structured way to run the numbers and feel more confident in the decisions you bring to your lender or financial advisor.",
+      "howto_title": "How to Use This Mortgage Calculator",
+      "howto_p1": "Start by entering the estimated home price and your planned down payment. You can switch between entering a dollar amount or a percentage, which makes it easy to test scenarios like \"What if I put 20% down instead of 10%?\" Next, choose a loan term, such as 15 or 30 years, and enter the interest rate you expect based on lender quotes or current market averages.",
+      "howto_p2": "After that, refine the estimate by including property taxes, homeowners insurance, and any HOA fees you expect for the property. If your down payment is below 20%, you can add an estimate for PMI to see how it affects your total monthly payment. Once your inputs look right, review the monthly payment breakdown, amortization details, and total interest over the life of the loan. Adjust one input at a time—such as the rate, term, or down payment—to understand which levers make the biggest difference to both affordability today and long-term costs.",
+      "examples_title": "Mortgage Calculation Examples",
+      "examples_p1": "Imagine a first-time homebuyer purchasing a $400,000 home with 10% down, a 30-year term, and a 6.5% interest rate. After including estimated taxes, insurance, and PMI, the calculator might show a monthly payment that is higher than expected, with a large share going to interest in the early years. This scenario can highlight how long it takes to build equity and how sensitive the payment is to interest rate changes.",
+      "examples_p2": "In a second scenario, consider a buyer with a similar budget but able to put 20% down on the same $400,000 home. By removing PMI and reducing the loan amount, the monthly payment drops, and total interest over 30 years decreases significantly. The calculator makes it easy to see how the larger upfront investment can pay off over time.",
+      "examples_p3": "Finally, think about a homeowner comparing a refinance from a 30-year mortgage at 6.5% to a new 15-year mortgage at a lower rate. The monthly payment may rise, but the total interest paid over the life of the loan could fall dramatically. By plugging both the current loan and the potential refinance terms into the calculator, you can quickly see whether the trade-off between higher monthly payments and lower long-term costs makes sense for your situation.",
+      "mistakes_title": "Common Mortgage Mistakes to Avoid",
+      "mistakes_p1": "One of the most common mistakes is focusing only on the principal and interest portion of the payment and ignoring taxes, insurance, PMI, and HOA dues. This can lead to underestimating your true monthly housing cost and stretching your budget too far. Another mistake is basing affordability solely on the maximum amount a lender is willing to approve rather than what comfortably fits into your broader financial plan.",
+      "mistakes_p2": "Many borrowers also lock in a rate without comparing multiple lender offers, which can mean paying more in interest over the life of the loan than necessary. Failing to understand how rate buydowns, points, and closing costs affect the break-even point is another frequent oversight. Use this calculator to test different rate scenarios and payment levels before you commit, and revisit your numbers if your income, debts, or savings change during the homebuying process.",
+      "terms_title": "Understanding Key Mortgage Terms",
+      "terms_p1": "The <strong>interest rate</strong> is the cost you pay to borrow money, expressed as a percentage of the loan balance. The <strong>APR</strong> (annual percentage rate) is a broader measure that can include certain lender fees in addition to the base rate. While this calculator focuses on the rate you enter for payment calculations, it is still helpful to compare APRs when reviewing lender offers.",
+      "terms_p2": "<strong>PMI</strong> (private mortgage insurance) is typically required when your down payment is below 20% and is an extra monthly cost on top of your base payment. <strong>Escrow</strong> refers to the account your lender may use to collect and hold property tax and insurance payments, bundling them into your monthly payment. Your <strong>DTI</strong> (debt-to-income ratio) is the percentage of your gross income that goes toward debt payments, including your mortgage. Lenders use DTI to assess how much you can reasonably afford to borrow.",
+      "faq_title": "Frequently Asked Questions",
+      "related_title": "Related Tools at FinWorld",
+      "related_p1": "Once you understand your potential mortgage payment, you can explore other FinWorld tools to round out your decision-making. The <1>Home Affordability Calculator</1> helps you estimate a comfortable price range based on your income and debts.",
+      "related_p2": "To explore payoff strategies, try the <1>Loan Payoff & Extra Payment Calculator</1>, which models how additional principal payments can shorten your term and reduce interest. If you are evaluating a property as an investment, the <1>Rental Property Calculator</1> lets you project cash flow and returns.",
+      "related_p3": "For broader planning, use the <1>Compounding Calculator</1> to see how your savings grow over time, or the <1>Buy vs Lease Auto Calculator</1> to compare borrowing decisions in other parts of your financial life. Together, these tools help you see how your mortgage fits into your overall money picture."
+    },
+    "faq": {
+      "q1": "How are mortgage payments calculated?",
+      "a1": "Mortgage payments are calculated using an amortization formula that considers the loan amount, interest rate, and term. The result is a fixed monthly payment that covers both principal and interest, with the mix shifting over time as you pay down the loan.",
+      "q2": "What is PMI and when does it apply?",
+      "a2": "PMI usually applies when you put less than 20% down on a conventional mortgage. It protects the lender in case of default and adds an additional monthly cost until you reach a certain equity threshold or refinance.",
+      "q3": "What is a good debt-to-income (DTI) ratio for a mortgage?",
+      "a3": "Many lenders prefer a total DTI at or below about 43%, though some programs allow higher depending on credit, reserves, and other factors. A lower DTI generally gives you more flexibility and can improve loan approval odds.",
+      "q4": "How do extra payments change my mortgage?",
+      "a4": "Extra payments reduce your principal faster, which can shorten your loan term and lower total interest. Even small recurring extra payments can make a noticeable difference over 15 or 30 years.",
+      "q5": "Is refinancing always a good idea?",
+      "a5": "Refinancing can be beneficial if you secure a lower rate or a term that better matches your goals, but it also comes with closing costs and a new timeline. Use this calculator to compare your current payment and payoff schedule with potential refinance options.",
+      "q6": "How does a shorter term affect total interest?",
+      "a6": "Shorter terms, such as 15-year mortgages, concentrate payments into a smaller window, which increases monthly payments but typically results in much lower total interest paid compared with longer terms like 30 years.",
+      "q7": "How do property taxes, insurance, and HOA fees change my payment?",
+      "a7": "Property taxes, homeowners insurance, and HOA fees are added on top of your principal and interest to form your total monthly housing payment. The calculator lets you enter estimates for each so you can see a more realistic monthly cost instead of just the base loan payment."
+    }
+  }
+}

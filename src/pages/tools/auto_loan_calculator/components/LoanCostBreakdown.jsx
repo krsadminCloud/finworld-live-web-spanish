@@ -2,8 +2,10 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { formatCurrency } from '../utils/loanCalculations';
+import { useTranslation } from 'react-i18next';
 
 const LoanCostBreakdown = ({ chartData, standard, accelerated }) => {
+  const { t } = useTranslation();
   if (!chartData.length || !standard || !accelerated) return null;
 
   const totalCost = accelerated.totalPayment;
@@ -12,12 +14,12 @@ const LoanCostBreakdown = ({ chartData, standard, accelerated }) => {
 
   const data = [
     {
-      name: 'Principal',
+      name: t("calculators.autoLoan.cost.principal"),
       value: principal,
       color: '#00C1B0'
     },
     {
-      name: 'Interest',
+      name: t("calculators.autoLoan.cost.interest"),
       value: interest,
       color: '#ADD8E6'
     }
@@ -33,7 +35,7 @@ const LoanCostBreakdown = ({ chartData, standard, accelerated }) => {
             {formatCurrency(data.value)}
           </p>
           <p className="text-xs text-neutral-400">
-            {((data.value / totalCost) * 100).toFixed(1)}% of total
+            {t("calculators.autoLoan.cost.percentOfTotal", { percent: ((data.value / totalCost) * 100).toFixed(1) })}
           </p>
         </div>
       );
@@ -70,7 +72,7 @@ const LoanCostBreakdown = ({ chartData, standard, accelerated }) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.2 }}
     >
-      <h2 className="text-2xl font-bold text-neutral-900 mb-4">Loan Cost Breakdown</h2>
+      <h2 className="text-2xl font-bold text-neutral-900 mb-4">{t("calculators.autoLoan.cost.title")}</h2>
 
       <div className="flex flex-col lg:flex-row items-center">
         {/* Chart */}
@@ -107,7 +109,7 @@ const LoanCostBreakdown = ({ chartData, standard, accelerated }) => {
           {/* Center Text */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <div className="text-center">
-              <p className="text-sm text-neutral-400">Total Cost</p>
+              <p className="text-sm text-neutral-400">{t("calculators.autoLoan.cost.totalCost")}</p>
               <p className="text-lg font-bold text-neutral-900">
                 {formatCurrency(totalCost)}
               </p>
@@ -151,12 +153,12 @@ const LoanCostBreakdown = ({ chartData, standard, accelerated }) => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.6 }}
           >
-            <h4 className="font-semibold text-neutral-900 mb-2">With Extra Payments:</h4>
+            <h4 className="font-semibold text-neutral-900 mb-2">{t("calculators.autoLoan.cost.withExtras")}</h4>
             <div className="text-sm text-neutral-600 space-y-1">
-              <p>• Original interest: {formatCurrency(standard.totalInterest)}</p>
-              <p>• New interest: {formatCurrency(accelerated.totalInterest)}</p>
+              <p>• {t("calculators.autoLoan.cost.originalInterest", { amount: formatCurrency(standard.totalInterest) })}</p>
+              <p>• {t("calculators.autoLoan.cost.newInterest", { amount: formatCurrency(accelerated.totalInterest) })}</p>
               <p className="font-semibold text-semantic-success">
-                • You save: {formatCurrency(accelerated.interestSaved)}!
+                • {t("calculators.autoLoan.cost.youSave", { amount: formatCurrency(accelerated.interestSaved) })}
               </p>
             </div>
           </motion.div>

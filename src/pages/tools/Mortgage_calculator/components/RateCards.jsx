@@ -2,6 +2,7 @@ import * as React from "react";
 import { Box, Paper, Typography } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { useNavigate } from "react-router-dom";
+import { useLanguageNavigate } from "../../../../utils/langRouting";
 
 const rateData = [
   {
@@ -26,10 +27,11 @@ const rateData = [
 
 export default function RateCards() {
   const navigate = useNavigate();
+  const langNavigate = useLanguageNavigate(navigate);
 
   const handleCardClick = (index) => {
     if (rateData[index].action === "navigate") {
-      navigate("/tools/mortgage_calculator/allrates");
+      langNavigate("/tools/mortgage-calculator/allrates");
     }
   };
 

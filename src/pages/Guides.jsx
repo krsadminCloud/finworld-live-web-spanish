@@ -1,13 +1,18 @@
 import React from "react";
 import { Box, Container, Typography, Stack, Card, CardContent, Button } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { useLanguageRouting } from "../utils/langRouting";
+import { useTranslation } from "react-i18next";
 
 export default function Guides() {
+  const location = useLocation();
+  const { withLang } = useLanguageRouting();
+  const { t } = useTranslation();
   const canonical =
     typeof window !== "undefined"
-      ? `${window.location.origin}/guides`
-      : "https://www.finworld.live/guides";
+      ? `${window.location.origin}${location.pathname}`
+      : "https://www.finworld.live/en/guides";
 
   return (
     <Box>
@@ -23,13 +28,10 @@ export default function Guides() {
         <Stack spacing={4}>
           <Stack spacing={2}>
             <Typography variant="h3" fontWeight={800}>
-              Learn with FinWorld Guides
+              {t("guides.title")}
             </Typography>
             <Typography variant="body1" color="text.secondary">
-              This section will host step‑by‑step guides that pair real‑world money
-              questions with interactive calculators. While the long‑form articles are
-              still being written, you can already use the tools below to start
-              exploring your own scenarios.
+              {t("guides.intro")}
             </Typography>
           </Stack>
 
@@ -37,16 +39,15 @@ export default function Guides() {
             <Card variant="outlined">
               <CardContent>
                 <Typography variant="h6" fontWeight={700}>
-                  How much house can I really afford?
+                  {t("guides.card1.title")}
                 </Typography>
                 <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5, mb: 1.5 }}>
-                  Combine the Home Affordability and Mortgage calculators to understand
-                  comfortable payment ranges, DTI ratios, and long‑term interest costs.
+                  {t("guides.card1.desc")}
                 </Typography>
                 <Stack direction="row" spacing={1}>
                   <Button
                     component={RouterLink}
-                    to="/tools/home-affordability"
+                    to={withLang("/tools/home-affordability")}
                     size="small"
                     variant="outlined"
                     sx={{ textTransform: "none" }}
@@ -55,7 +56,7 @@ export default function Guides() {
                   </Button>
                   <Button
                     component={RouterLink}
-                    to="/tools/mortgage-calculator"
+                    to={withLang("/tools/mortgage-calculator")}
                     size="small"
                     variant="outlined"
                     sx={{ textTransform: "none" }}
@@ -69,20 +70,19 @@ export default function Guides() {
             <Card variant="outlined">
               <CardContent>
                 <Typography variant="h6" fontWeight={700}>
-                  Estimating take‑home pay on a new job
+                  {t("guides.card2.title")}
                 </Typography>
                 <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5, mb: 1.5 }}>
-                  Use the Take‑Home Pay calculator to compare offers across states,
-                  filing statuses, and benefit assumptions before you negotiate.
+                  {t("guides.card2.desc")}
                 </Typography>
                 <Button
                   component={RouterLink}
-                  to="/tools/take-home-pay"
+                  to={withLang("/tools/take-home-pay")}
                   size="small"
                   variant="contained"
                   sx={{ textTransform: "none" }}
                 >
-                  Open Take‑Home Pay Calculator
+                  {t("common.btn.openNamed", { name: "Take-Home Pay Calculator" })}
                 </Button>
               </CardContent>
             </Card>
@@ -90,16 +90,15 @@ export default function Guides() {
             <Card variant="outlined">
               <CardContent>
                 <Typography variant="h6" fontWeight={700}>
-                  Planning long‑term investing and retirement
+                  {t("guides.card3.title")}
                 </Typography>
                 <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5, mb: 1.5 }}>
-                  Pair the Compounding and Retirement calculators to see how today&apos;s
-                  savings decisions translate into future retirement income.
+                  {t("guides.card3.desc")}
                 </Typography>
                 <Stack direction="row" spacing={1}>
                   <Button
                     component={RouterLink}
-                    to="/tools/compounding-calculator"
+                    to={withLang("/tools/compounding-calculator")}
                     size="small"
                     variant="outlined"
                     sx={{ textTransform: "none" }}
@@ -108,7 +107,7 @@ export default function Guides() {
                   </Button>
                   <Button
                     component={RouterLink}
-                    to="/tools/retirement-calculator"
+                    to={withLang("/tools/retirement-calculator")}
                     size="small"
                     variant="outlined"
                     sx={{ textTransform: "none" }}
@@ -124,4 +123,3 @@ export default function Guides() {
     </Box>
   );
 }
-

@@ -4,6 +4,7 @@ import PayoffSummaryCard from './PayoffSummaryCard';
 import LoanCostBreakdown from './LoanCostBreakdown';
 import PayoffTimelineComparison from './PayoffTimelineComparison';
 import AmortizationSchedule from './AmortizationSchedule';
+import { useTranslation } from 'react-i18next';
 
 const ResultsSection = ({ 
   results, 
@@ -11,6 +12,7 @@ const ResultsSection = ({
   showAmortization, 
   onToggleAmortization 
 }) => {
+  const { t } = useTranslation();
   if (!results.standard || !results.accelerated) {
     return (
       <motion.div
@@ -20,8 +22,8 @@ const ResultsSection = ({
         transition={{ duration: 0.6 }}
       >
         <div className="text-neutral-400">
-          <h3 className="text-h2 mb-4">Ready to Calculate</h3>
-          <p>Enter your loan details and extra payment information to see your savings.</p>
+          <h3 className="text-h2 mb-4">{t("calculators.autoLoan.empty.title")}</h3>
+          <p>{t("calculators.autoLoan.empty.body")}</p>
         </div>
       </motion.div>
     );

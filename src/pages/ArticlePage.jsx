@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams, Link as RouterLink } from "react-router-dom";
+import { useParams, Link as RouterLink, useLocation } from "react-router-dom";
 import {
   Box,
   Container,
@@ -16,6 +16,8 @@ import {
 } from "@mui/material";
 import { Helmet } from "react-helmet-async";
 import { getArticleBySlug } from "../data/articles";
+import { useLanguageRouting } from "../utils/langRouting";
+import { useTranslation } from "react-i18next";
 
 const formatParagraph = (text) => {
   const splitCandidates = [". ", ": "];
@@ -45,18 +47,21 @@ const formatParagraph = (text) => {
 export default function ArticlePage() {
   const { slug } = useParams();
   const article = getArticleBySlug(slug);
+  const location = useLocation();
+  const { withLang } = useLanguageRouting();
+  const { t } = useTranslation();
 
   if (!article) {
     return (
       <Container sx={{ py: 8 }}>
         <Typography variant="h4" fontWeight={800} gutterBottom>
-          Article not found
+          {t("articles.empty")}
         </Typography>
         <Typography color="text.secondary" sx={{ mb: 3 }}>
-          We couldn’t find that article. Head back to the guides to explore more resources.
+          {t("articles.empty.desc")}
         </Typography>
-        <Button component={RouterLink} to="/guides" variant="contained">
-          View all guides
+        <Button component={RouterLink} to={withLang("/guides")} variant="contained">
+          {t("articles.empty.cta")}
         </Button>
       </Container>
     );
@@ -73,7 +78,10 @@ export default function ArticlePage() {
       .trim()
       .replace(/\s+/g, "-");
 
-  const canonical = `https://www.finworld.live/articles/${article.slug}`;
+  const canonical =
+    typeof window !== "undefined"
+      ? `${window.location.origin}${location.pathname}`
+      : `https://www.finworld.live/en/articles/${article.slug}`;
 
   const sectionAnchors = sections.map((section, idx) => {
     const base = section.title ? slugify(section.title) : `section-${idx}`;
@@ -81,9 +89,9 @@ export default function ArticlePage() {
   });
 
   const recommendedTools = [
-    { label: "Home Affordability Calculator", to: "/tools/home-affordability", color: "#22c55e" },
-    { label: "Mortgage Calculator", to: "/tools/mortgage-calculator", color: "#0ea5e9" },
-    { label: "Extra Payment Calculator", to: "/tools/extra-payment", color: "#f97316" },
+    { label: "Home Affordability Calculator", to: withLang("/tools/home-affordability"), color: "#22c55e" },
+    { label: "Mortgage Calculator", to: withLang("/tools/mortgage-calculator"), color: "#0ea5e9" },
+    { label: "Extra Payment Calculator", to: withLang("/tools/extra-payment"), color: "#f97316" },
   ];
 
   return (
@@ -169,12 +177,12 @@ export default function ArticlePage() {
           <Breadcrumbs
             aria-label="breadcrumb"
             sx={{ color: "rgba(241,245,249,0.82)", mb: 1.5, fontSize: 14 }}
-          >
-            <Link component={RouterLink} underline="hover" color="inherit" to="/">
-              Home
+        >
+            <Link component={RouterLink} underline="hover" color="inherit" to={withLang("/")}>
+              {t("articles.breadcrumb.home")}
             </Link>
-            <Link component={RouterLink} underline="hover" color="inherit" to="/guides">
-              Guides
+            <Link component={RouterLink} underline="hover" color="inherit" to={withLang("/guides")}>
+              {t("articles.breadcrumb.guides")}
             </Link>
             <Typography color="inherit">{article.title}</Typography>
           </Breadcrumbs>

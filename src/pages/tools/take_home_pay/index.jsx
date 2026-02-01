@@ -6,8 +6,10 @@ import { calcFederalTax, calcStateTax, calcFicaComponents, calcFicaTax, formatCu
 import { TaxChart } from './components/TaxChart';
 import { ensureThpThemeCss, setThpThemeCss } from './themeCssLoader';
 import { trackEvent } from '../../../utils/analytics';
+import { useTranslation, Trans } from 'react-i18next';
 
 export default function TakeHomePayCalculator() {
+  const { t } = useTranslation();
   const [inputs, setInputs] = useState({
     income: '',
     spouseIncome: '',
@@ -58,6 +60,8 @@ export default function TakeHomePayCalculator() {
     typeof window !== 'undefined'
       ? `${window.location.origin}/tools/take-home-pay`
       : 'https://www.finworld.live/tools/take-home-pay';
+  const title = t("calculators.takeHomePay.meta.title");
+  const description = t("calculators.takeHomePay.meta.description");
 
   const result = useMemo(() => {
     const baseSelf = Number(inputs.income) || 0;
@@ -228,15 +232,20 @@ export default function TakeHomePayCalculator() {
 
   return (
     <div className="thp min-h-screen bg-bg-page text-neutral-900">
+      <Helmet>
+        <title>{title}</title>
+        <link rel="canonical" href={canonical} />
+        <meta name="description" content={description} />
+      </Helmet>
       <Topbar />
 
       <main className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <header className="flex items-start justify-between mb-6">
           <div>
-            <h1 className="text-5xl sm:text-6xl font-extrabold text-neutral-900">U.S. Take-Home Pay Calculator</h1>
-            <p className="text-neutral-600 mt-1 max-w-2xl">Compare your gross income against taxes and deductions to estimate take-home pay.</p>
+            <h1 className="text-5xl sm:text-6xl font-extrabold text-neutral-900">{t("calculators.takeHomePay.hero.title")}</h1>
+            <p className="text-neutral-600 mt-1 max-w-2xl">{t("calculators.takeHomePay.hero.subtitle")}</p>
           </div>
-          <button onClick={handleReset} className="inline-flex items-center rounded-md bg-neutral-100 hover:bg-neutral-200 text-neutral-900 text-sm font-semibold px-3 py-2">Reset</button>
+            <button onClick={handleReset} className="inline-flex items-center rounded-md bg-neutral-100 hover:bg-neutral-200 text-neutral-900 text-sm font-semibold px-3 py-2">{t("calculators.takeHomePay.actions.reset")}</button>
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -244,34 +253,34 @@ export default function TakeHomePayCalculator() {
           <section className="lg:col-span-1 bg-bg-surface shadow-card rounded-lg p-6">
             <div className="space-y-5">
               <div>
-                <label className="block text-sm text-neutral-600 mb-1">Your Gross Annual Income</label>
+                <label className="block text-sm text-neutral-600 mb-1">{t("calculators.takeHomePay.inline.labels.yourIncome")}</label>
                 <input type="number" min="0" step="100" value={inputs.income}
                   onChange={(e)=>{ const val = e.target.value; setInputs(v=>({...v,income: val === '' ? '' : Number(val)})); }}
-                  className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 input-focus" placeholder="e.g. 90000" />
+                  className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 input-focus" placeholder={t("calculators.takeHomePay.inline.placeholders.income")} />
               </div>
               
               <div>
-                <label className="block text-sm text-neutral-600 mb-1">Spouse's Gross Annual Income</label>
+                <label className="block text-sm text-neutral-600 mb-1">{t("calculators.takeHomePay.inline.labels.spouseIncome")}</label>
                 <input type="number" min="0" step="100" value={inputs.spouseIncome}
                   onChange={(e)=>{ const val = e.target.value; setInputs(v=>({...v,spouseIncome: val === '' ? '' : Number(val)})); }}
-                  className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 input-focus" placeholder="e.g. 75000" />
+                  className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 input-focus" placeholder={t("calculators.takeHomePay.inline.placeholders.incomeSpouse")} />
               </div>
               
               <div>
-                <label className="block text-sm text-neutral-600 mb-1">Your Annual Bonus</label>
+                <label className="block text-sm text-neutral-600 mb-1">{t("calculators.takeHomePay.inline.labels.yourBonus")}</label>
                 <input type="number" min="0" step="100" value={inputs.yourBonus ?? ''}
                   onChange={(e)=>{ const val = e.target.value; setInputs(v=>({...v,yourBonus: val === '' ? '' : Number(val)})); }}
-                  className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 input-focus" placeholder="e.g. 10000" />
+                  className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 input-focus" placeholder={t("calculators.takeHomePay.inline.placeholders.yourBonus")} />
               </div>
               <div>
-                <label className="block text-sm text-neutral-600 mb-1">Spouse's Annual Bonus</label>
+                <label className="block text-sm text-neutral-600 mb-1">{t("calculators.takeHomePay.inline.labels.spouseBonus")}</label>
                 <input type="number" min="0" step="100" value={inputs.spouseBonus ?? ''}
                   onChange={(e)=>{ const val = e.target.value; setInputs(v=>({...v,spouseBonus: val === '' ? '' : Number(val)})); }}
-                  className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 input-focus" placeholder="e.g. 5000" />
+                  className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 input-focus" placeholder={t("calculators.takeHomePay.inline.placeholders.spouseBonus")} />
               </div>
               
               <div>
-                <label className="block text-sm text-neutral-600 mb-1">Tax Year</label>
+                <label className="block text-sm text-neutral-600 mb-1">{t("calculators.takeHomePay.inline.labels.taxYear")}</label>
                 <select value={inputs.year} onChange={(e)=>setInputs(v=>({...v,year:Number(e.target.value)}))}
                   className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 input-focus">
                   <option value={2025}>2025</option>
@@ -279,51 +288,51 @@ export default function TakeHomePayCalculator() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm text-neutral-600 mb-1">Filing Status</label>
+                <label className="block text-sm text-neutral-600 mb-1">{t("calculators.takeHomePay.inline.labels.filingStatus")}</label>
                 <select value={inputs.status} onChange={(e)=>setInputs(v=>({...v,status:e.target.value}))}
                   className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 input-focus">
-                  <option value="single">Single</option>
-                  <option value="mfj">Married Filing Jointly</option>
-                  <option value="mfs">Married Filing Separately</option>
-                  <option value="hoh">Head of Household</option>
+                  <option value="single">{t("calculators.takeHomePay.inline.options.single")}</option>
+                  <option value="mfj">{t("calculators.takeHomePay.inline.options.mfj")}</option>
+                  <option value="mfs">{t("calculators.takeHomePay.inline.options.mfs")}</option>
+                  <option value="hoh">{t("calculators.takeHomePay.inline.options.hoh")}</option>
                 </select>
               </div>
               <div>
-                <label className="block text-sm text-neutral-600 mb-1">State</label>
+                <label className="block text-sm text-neutral-600 mb-1">{t("calculators.takeHomePay.inline.labels.state")}</label>
                 <select value={inputs.state} onChange={(e)=>setInputs(v=>({...v,state:e.target.value}))}
                   className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 input-focus">
-                  <option value="">Select state</option>
+                  <option value="">{t("calculators.takeHomePay.inline.options.selectState")}</option>
                   {STATES_LIST.map((s)=> (<option key={s} value={s}>{s}</option>))}
                 </select>
               </div>
               <div>
-                <label className="block text-sm text-neutral-600 mb-1">Override State Effective Rate (%) <span className="text-neutral-400">(optional)</span></label>
+                <label className="block text-sm text-neutral-600 mb-1">{t("calculators.takeHomePay.inline.labels.overrideState")} <span className="text-neutral-400">{t("calculators.takeHomePay.inline.labels.optional")}</span></label>
                 <input type="number" min="0" step="0.01" value={inputs.overrideStateRate ?? ''}
                   onChange={(e)=>{ const val = e.target.value; setInputs(v=>({...v,overrideStateRate: val})); }}
-                  className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 input-focus" placeholder="Overrides State Calculated Rate" />
+                  className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 input-focus" placeholder={t("calculators.takeHomePay.inline.placeholders.overrideState")} />
               </div>
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <label className="block text-sm font-medium text-neutral-700">Local Tax Rate (%)</label>
+                  <label className="block text-sm font-medium text-neutral-700">{t("calculators.takeHomePay.inline.labels.localTax")}</label>
                   <span className="tooltip">
                     <button type="button" aria-describedby="tip-local" className="p-0.5 rounded focus:outline-none focus:ring-2 focus:ring-teal-300">
                       <svg className="h-4 w-4 text-teal-600 hover:text-teal-700" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1-9a1 1 0 112 0v5a1 1 0 11-2 0V9zm1-4a1.5 1.5 0 100 3 1.5 1.5 0 000-3z" clipRule="evenodd" />
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1-9a1 1 0 112 0v5a1 1 0 11-2 0V9zm1-4a1.5 1.5 0 100 3 1.5 1.5 0 000-3z" clipRule="evenodd" />
                       </svg>
                     </button>
                     <div id="tip-local" role="tooltip" className="tooltip-bubble">
-                      Enter your local income tax rate (percent).
+                      {t("calculators.takeHomePay.inline.help.localTax")}
                     </div>
                   </span>
                 </div>
                 <input type="number" min="0" step="0.01" value={inputs.localTaxRate}
                   onChange={(e)=>{ const val = e.target.value; setInputs(v=>({...v,localTaxRate: val === '' ? '' : Number(val)})); }}
-                  className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 input-focus" placeholder="e.g. 1.5" />
+                  className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 input-focus" placeholder={t("calculators.takeHomePay.inline.placeholders.localTaxExample")} />
                 </div>
               <div>
                 {/* Your 401(k) first */}
                 <div className="flex items-center gap-2 mb-1">
-                  <label className="block text-sm font-medium text-neutral-700">Your 401(k) Contributions</label>
+                  <label className="block text-sm font-medium text-neutral-700">{t("calculators.takeHomePay.inline.labels.your401")}</label>
                   <span className="tooltip">
                     <button type="button" aria-describedby="tip-k401" className="p-0.5 rounded focus:outline-none focus:ring-2 focus:ring-teal-300">
                       <svg className="h-4 w-4 text-teal-600 hover:text-teal-700" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -331,7 +340,7 @@ export default function TakeHomePayCalculator() {
                       </svg>
                     </button>
                     <div id="tip-k401" role="tooltip" className="tooltip-bubble">
-                      Enter the percent of income you contribute pre-tax to a 401(k).
+                      {t("calculators.takeHomePay.inline.help.your401")}
                     </div>
                   </span>
                 </div>
@@ -343,26 +352,26 @@ export default function TakeHomePayCalculator() {
                     value={inputs.k401Percent}
                     onChange={(e)=>{ const val = e.target.value; setInputs(v=>({...v,k401Percent: val === '' ? '' : Number(val)})); }}
                     className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 input-focus"
-                    placeholder="Percent of income"
+                    placeholder={t("calculators.takeHomePay.inline.placeholders.percentIncome")}
                     data-has-value={inputs.k401Percent ? 'true' : 'false'}
                   />
                 </div>
 
                 <div className="mt-1">
-                  <label className="block text-xs text-neutral-500 mb-1">Apply 401(k) to</label>
+                  <label className="block text-xs text-neutral-500 mb-1">{t("calculators.takeHomePay.inline.labels.apply401")}</label>
                   <select
                     value={inputs.k401BaseSelf || 'salary_plus_bonus'}
                     onChange={(e)=> setInputs(v=>({...v,k401BaseSelf: e.target.value}))}
                     className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 input-focus"
                   >
-                    <option value="salary">Salary only</option>
-                    <option value="salary_plus_bonus">Salary + Bonus</option>
+                    <option value="salary">{t("calculators.takeHomePay.inline.options.salaryOnly")}</option>
+                    <option value="salary_plus_bonus">{t("calculators.takeHomePay.inline.options.salaryPlusBonus")}</option>
                   </select>
                 </div>
 
                 {/* Spouse 401(k) second */}
                 <div className="flex items-center gap-2 mb-1 mt-4">
-                  <label className="block text-sm font-medium text-neutral-700">Spouse's 401(k) Contributions</label>
+                  <label className="block text-sm font-medium text-neutral-700">{t("calculators.takeHomePay.inline.labels.spouse401")}</label>
                   <span className="tooltip">
                     <button type="button" aria-describedby="tip-k401-spouse" className="p-0.5 rounded focus:outline-none focus:ring-2 focus:ring-teal-300">
                       <svg className="h-4 w-4 text-teal-600 hover:text-teal-700" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -370,7 +379,7 @@ export default function TakeHomePayCalculator() {
                       </svg>
                     </button>
                     <div id="tip-k401-spouse" role="tooltip" className="tooltip-bubble">
-                      Enter the percent of your spouse's income contributed pre-tax to a 401(k).
+                      {t("calculators.takeHomePay.inline.help.spouse401")}
                     </div>
                   </span>
                 </div>
@@ -382,19 +391,19 @@ export default function TakeHomePayCalculator() {
                     value={inputs.spouseK401Percent}
                     onChange={(e)=>{ const val = e.target.value; setInputs(v=>({...v,spouseK401Percent: val === '' ? '' : Number(val)})); }}
                     className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 input-focus"
-                    placeholder="Percent of income"
+                    placeholder={t("calculators.takeHomePay.inline.placeholders.percentIncome")}
                     data-has-value={inputs.spouseK401Percent ? 'true' : 'false'}
                   />
                 </div>
                 <div className="mt-1">
-                  <label className="block text-xs text-neutral-500 mb-1">Apply 401(k) to</label>
+                  <label className="block text-xs text-neutral-500 mb-1">{t("calculators.takeHomePay.inline.labels.apply401")}</label>
                   <select
                     value={inputs.k401BaseSpouse || 'salary_plus_bonus'}
                     onChange={(e)=> setInputs(v=>({...v,k401BaseSpouse: e.target.value}))}
                     className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 input-focus"
                   >
-                    <option value="salary">Salary only</option>
-                    <option value="salary_plus_bonus">Salary + Bonus</option>
+                    <option value="salary">{t("calculators.takeHomePay.inline.options.salaryOnly")}</option>
+                    <option value="salary_plus_bonus">{t("calculators.takeHomePay.inline.options.salaryPlusBonus")}</option>
                   </select>
                 </div>
               </div>
@@ -413,7 +422,7 @@ export default function TakeHomePayCalculator() {
                   >
                     <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 011.08 1.04l-4.25 4.25a.75.75 0 01-1.06 0L5.21 8.27a.75.75 0 01.02-1.06z" clipRule="evenodd" />
                   </svg>
-                  {showAdvanced ? 'Hide Advanced Options' : 'Show Advanced Options'}
+                  {showAdvanced ? t("calculators.takeHomePay.inline.labels.hideAdvanced") : t("calculators.takeHomePay.inline.labels.showAdvanced")}
                 </button>
               </div>
               
@@ -421,7 +430,7 @@ export default function TakeHomePayCalculator() {
               <div className="mt-4 space-y-5">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <label className="block text-sm font-medium text-neutral-700">Your Roth IRA (Post-tax)</label>
+                    <label className="block text-sm font-medium text-neutral-700">{t("calculators.takeHomePay.inline.labels.yourRoth")}</label>
                     <span className="tooltip">
                       <button type="button" aria-describedby="tip-roth" className="p-0.5 rounded focus:outline-none focus:ring-2 focus:ring-teal-300">
                         <svg className="h-4 w-4 text-teal-600 hover:text-teal-700" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -429,7 +438,7 @@ export default function TakeHomePayCalculator() {
                         </svg>
                       </button>
                       <div id="tip-roth" role="tooltip" className="tooltip-bubble">
-                        Enter your annual post-tax Roth IRA contributions (amount).
+                        {t("calculators.takeHomePay.inline.help.yourRoth")}
                       </div>
                     </span>
                   </div>
@@ -443,13 +452,13 @@ export default function TakeHomePayCalculator() {
                         const val = e.target.value; setInputs(v=>({...v,rothAmount: val === '' ? '' : Number(val)}));
                       }}
                       className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 input-focus"
-                      placeholder="e.g. 3000"
+                      placeholder={t("calculators.takeHomePay.inline.placeholders.rothExample")}
                     />
                   </div>
                 </div>
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <label className="block text-sm font-medium text-neutral-700">Spouse's Roth IRA (Post-tax)</label>
+                  <label className="block text-sm font-medium text-neutral-700">{t("calculators.takeHomePay.inline.labels.spouseRoth")}</label>
                   <span className="tooltip">
                     <button type="button" aria-describedby="tip-roth-spouse" className="p-0.5 rounded focus:outline-none focus:ring-2 focus:ring-teal-300">
                       <svg className="h-4 w-4 text-teal-600 hover:text-teal-700" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -457,20 +466,20 @@ export default function TakeHomePayCalculator() {
                       </svg>
                     </button>
                     <div id="tip-roth-spouse" role="tooltip" className="tooltip-bubble">
-                      Enter your spouse's annual post-tax Roth IRA contributions (amount).
+                      {t("calculators.takeHomePay.inline.help.spouseRoth")}
                     </div>
                   </span>
                 </div>
                 <div className="relative">
                 <input type="number" min="0" step="100" value={inputs.spouseRothAmount}
                   onChange={(e)=>{ const val = e.target.value; setInputs(v=>({...v,spouseRothAmount: val === '' ? '' : Number(val)})); }}
-                  className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 input-focus" placeholder="e.g. 3000" />
+                  className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 input-focus" placeholder={t("calculators.takeHomePay.inline.placeholders.rothExample")} />
                   
                 </div>
               </div>
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <label className="block text-sm font-medium text-neutral-700">Health Insurance</label>
+                  <label className="block text-sm font-medium text-neutral-700">{t("calculators.takeHomePay.inline.labels.healthInsurance")}</label>
                   <span className="tooltip">
                     <button type="button" aria-describedby="tip-health" className="p-0.5 rounded focus:outline-none focus:ring-2 focus:ring-teal-300">
                       <svg className="h-4 w-4 text-teal-600 hover:text-teal-700" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -478,7 +487,7 @@ export default function TakeHomePayCalculator() {
                       </svg>
                     </button>
                     <div id="tip-health" role="tooltip" className="tooltip-bubble">
-                      Enter your annual pre-tax health insurance premiums (amount).
+                      {t("calculators.takeHomePay.inline.help.healthInsurance")}
                     </div>
                   </span>
                 </div>
@@ -488,7 +497,7 @@ export default function TakeHomePayCalculator() {
               </div>
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <label className="block text-sm font-medium text-neutral-700">HSA</label>
+                  <label className="block text-sm font-medium text-neutral-700">{t("calculators.takeHomePay.advanced.preTax.hsa")}</label>
                   <span className="tooltip">
                     <button type="button" aria-describedby="tip-hsa" className="p-0.5 rounded focus:outline-none focus:ring-2 focus:ring-teal-300">
                       <svg className="h-4 w-4 text-teal-600 hover:text-teal-700" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -496,7 +505,7 @@ export default function TakeHomePayCalculator() {
                       </svg>
                     </button>
                     <div id="tip-hsa" role="tooltip" className="tooltip-bubble">
-                      Enter annual pre-tax HSA contributions (amount).
+                      {t("calculators.takeHomePay.advanced.preTax.hsaHelp")}
                     </div>
                   </span>
                 </div>
@@ -506,7 +515,7 @@ export default function TakeHomePayCalculator() {
               </div>
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <label className="block text-sm font-medium text-neutral-700">Traditional IRA</label>
+                  <label className="block text-sm font-medium text-neutral-700">{t("calculators.takeHomePay.advanced.preTax.traditionalIra")}</label>
                   <span className="tooltip">
                     <button type="button" aria-describedby="tip-tira" className="p-0.5 rounded focus:outline-none focus:ring-2 focus:ring-teal-300">
                       <svg className="h-4 w-4 text-teal-600 hover:text-teal-700" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -514,7 +523,7 @@ export default function TakeHomePayCalculator() {
                       </svg>
                     </button>
                     <div id="tip-tira" role="tooltip" className="tooltip-bubble">
-                      Enter annual pre-tax Traditional IRA contributions (amount).
+                      {t("calculators.takeHomePay.advanced.preTax.traditionalIraHelp")}
                     </div>
                   </span>
                 </div>
@@ -524,7 +533,7 @@ export default function TakeHomePayCalculator() {
               </div>
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <label className="block text-sm font-medium text-neutral-700">Student Loan Interest</label>
+                  <label className="block text-sm font-medium text-neutral-700">{t("calculators.takeHomePay.advanced.preTax.studentLoanInterest")}</label>
                   <span className="tooltip">
                     <button type="button" aria-describedby="tip-sli" className="p-0.5 rounded focus:outline-none focus:ring-2 focus:ring-teal-300">
                       <svg className="h-4 w-4 text-teal-600 hover:text-teal-700" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -532,7 +541,7 @@ export default function TakeHomePayCalculator() {
                       </svg>
                     </button>
                     <div id="tip-sli" role="tooltip" className="tooltip-bubble">
-                      Enter annual student loan interest eligible for adjustment (amount).
+                      {t("calculators.takeHomePay.advanced.preTax.studentLoanInterestHelp")}
                     </div>
                   </span>
                 </div>
@@ -542,7 +551,7 @@ export default function TakeHomePayCalculator() {
               </div>
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <label className="block text-sm font-medium text-neutral-700">FSA Contribution</label>
+                  <label className="block text-sm font-medium text-neutral-700">{t("calculators.takeHomePay.advanced.preTax.fsaContribution")}</label>
                   <span className="tooltip">
                     <button type="button" aria-describedby="tip-fsa" className="p-0.5 rounded focus:outline-none focus:ring-2 focus:ring-teal-300">
                       <svg className="h-4 w-4 text-teal-600 hover:text-teal-700" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -550,7 +559,7 @@ export default function TakeHomePayCalculator() {
                       </svg>
                     </button>
                     <div id="tip-fsa" role="tooltip" className="tooltip-bubble">
-                      Enter your annual pre-tax FSA contributions (amount).
+                      {t("calculators.takeHomePay.advanced.preTax.fsaContributionHelp")}
                     </div>
                   </span>
                 </div>
@@ -560,7 +569,7 @@ export default function TakeHomePayCalculator() {
               </div>
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <label className="block text-sm font-medium text-neutral-700">Other Pre-Tax Deductions</label>
+                  <label className="block text-sm font-medium text-neutral-700">{t("calculators.takeHomePay.advanced.preTax.otherDeductions")}</label>
                   <span className="tooltip">
                     <button type="button" aria-describedby="tip-other" className="p-0.5 rounded focus:outline-none focus:ring-2 focus:ring-teal-300">
                       <svg className="h-4 w-4 text-teal-600 hover:text-teal-700" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -568,7 +577,7 @@ export default function TakeHomePayCalculator() {
                       </svg>
                     </button>
                     <div id="tip-other" role="tooltip" className="tooltip-bubble">
-                      Enter other annual pre-tax deductions not listed above (amount).
+                      {t("calculators.takeHomePay.advanced.preTax.otherDeductionsHelp")}
                     </div>
                   </span>
                 </div>
@@ -578,7 +587,7 @@ export default function TakeHomePayCalculator() {
               </div>
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <label className="block text-sm font-medium text-neutral-700">Child Tax Credit</label>
+                  <label className="block text-sm font-medium text-neutral-700">{t("calculators.takeHomePay.credits.childTaxCredit")}</label>
                   <span className="tooltip">
                     <button type="button" aria-describedby="tip-ctc" className="p-0.5 rounded focus:outline-none focus:ring-2 focus:ring-teal-300">
                       <svg className="h-4 w-4 text-teal-600 hover:text-teal-700" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -586,7 +595,7 @@ export default function TakeHomePayCalculator() {
                       </svg>
                     </button>
                     <div id="tip-ctc" role="tooltip" className="tooltip-bubble">
-                      Enter your total annual Child Tax Credit to apply (amount).
+                      {t("calculators.takeHomePay.credits.childTaxCreditHelp")}
                     </div>
                   </span>
                 </div>
@@ -596,7 +605,7 @@ export default function TakeHomePayCalculator() {
               </div>
               <div>
                     <div className="flex items-center gap-2 mb-1">
-                      <label className="block text-sm font-medium text-neutral-700">Dependent Care Credit</label>
+                      <label className="block text-sm font-medium text-neutral-700">{t("calculators.takeHomePay.credits.dependentCareCredit")}</label>
                       <span className="tooltip">
                         <button type="button" aria-describedby="tip-dcc" className="p-0.5 rounded focus:outline-none focus:ring-2 focus:ring-teal-300">
                           <svg className="h-4 w-4 text-teal-600 hover:text-teal-700" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -604,7 +613,7 @@ export default function TakeHomePayCalculator() {
                           </svg>
                         </button>
                         <div id="tip-dcc" role="tooltip" className="tooltip-bubble">
-                          Enter your total annual Dependent Care Credit to apply (amount).
+                          {t("calculators.takeHomePay.credits.dependentCareCreditHelp")}
                         </div>
                       </span>
                     </div>
@@ -621,38 +630,38 @@ export default function TakeHomePayCalculator() {
           <section className="lg:col-span-2 space-y-6">
             <div className="bg-bg-surface shadow-card rounded-2xl p-6">
               <div className="text-center">
-                <p className="text-sm text-neutral-400">Annual Take-Home Pay</p>
+                <p className="text-sm text-neutral-400">{t("calculators.takeHomePay.results.annualTitle")}</p>
                 <p className="text-4xl font-extrabold mt-1 text-primary-700">{result ? formatCurrency(result.netPay) : '$0'}</p>
-                <p className="text-xs text-neutral-400 mt-1">Primary State: {inputs.state || '\u2014'}</p>
+                <p className="text-xs text-neutral-400 mt-1">{t("calculators.takeHomePay.results.primaryState")} {inputs.state || '\u2014'}</p>
 
                 {result && (
                   <div className="flex flex-wrap items-center justify-center gap-2 mt-3">
                     <div className="inline-flex items-center gap-2 rounded-full bg-neutral-100 px-3 py-1 text-xs text-neutral-900 border border-neutral-200">
-                      <span>Std Deduction</span>
+                      <span>{t("calculators.takeHomePay.results.stdDeduction")}</span>
                       <strong>{formatCurrency(result.federalStdDeduction)}</strong>
                     </div>
                     <div className="inline-flex items-center gap-2 rounded-full bg-neutral-100 px-3 py-1 text-xs text-neutral-900 border border-neutral-200">
-                      <span>Federal Taxable</span>
+                      <span>{t("calculators.takeHomePay.results.federalTaxable")}</span>
                       <strong>{formatCurrency(result.federalTaxable)}</strong>
                     </div>
                     <div className="inline-flex items-center gap-2 rounded-full bg-neutral-100 px-3 py-1 text-xs text-neutral-900 border border-neutral-200">
-                      <span>Federal Marginal</span>
+                      <span>{t("calculators.takeHomePay.results.federalMarginal")}</span>
                       <strong>{(result.federalMarginalRate * 100).toFixed(2)}%</strong>
                     </div>
                     <div className="inline-flex items-center gap-2 rounded-full bg-neutral-100 px-3 py-1 text-xs text-neutral-900 border border-neutral-200">
-                      <span>401(k) per paycheck</span>
+                      <span>{t("calculators.takeHomePay.results.k401PerPaycheck")}</span>
                       <strong>{formatCurrency(result.k401Total / 26)}</strong>
                     </div>
                     <div className="inline-flex items-center gap-2 rounded-full bg-neutral-100 px-3 py-1 text-xs text-neutral-900 border border-neutral-200">
-                      <span>State Marginal</span>
+                      <span>{t("calculators.takeHomePay.results.stateMarginal")}</span>
                       <strong>{(result.stateMarginalRate * 100).toFixed(2)}%</strong>
                     </div>
                     <div className="inline-flex items-center gap-2 rounded-full bg-neutral-100 px-3 py-1 text-xs text-neutral-900 border border-neutral-200">
-                      <span>State Taxable</span>
+                      <span>{t("calculators.takeHomePay.results.stateTaxable")}</span>
                       <strong>{formatCurrency(result.stateTaxable || 0)}</strong>
                     </div>
                     <div className="inline-flex items-center gap-2 rounded-full bg-neutral-100 px-3 py-1 text-xs text-neutral-900 border border-neutral-200">
-                      <span>State Deduction</span>
+                      <span>{t("calculators.takeHomePay.results.stateDeduction")}</span>
                       <strong>{formatCurrency(result.stateDeduction || 0)}</strong>
                     </div>
                     {false && (
@@ -667,17 +676,17 @@ export default function TakeHomePayCalculator() {
               <div className="my-4 border-t border-neutral-200" />
 
               <div>
-                <p className="text-lg font-semibold mb-2">Breakdown</p>
+                <p className="text-lg font-semibold mb-2">{t("calculators.takeHomePay.breakdown.title")}</p>
                 <div className="rounded-xl border border-neutral-200 divide-y divide-neutral-200 overflow-hidden">
                   <div className="flex items-center justify-between px-3 py-2 text-sm bg-neutral-50">
                     <span className="text-neutral-500">
-                      Gross Income
+                      {t("calculators.takeHomePay.breakdown.grossIncome")}
                       <button
                         type="button"
                         onClick={() => setShowIncomeDetails(v=>!v)}
                         className="ml-2 text-teal-700 hover:text-teal-800 text-xs underline"
                       >
-                        {showIncomeDetails ? 'Hide details' : 'Income details'}
+                        {showIncomeDetails ? t("calculators.takeHomePay.breakdown.hideDetails") : t("calculators.takeHomePay.breakdown.incomeDetails")}
                       </button>
                     </span>
                     <span className="font-semibold tabular-nums font-mono">{result ? formatCurrency(result.grossIncome) : '$0'}</span>
@@ -686,10 +695,10 @@ export default function TakeHomePayCalculator() {
                     <div className="px-3 py-2 text-xs bg-white">
                       {(() => {
                         const items = [
-                          { key: 'baseSelf', label: 'Your Base Income', val: result.yourBaseIncome },
-                          { key: 'bonusSelf', label: 'Your Annual Bonus', val: result.yourBonus },
-                          { key: 'baseSpouse', label: "Spouse Base Income", val: result.spouseBaseIncome },
-                          { key: 'bonusSpouse', label: "Spouse's Annual Bonus", val: result.spouseBonus },
+                          { key: 'baseSelf', label: t("calculators.takeHomePay.breakdown.income.baseSelf"), val: result.yourBaseIncome },
+                          { key: 'bonusSelf', label: t("calculators.takeHomePay.breakdown.income.bonusSelf"), val: result.yourBonus },
+                          { key: 'baseSpouse', label: t("calculators.takeHomePay.breakdown.income.baseSpouse"), val: result.spouseBaseIncome },
+                          { key: 'bonusSpouse', label: t("calculators.takeHomePay.breakdown.income.bonusSpouse"), val: result.spouseBonus },
                         ];
                         return items
                           .filter(i => (Number(i.val) || 0) > 0)
@@ -710,13 +719,13 @@ export default function TakeHomePayCalculator() {
 
                   <div className="flex items-center justify-between px-3 py-2 text-sm bg-white">
                     <span className="text-neutral-500">
-                      Total Pre-Tax Deductions
+                      {t("calculators.takeHomePay.breakdown.preTaxTotal")}
                       <button
                         type="button"
                         onClick={() => setShowPreTaxDetails(v => !v)}
                         className="ml-2 text-teal-700 hover:text-teal-800 text-xs underline"
                       >
-                        Details
+                        {t("calculators.takeHomePay.breakdown.details")}
                       </button>
                     </span>
                     <span className="flex items-center gap-2 font-semibold tabular-nums font-mono text-rose-700">
@@ -760,19 +769,19 @@ export default function TakeHomePayCalculator() {
                   )}
 
                   <div className="flex items-center justify-between px-3 py-2 text-sm bg-neutral-50">
-                    <span className="text-neutral-500">Adjusted Income</span>
+                    <span className="text-neutral-500">{t("calculators.takeHomePay.breakdown.adjustedIncome")}</span>
                     <span className="font-semibold tabular-nums font-mono">{result ? formatCurrency(result.adjustedIncome) : '$0'}</span>
                   </div>
 
                   <div className="flex items-center justify-between px-3 py-2 text-sm bg-white">
                     <span className="text-neutral-500">
-                      Federal Tax
+                      {t("calculators.takeHomePay.breakdown.federalTax")}
                       <button
                         type="button"
                         onClick={() => setDetailRow(prev => prev === 'federal' ? '' : 'federal')}
                         className="ml-2 text-teal-700 hover:text-teal-800 text-xs underline"
                       >
-                        {detailRow === 'federal' ? 'Hide details' : 'Details'}
+                        {detailRow === 'federal' ? t("calculators.takeHomePay.breakdown.hideDetails") : t("calculators.takeHomePay.breakdown.details")}
                       </button>
                     </span>
                     <span className="flex items-center gap-2 font-semibold tabular-nums font-mono text-rose-700">
@@ -786,19 +795,24 @@ export default function TakeHomePayCalculator() {
                 </div>
                 {detailRow === 'federal' && result && (
                   <div className="px-3 py-2 text-xs text-neutral-500 bg-neutral-50">
-                    Federal taxable = adjusted income ({formatCurrency(result.adjustedIncome)}) minus standard deduction ({formatCurrency(result.federalStdDeduction)}) = {formatCurrency(result.federalTaxable)}; tax computed at marginal {((result.federalMarginalRate || 0) * 100).toFixed(2)}%.
+                    {t("calculators.takeHomePay.breakdown.federalDetails", {
+                      adjusted: formatCurrency(result.adjustedIncome),
+                      std: formatCurrency(result.federalStdDeduction),
+                      taxable: formatCurrency(result.federalTaxable),
+                      marginal: ((result.federalMarginalRate || 0) * 100).toFixed(2),
+                    })}
                   </div>
                 )}
 
                   <div className="flex items-center justify-between px-3 py-2 text-sm bg-neutral-50">
                     <span className="text-neutral-500">
-                      State Tax
+                      {t("calculators.takeHomePay.breakdown.stateTax")}
                       <button
                         type="button"
                         onClick={() => setDetailRow(prev => prev === 'state' ? '' : 'state')}
                         className="ml-2 text-teal-700 hover:text-teal-800 text-xs underline"
                       >
-                        {detailRow === 'state' ? 'Hide details' : 'Details'}
+                        {detailRow === 'state' ? t("calculators.takeHomePay.breakdown.hideDetails") : t("calculators.takeHomePay.breakdown.details")}
                       </button>
                     </span>
                     <span className="flex items-center gap-2 font-semibold tabular-nums font-mono text-rose-700">
@@ -812,19 +826,24 @@ export default function TakeHomePayCalculator() {
                 </div>
                 {detailRow === 'state' && result && (
                   <div className="px-3 py-2 text-xs text-neutral-500 bg-white">
-                    State taxable = adjusted income ({formatCurrency(result.adjustedIncome)}) minus state deduction ({formatCurrency(result.stateDeduction || 0)}) = {formatCurrency(result.stateTaxable || result.adjustedIncome)}; {result.stateInfo || 'Tax calculated via the configured state brackets.'}
+                    {t("calculators.takeHomePay.breakdown.stateDetails", {
+                      adjusted: formatCurrency(result.adjustedIncome),
+                      deduction: formatCurrency(result.stateDeduction || 0),
+                      taxable: formatCurrency(result.stateTaxable || result.adjustedIncome),
+                      info: result.stateInfo || t("calculators.takeHomePay.breakdown.stateInfoDefault"),
+                    })}
                   </div>
                 )}
 
                   <div className="flex items-center justify-between px-3 py-2 text-sm bg-white">
                     <span className="text-neutral-500">
-                      FICA Tax
+                      {t("calculators.takeHomePay.breakdown.ficaTax")}
                       <button
                         type="button"
                         onClick={() => setDetailRow(prev => prev === 'fica' ? '' : 'fica')}
                         className="ml-2 text-teal-700 hover:text-teal-800 text-xs underline"
                       >
-                        {detailRow === 'fica' ? 'Hide details' : 'Details'}
+                        {detailRow === 'fica' ? t("calculators.takeHomePay.breakdown.hideDetails") : t("calculators.takeHomePay.breakdown.details")}
                       </button>
                     </span>
                     <span className="flex items-center gap-2 font-semibold tabular-nums font-mono text-rose-700">
@@ -838,19 +857,25 @@ export default function TakeHomePayCalculator() {
                 </div>
                 {detailRow === 'fica' && result && (
                   <div className="px-3 py-2 text-xs text-neutral-500 bg-neutral-50">
-                    Social Security: {formatCurrency(result.ficaComponents.socialSecurityTax)} (6.2% of the first {formatCurrency(result.ficaComponents.ssLimit)}); Medicare: {formatCurrency(result.ficaComponents.medicareTax - (result.ficaComponents.additionalMedicareTax || 0))} (1.45% of total income); Additional Medicare: {formatCurrency(result.ficaComponents.additionalMedicareTax)} (0.9% above {formatCurrency(result.ficaComponents.addMedThreshold)}).
+                    {t("calculators.takeHomePay.breakdown.ficaDetails", {
+                      ss: formatCurrency(result.ficaComponents.socialSecurityTax),
+                      ssLimit: formatCurrency(result.ficaComponents.ssLimit),
+                      medicare: formatCurrency(result.ficaComponents.medicareTax - (result.ficaComponents.additionalMedicareTax || 0)),
+                      addlMedicare: formatCurrency(result.ficaComponents.additionalMedicareTax),
+                      addlThreshold: formatCurrency(result.ficaComponents.addMedThreshold),
+                    })}
                   </div>
                 )}
 
                   <div className="flex items-center justify-between px-3 py-2 text-sm bg-neutral-50">
                     <span className="text-neutral-500">
-                      Local Tax
+                      {t("calculators.takeHomePay.breakdown.localTax")}
                       <button
                         type="button"
                         onClick={() => setDetailRow(prev => prev === 'local' ? '' : 'local')}
                         className="ml-2 text-teal-700 hover:text-teal-800 text-xs underline"
                       >
-                        {detailRow === 'local' ? 'Hide details' : 'Details'}
+                        {detailRow === 'local' ? t("calculators.takeHomePay.breakdown.hideDetails") : t("calculators.takeHomePay.breakdown.details")}
                       </button>
                     </span>
                     <span className="flex items-center gap-2 font-semibold tabular-nums font-mono text-rose-700">
@@ -869,7 +894,7 @@ export default function TakeHomePayCalculator() {
                 )}
 
                   <div className="flex items-center justify-between px-3 py-2 text-sm bg-white">
-                    <span className="text-neutral-500">Total Tax</span>
+                    <span className="text-neutral-500">{t("calculators.takeHomePay.breakdown.totalTax")}</span>
                     <span className="flex items-center gap-2 font-semibold tabular-nums font-mono text-rose-700">
                       {result && result.grossIncome ? (
                         <span className="text-[11px] text-rose-700/80 bg-rose-50 border border-rose-100 rounded-full px-2 py-0.5">
@@ -893,27 +918,27 @@ export default function TakeHomePayCalculator() {
                   </div>
 
                   <div className="flex items-center justify-between px-3 py-2 text-sm bg-white">
-                    <span className="text-neutral-600 font-medium">Net After Taxes</span>
+                    <span className="text-neutral-600 font-medium">{t("calculators.takeHomePay.summary.netAfterTaxes")}</span>
                     <span className="font-semibold tabular-nums font-mono text-emerald-700">{result ? formatCurrency(result.netPay) : '$0'}</span>
                   </div>
 
                   <div className="flex items-center justify-between px-3 py-2 text-sm bg-neutral-50">
-                    <span className="text-neutral-600 font-medium">Final Net (After Roth)</span>
+                    <span className="text-neutral-600 font-medium">{t("calculators.takeHomePay.summary.finalNet")}</span>
                     <span className="font-semibold tabular-nums font-mono text-emerald-700">{result ? formatCurrency(result.finalNet) : '$0'}</span>
                   </div>
 
                   <div className="flex items-center justify-between px-3 py-2 text-sm bg-white">
-                    <span className="text-neutral-700 font-semibold">Final Net (Weekly)</span>
+                    <span className="text-neutral-700 font-semibold">{t("calculators.takeHomePay.summary.finalNetWeekly")}</span>
                     <span className="font-bold tabular-nums font-mono text-emerald-700">{result ? formatCurrency(result.finalNetWeekly) : '$0'}</span>
                   </div>
 
                   <div className="flex items-center justify-between px-3 py-2 text-sm bg-neutral-50">
-                    <span className="text-neutral-700 font-semibold">Final Net (Biweekly)</span>
+                    <span className="text-neutral-700 font-semibold">{t("calculators.takeHomePay.summary.finalNetBiweekly")}</span>
                     <span className="font-bold tabular-nums font-mono text-emerald-700">{result ? formatCurrency(result.finalNetBiweekly) : '$0'}</span>
                   </div>
 
                   <div className="flex items-center justify-between px-3 py-2 text-sm bg-white">
-                    <span className="text-neutral-700 font-semibold">Final Net (Monthly)</span>
+                    <span className="text-neutral-700 font-semibold">{t("calculators.takeHomePay.summary.finalNetMonthly")}</span>
                     <span className="font-bold tabular-nums font-mono text-emerald-700">{result ? formatCurrency(result.finalNetMonthly) : '$0'}</span>
                   </div>
                 </div>
@@ -934,29 +959,29 @@ export default function TakeHomePayCalculator() {
 
             {/* Compare States */}
             <div className="bg-bg-surface shadow-card rounded-2xl p-6">
-              <p className="text-lg font-semibold mb-3">Compare States</p>
+              <p className="text-lg font-semibold mb-3">{t("calculators.takeHomePay.compare.title")}</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
                 {[0,1].map((i)=> (
                   <select key={i} value={compareStates[i]} onChange={(e)=> setCompareStates((prev)=> { const c=[...prev]; c[i]=e.target.value; return c; })}
                     className="w-full h-12 rounded-xl px-4 border border-neutral-200 bg-neutral-50 focus:border-primary-500 focus:ring-primary-500">
-                    <option value="">Select state</option>
+                    <option value="">{t("calculators.takeHomePay.compare.selectState")}</option>
                     {STATES_LIST.map((s)=> (<option key={s} value={s}>{s}</option>))}
                   </select>
                 ))}
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {comparisonResults.length === 0 && (
-                  <p className="text-neutral-400 text-sm">Pick up to two states to compare.</p>
+                  <p className="text-neutral-400 text-sm">{t("calculators.takeHomePay.compare.pickTwo")}</p>
                 )}
                 {comparisonResults.map((c)=> (
                   <div key={c.code} className="rounded-lg border border-neutral-200 p-4 bg-bg-surface">
                     <h3 className="font-semibold mb-2">{c.code}</h3>
-                    <div className="flex justify-between text-sm"><span className="text-neutral-400">State tax</span><strong>{formatCurrency(c.stateTax)}</strong></div>
-                    <div className="flex justify-between text-sm"><span className="text-neutral-400">Net (annual)</span><strong>{formatCurrency(c.netAnnual)}</strong></div>
-                    <div className="flex justify-between text-sm"><span className="text-neutral-400">After Roth (annual)</span><strong>{formatCurrency(c.finalAnnual)}</strong></div>
-                    <div className="flex justify-between text-sm"><span className="text-neutral-400">Monthly</span><strong>{formatCurrency(c.monthly)}</strong></div>
-                    <div className="flex justify-between text-sm"><span className="text-neutral-400">Biweekly</span><strong>{formatCurrency(c.biweekly)}</strong></div>
-                    <div className="flex justify-between text-sm"><span className="text-neutral-400">Weekly</span><strong>{formatCurrency(c.weekly)}</strong></div>
+                    <div className="flex justify-between text-sm"><span className="text-neutral-400">{t("calculators.takeHomePay.compare.stateTax")}</span><strong>{formatCurrency(c.stateTax)}</strong></div>
+                    <div className="flex justify-between text-sm"><span className="text-neutral-400">{t("calculators.takeHomePay.compare.netAnnual")}</span><strong>{formatCurrency(c.netAnnual)}</strong></div>
+                    <div className="flex justify-between text-sm"><span className="text-neutral-400">{t("calculators.takeHomePay.compare.afterRothAnnual")}</span><strong>{formatCurrency(c.finalAnnual)}</strong></div>
+                    <div className="flex justify-between text-sm"><span className="text-neutral-400">{t("calculators.takeHomePay.compare.monthly")}</span><strong>{formatCurrency(c.monthly)}</strong></div>
+                    <div className="flex justify-between text-sm"><span className="text-neutral-400">{t("calculators.takeHomePay.compare.biweekly")}</span><strong>{formatCurrency(c.biweekly)}</strong></div>
+                    <div className="flex justify-between text-sm"><span className="text-neutral-400">{t("calculators.takeHomePay.compare.weekly")}</span><strong>{formatCurrency(c.weekly)}</strong></div>
                     <p className="text-xs text-neutral-400 mt-2">{c.info||''}</p>
                   </div>
                 ))}

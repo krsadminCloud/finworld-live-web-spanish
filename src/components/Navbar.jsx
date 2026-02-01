@@ -6,6 +6,9 @@ import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import MenuIcon from '@mui/icons-material/Menu';
 import { ColorModeContext } from '../context/ColorModeContext';
+import { useLanguageRouting, useLanguageNavigate } from '../utils/langRouting';
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from './LanguageSwitcher';
 
 export default function Navbar() {
   const theme = useTheme();
@@ -13,6 +16,9 @@ export default function Navbar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileOpen, setMobileOpen] = React.useState(null);
   const navigate = useNavigate();
+  const langNavigate = useLanguageNavigate(navigate);
+  const { withLang } = useLanguageRouting();
+  const { t } = useTranslation();
 
   const handleOpenTools = (e) => setAnchorEl(e.currentTarget);
   const handleCloseTools = () => setAnchorEl(null);
@@ -36,12 +42,12 @@ export default function Navbar() {
     >
       <SearchIcon sx={{ mr: 1, opacity: 0.7 }} />
       <InputBase
-        placeholder="Search…"
+        placeholder={t('nav.searchPlaceholder')}
         inputProps={{ 'aria-label': 'search' }}
         onKeyDown={(e) => {
           if (e.key === 'Enter') {
             // TODO: wire search route
-            navigate('/');
+            langNavigate('/');
           }
         }}
         sx={{ minWidth: 160 }}
@@ -51,7 +57,7 @@ export default function Navbar() {
 
   return (
     <AppBar position="sticky" color="transparent" elevation={0}
-      sx={{ borderBottom: `1px solid ${alpha(theme.palette.text.primary, 0.12)}`, backdropFilter: 'blur(6px)' }}>
+      sx={{ borderBottom: `1px solid ${alpha(theme.palette.text.primary, 0.12)}`, backdropFilter: 'blur(6px)', zIndex: (theme) => theme.zIndex.drawer + 1 }}>
       <Toolbar sx={{ display: 'flex', gap: 2 }}>
         <IconButton edge="start" sx={{ display: { md: 'none' } }} onClick={(e) => setMobileOpen(e.currentTarget)}>
           <MenuIcon />
@@ -60,29 +66,35 @@ export default function Navbar() {
         <Typography
           variant="h6"
           component={RouterLink}
-          to="/"
+          to={withLang('/')}
           sx={{ textDecoration: 'none', color: 'text.primary', fontWeight: 800 }}
         >
           Finworld
         </Typography>
 
         <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, gap: 1 }}>
-          <Button component={RouterLink} to="/" sx={{ fontWeight: 600 }}>Home</Button>
-          <Button onClick={handleOpenTools} sx={{ fontWeight: 600 }}>Financial Tools</Button>
+          <Button component={RouterLink} to={withLang('/')} sx={{ fontWeight: 600 }}>{t('nav.home')}</Button>
+          <Button onClick={handleOpenTools} sx={{ fontWeight: 600 }}>{t('nav.tools')}</Button>
           <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleCloseTools}>
-            <MenuItem component={RouterLink} to="/tools/extra-payment" onClick={handleCloseTools}>Loan Payoff Calculator</MenuItem>
-            <MenuItem component={RouterLink} to="/tools/take-home-pay" onClick={handleCloseTools}>Take-Home Pay Calculator</MenuItem>
+            <MenuItem component={RouterLink} to={withLang('/tools/extra-payment')} onClick={handleCloseTools}>{t('nav.tool_extra_payment')}</MenuItem>
+            <MenuItem component={RouterLink} to={withLang('/tools/take-home-pay')} onClick={handleCloseTools}>{t('nav.tool_take_home_pay')}</MenuItem>
           </Menu>
-          <Button sx={{ fontWeight: 600 }} component={RouterLink} to="/comparisons">Comparisons</Button>
-          <Button sx={{ fontWeight: 600 }} component={RouterLink} to="/articles">Guides</Button>
-          <Button sx={{ fontWeight: 600 }} component={RouterLink} to="/about">About</Button>
+          <Button sx={{ fontWeight: 600 }} component={RouterLink} to={withLang('/comparisons')}>{t('nav.comparisons')}</Button>
+          <Button sx={{ fontWeight: 600 }} component={RouterLink} to={withLang('/articles')}>{t('nav.articles')}</Button>
+          <Button sx={{ fontWeight: 600 }} component={RouterLink} to={withLang('/about')}>{t('nav.about')}</Button>
         </Box>
 
         <Box sx={{ ml: 'auto', display: 'flex', alignItems: 'center', gap: 1.5 }}>
           <Search />
+          
+          <LanguageSwitcher iconOnly buttonProps={{}} />
+
           <IconButton onClick={colorMode.toggle} aria-label="toggle theme">
             {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
           </IconButton>
+          <Button sx={{ fontWeight: 600, display: { xs: 'none', md: 'inline-flex' } }} component={RouterLink} to={withLang('/')} >
+            {t('nav.account')}
+          </Button>
         </Box>
       </Toolbar>
     </AppBar>

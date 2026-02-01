@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useTranslation } from "react-i18next";
 import {
   Box,
   Typography,
@@ -18,6 +19,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { formatCurrency } from "../utils/mortgageCalculations";
 
 export default function AdvancedSection() {
+  const { t } = useTranslation();
   // Option A: teal backgrounds for Advanced wrappers (disabled by default)
   const OPTION_A_TEAL = false;
   const allowNumeric = (val) => val === "" || /^[0-9]*\.?[0-9]*$/.test(val);
@@ -206,7 +208,7 @@ export default function AdvancedSection() {
     <Paper sx={{ p: 3, borderRadius: 2, overflow: 'hidden', ...(OPTION_A_TEAL && { bgcolor: '#E9F9F8' }) }}>
       <Box sx={{ bgcolor: '#1976d2', color: '#ffffff', mx: -3, mt: -3, px: 3, py: 1.5 }}>
         <Typography variant="h6" sx={{ fontWeight: 700, color: '#ffffff' }}>
-          Advance Features (Click Dropdown)
+          {t("tools.advancedFeatures")} ({t("tools.advancedFeaturesHint")})
         </Typography>
       </Box>
       <Divider sx={{ mb: 2 }} />
@@ -245,7 +247,7 @@ export default function AdvancedSection() {
           >
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, whiteSpace: 'nowrap' }}>
               <Typography sx={{ fontWeight: 800, textTransform: 'uppercase', letterSpacing: 0.5 }}>
-                Compare Two Loans
+                {t("tools.compareLoans")}
               </Typography>
             </Box>
           </AccordionSummary>

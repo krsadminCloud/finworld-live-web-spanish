@@ -23,6 +23,9 @@ import {
 import { useTheme } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import { ColorModeContext } from "../../context/ColorModeContext";
+import { useLanguageNavigate, useLanguageRouting } from "../../utils/langRouting";
+import { useTranslation } from "react-i18next";
+import i18n, { SUPPORTED_LANGUAGES, toCanonicalLanguage } from "../../i18n";
 
 // Icons
 import CalculateIcon from "@mui/icons-material/Calculate";
@@ -50,11 +53,29 @@ import SchoolIcon from "@mui/icons-material/School";
 import HomeIcon from "@mui/icons-material/Home";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import LanguageSwitcher from "../../components/LanguageSwitcher";
 
 export default function FinancialCalculators() {
   const theme = useTheme();
   const navigate = useNavigate();
   const colorMode = React.useContext(ColorModeContext);
+  const langNavigate = useLanguageNavigate(navigate);
+  const { currentLang, routeLang, withLang } = useLanguageRouting();
+  const { t } = useTranslation();
+
+  // Temporary instrumentation to verify active language and loaded strings
+  console.log("Tools page language:", i18n.language);
+  console.log("Tools hero title:", t("tools.hero.title"));
+
+  const categoryLabelKey = {
+    All: "tools.filters.all",
+    Mortgage: "tools.filters.mortgage",
+    Investment: "tools.filters.investment",
+    "Personal Finance": "tools.filters.personalFinance",
+    Retirement: "tools.filters.retirement",
+    Taxes: "tools.filters.taxes",
+    Auto: "tools.filters.auto",
+  };
 
   const [query, setQuery] = React.useState("");
   const [debouncedQuery, setDebouncedQuery] = React.useState("");
@@ -64,84 +85,102 @@ export default function FinancialCalculators() {
 
   const calculators = [
     {
-      title: "Mortgage Calculator",
+      titleKey: "tools.cards.mortgageCalculator.title",
+      descKey: "tools.cards.mortgageCalculator.desc",
+      searchTitle: "Mortgage Calculator",
       icon: <PaymentsIcon sx={{ color: "#0ea5e9" }} fontSize="large" />,
       to: "/tools/mortgage-calculator",
       cat: "Mortgage",
       status: "live",
-      desc: "Monthly payment with taxes, insurance, PMI, and amortization.",
+      searchDesc: "Monthly payment with taxes, insurance, PMI, and amortization.",
       tags: ["payment", "mortgage", "piti"],
     },
     {
-      title: "Loan Payoff Calculator",
+      titleKey: "tools.cards.loanPayoff.title",
+      descKey: "tools.cards.loanPayoff.desc",
+      searchTitle: "Loan Payoff Calculator",
       icon: <PaidIcon sx={{ color: "#10b981" }} fontSize="large" />,
       to: "/tools/extra-payment",
       cat: "Mortgage",
       status: "live",
-      desc: "Compare extra payment strategies and interest saved.",
+      searchDesc: "Compare extra payment strategies and interest saved.",
       tags: ["loan", "payoff", "extra"],
     },
     {
-      title: "Mortgage Affordability Calculator",
+      titleKey: "tools.cards.mortgageAffordability.title",
+      descKey: "tools.cards.mortgageAffordability.desc",
+      searchTitle: "Mortgage Affordability Calculator",
       icon: <AttachMoneyIcon sx={{ color: "#22c55e" }} fontSize="large" />,
       to: "/tools/home-affordability",
       cat: "Mortgage",
       status: "live",
-      desc: "Income and debts to realistic price range and monthly cost.",
+      searchDesc: "Income and debts to realistic price range and monthly cost.",
       tags: ["dti", "price", "budget"],
     },
     {
-      title: "Rental Property Calculator",
+      titleKey: "tools.cards.rentalProperty.title",
+      descKey: "tools.cards.rentalProperty.desc",
+      searchTitle: "Rental Property Calculator",
       icon: <RealEstateAgentIcon sx={{ color: "#06b6d4" }} fontSize="large" />,
       to: "/tools/rental-property-calculator",
       cat: "Investment",
       status: "live",
-      desc: "Cash flow, cap rate, and cash-on-cash returns.",
+      searchDesc: "Cash flow, cap rate, and cash-on-cash returns.",
       tags: ["rental", "cap rate", "coc"],
     },
     {
-      title: "Compounding Calculator",
+      titleKey: "tools.cards.compounding.title",
+      descKey: "tools.cards.compounding.desc",
+      searchTitle: "Compounding Calculator",
       icon: <TrendingUpIcon sx={{ color: "#f59e0b" }} fontSize="large" />,
       to: "/tools/compounding-calculator",
       cat: "Personal Finance",
       status: "live",
-      desc: "Project growth with contributions and flexible frequency.",
+      searchDesc: "Project growth with contributions and flexible frequency.",
       tags: ["investment", "compound", "savings"],
     },
     {
-      title: "Retirement Saving",
+      titleKey: "tools.cards.retirementSaving.title",
+      descKey: "tools.cards.retirementSaving.desc",
+      searchTitle: "Retirement Saving",
       icon: <SavingsIcon sx={{ color: "#60a5fa" }} fontSize="large" />,
       to: "/tools/retirement-calculator",
       cat: "Retirement",
       status: "live",
-      desc: "Retirement trajectory with inflation-aware projections.",
+      searchDesc: "Retirement trajectory with inflation-aware projections.",
       tags: ["retirement", "nest egg", "drawdown"],
     },
     {
-      title: "Take Home Pay",
+      titleKey: "tools.cards.takeHomePay.title",
+      descKey: "tools.cards.takeHomePay.desc",
+      searchTitle: "Take Home Pay",
       icon: <AttachMoneyIcon sx={{ color: "#f472b6" }} fontSize="large" />,
       to: "/tools/take-home-pay",
       cat: "Taxes",
       status: "live",
-      desc: "Net pay after federal, state, FICA, and deductions.",
+      searchDesc: "Net pay after federal, state, FICA, and deductions.",
       tags: ["paycheck", "tax", "net"],
     },
     {
-      title: "Car Loan",
+      titleKey: "tools.cards.carLoan.title",
+      descKey: "tools.cards.carLoan.desc",
+      searchTitle: "Car Loan",
       icon: <DirectionsCarIcon sx={{ color: "#38bdf8" }} fontSize="large" />,
       to: "/tools/auto-loan-calculator",
       cat: "Auto",
       status: "live",
-      desc: "Auto loan payment, interest, and payoff timing.",
+      searchDesc: "Auto loan payment, interest, and payoff timing.",
       tags: ["auto", "loan", "payoff"],
     },
     {
-      title: "Buy vs Lease",
+      titleKey: "tools.cards.buyVsLease.title",
+      descKey: "tools.cards.buyVsLease.desc",
+      searchTitle: "Buy vs Lease",
       icon: <DirectionsCarIcon sx={{ color: "#22d3ee" }} fontSize="large" />,
       to: "/tools/buy-vs-lease-auto",
       cat: "Auto",
       status: "live",
-      desc: "Total cost comparison over your chosen horizon.",
+      searchDesc: "Total cost comparison over your chosen horizon.",
       tags: ["lease", "auto", "compare"],
     },
     { title: "Mortgage Amortization Calculator", icon: <ReceiptLongIcon sx={{ color: "#93C5FD" }} fontSize="large" />, cat: "Mortgage", status: "planned", desc: "Full amortization table with exports.", tags: ["schedule"] },
@@ -202,8 +241,8 @@ export default function FinancialCalculators() {
     const q = debouncedQuery;
     const matchesQuery =
       !q ||
-      c.title.toLowerCase().includes(q) ||
-      (c.desc && c.desc.toLowerCase().includes(q)) ||
+      c.searchTitle.toLowerCase().includes(q) ||
+      (c.searchDesc && c.searchDesc.toLowerCase().includes(q)) ||
       (c.tags && c.tags.some((tag) => tag.toLowerCase().includes(q)));
     return matchesCategory && matchesQuery;
   });
@@ -251,7 +290,7 @@ export default function FinancialCalculators() {
             <Button
               size="small"
               variant="outlined"
-              onClick={() => navigate("/")}
+              onClick={() => langNavigate("/")}
               sx={{
                 borderRadius: 50,
                 fontWeight: 700,
@@ -267,8 +306,21 @@ export default function FinancialCalculators() {
                 },
               }}
             >
-              Home
+              {t("nav.home")}
             </Button>
+            <LanguageSwitcher
+              buttonProps={{
+                size: "small",
+                variant: "outlined",
+                sx: {
+                  borderRadius: 50,
+                  fontWeight: 700,
+                  px: { xs: 1.25, md: 2 },
+                  py: { xs: 0.5, md: 0.9 },
+                  whiteSpace: "nowrap",
+                },
+              }}
+            />
             <IconButton
               onClick={colorMode.toggleColorMode}
               color="inherit"
@@ -295,7 +347,7 @@ export default function FinancialCalculators() {
                 "&:hover": { bgcolor: "#0f948a" },
               }}
             >
-              My Account
+              {t("nav.account")}
             </Button>
           </Stack>
         </Toolbar>
@@ -325,9 +377,9 @@ export default function FinancialCalculators() {
             <Stack spacing={2} flex={1}>
               <Stack direction="row" spacing={1} alignItems="center">
                 <Badge color="success" variant="dot" anchorOrigin={{ vertical: "top", horizontal: "left" }}>
-                  <Chip label="Fresh & trusted" color="success" size="small" />
+                  <Chip label={t("tools.hero.badge1")} color="success" size="small" />
                 </Badge>
-                <Chip label="No sign-up" variant="outlined" size="small" />
+                <Chip label={t("tools.hero.badge2")} variant="outlined" size="small" />
               </Stack>
               <Typography
                 variant="h3"
@@ -339,10 +391,10 @@ export default function FinancialCalculators() {
                   color: theme.palette.mode === "dark" ? "#c4f1f9" : "#0f766e",
                 }}
               >
-                Financial Calculators, tuned for real decisions.
+                {t("tools.hero.title")}
               </Typography>
               <Typography variant="subtitle1" color="text.secondary" sx={{ maxWidth: 720 }}>
-                Compare mortgages, plan paychecks, and stress-test investments without spreadsheets.
+                {t("tools.hero.subtitle")}
               </Typography>
               <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
                 <Button
@@ -390,18 +442,18 @@ export default function FinancialCalculators() {
               }}
             >
               <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>
-                Quick actions
+                {t("tools.quick.title")}
               </Typography>
               <Stack spacing={1.25}>
                 {[
-                  { label: "Plan a mortgage payment", to: "/tools/mortgage-calculator", icon: <PaymentsIcon fontSize="small" /> },
-                  { label: "Pay down a loan faster", to: "/tools/extra-payment", icon: <PaidIcon fontSize="small" /> },
-                  { label: "Project retirement savings", to: "/tools/retirement-calculator", icon: <SavingsIcon fontSize="small" /> },
+                  { label: t("tools.quick.actions.mortgage"), to: "/tools/mortgage-calculator", icon: <PaymentsIcon fontSize="small" /> },
+                  { label: t("tools.quick.actions.loan"), to: "/tools/extra-payment", icon: <PaidIcon fontSize="small" /> },
+                  { label: t("tools.quick.actions.retirement"), to: "/tools/retirement-calculator", icon: <SavingsIcon fontSize="small" /> },
                 ].map((item, idx) => (
                   <Paper
                     key={item.label}
                     elevation={0}
-                    onClick={() => navigate(item.to)}
+                    onClick={() => langNavigate(item.to)}
                     sx={{
                       p: 1.5,
                       borderRadius: "12px",
@@ -469,7 +521,7 @@ export default function FinancialCalculators() {
           <Stack direction="row" alignItems="center" spacing={1}>
             <TextField
               fullWidth
-              placeholder='Search title, purpose, or tags (e.g., "amortization", "paycheck", "rental")'
+              placeholder={t("tools.search.placeholder")}
               variant="standard"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
@@ -496,7 +548,7 @@ export default function FinancialCalculators() {
               }}
             />
             <Chip
-              label={`${filteredLive.length} results`}
+              label={t("common.label.results", { count: filteredLive.length })}
               size="small"
               variant="outlined"
               sx={{ borderRadius: "999px" }}
@@ -506,11 +558,11 @@ export default function FinancialCalculators() {
 
         <Stack direction="row" spacing={1} alignItems="center" justifyContent="center" sx={{ mb: 1.5 }}>
           <Typography variant="body2" color="text.secondary">
-            Showing {filteredLive.length} of {liveCalculators.length} live calculators
+            {t("common.label.showing", { shown: filteredLive.length, total: liveCalculators.length })}
           </Typography>
           {(debouncedQuery || category !== "All") && (
             <Chip
-              label="Filters active"
+              label={t("common.btn.clearFilters")}
               size="small"
               color="primary"
               onDelete={() => {
@@ -526,19 +578,19 @@ export default function FinancialCalculators() {
             variant="subtitle1"
             sx={{ fontWeight: 800, color: theme.palette.mode === "dark" ? "#e0f2fe" : "#0f172a" }}
           >
-            Popular
+            {t("common.label.popular")}
           </Typography>
           <Stack direction={{ xs: "column", md: "row" }} spacing={2} useFlexGap flexWrap="wrap">
             {[
-              { title: "Mortgage payment", desc: "See monthly payment with taxes, insurance, and PMI.", to: "/tools/mortgage-calculator", icon: <PaymentsIcon /> },
-              { title: "Loan payoff boost", desc: "Compare extra payments and interest saved.", to: "/tools/extra-payment", icon: <PaidIcon /> },
-              { title: "Plan retirement", desc: "Estimate contributions, growth, and withdrawals.", to: "/tools/retirement-calculator", icon: <SavingsIcon /> },
-              { title: "Take-home pay", desc: "Federal, state, and FICA deductions applied.", to: "/tools/take-home-pay", icon: <AttachMoneyIcon /> },
+              { title: t("tools.popular.payment.title"), desc: t("tools.popular.payment.desc"), to: "/tools/mortgage-calculator", icon: <PaymentsIcon /> },
+              { title: t("tools.popular.loan.title"), desc: t("tools.popular.loan.desc"), to: "/tools/extra-payment", icon: <PaidIcon /> },
+              { title: t("tools.popular.retirement.title"), desc: t("tools.popular.retirement.desc"), to: "/tools/retirement-calculator", icon: <SavingsIcon /> },
+              { title: t("tools.popular.takehome.title"), desc: t("tools.popular.takehome.desc"), to: "/tools/take-home-pay", icon: <AttachMoneyIcon /> },
             ].map((item) => (
               <Paper
                 key={item.title}
                 elevation={0}
-                onClick={() => navigate(item.to)}
+                onClick={() => langNavigate(item.to)}
                 sx={{
                   flex: { md: "1 1 220px" },
                   p: 2,
@@ -623,10 +675,12 @@ export default function FinancialCalculators() {
             };
             const style = paletteMap[c] || { bg: "#64748b", hover: "#475569", soft: "rgba(100,116,139,0.16)" };
             const isActive = c === category;
+            const labelKey = categoryLabelKey[c] || c;
+            const label = c === "All" ? t(labelKey) : `${t(labelKey)} - ${count}`;
             return (
               <Chip
                 key={c}
-                label={c === "All" ? "All" : `${c} - ${count}`}
+                label={label}
                 onClick={() => setCategory(c)}
                 sx={{
                   borderRadius: "999px",
@@ -671,13 +725,13 @@ export default function FinancialCalculators() {
             const accentColor = item.icon?.props?.sx?.color || "#14B8A6";
             return (
               <Card
-                key={item.title}
-                onClick={() => item.to && navigate(item.to)}
+                key={item.titleKey}
+                onClick={() => item.to && langNavigate(item.to)}
                 tabIndex={0}
                 onKeyDown={(e) => {
                   if ((e.key === "Enter" || e.key === " " ) && item.to) {
                     e.preventDefault();
-                    navigate(item.to);
+                    langNavigate(item.to);
                   }
                 }}
                 sx={{
@@ -738,7 +792,7 @@ export default function FinancialCalculators() {
                       {item.icon && React.cloneElement(item.icon, { fontSize: "medium" })}
                     </Box>
                     <Chip
-                      label={item.cat}
+                      label={t(categoryLabelKey[item.cat] || item.cat)}
                       size="small"
                       variant="outlined"
                       sx={{
@@ -752,7 +806,7 @@ export default function FinancialCalculators() {
                     />
                   </Stack>
                   <Typography fontWeight={800} sx={{ mt: 0.25, letterSpacing: "-0.01em" }}>
-                    {item.title}
+                    {t(item.titleKey)}
                   </Typography>
                   <Typography
                     variant="body2"
@@ -766,7 +820,7 @@ export default function FinancialCalculators() {
                       lineHeight: 1.5,
                     }}
                   >
-                    {item.desc}
+                    {t(item.descKey)}
                   </Typography>
                   {!!item.tags?.length && (
                     <Stack direction="row" spacing={1} flexWrap="wrap" sx={{ mt: "auto" }}>
@@ -804,9 +858,9 @@ export default function FinancialCalculators() {
               border: `1px solid ${theme.palette.divider}`,
             }}
           >
-            <Typography fontWeight={800}>No calculators match your filters.</Typography>
+            <Typography fontWeight={800}>{t("common.label.noMatchTitle")}</Typography>
             <Typography variant="body2" color="text.secondary">
-              Try clearing filters or switching categories.
+              {t("common.label.noMatchBody")}
             </Typography>
           </Paper>
         )}
@@ -815,9 +869,9 @@ export default function FinancialCalculators() {
           <Stack direction="row" alignItems="center" justifyContent="space-between">
             <Stack direction="row" spacing={1} alignItems="center">
               <Typography variant="h6" fontWeight={800}>
-                Planned calculators
+                {t("tools.planned.title")}
               </Typography>
-              <Chip label={`${plannedCalculators.length} planned`} color="default" size="small" />
+              <Chip label={t("common.label.plannedCount", { count: plannedCalculators.length })} color="default" size="small" />
             </Stack>
             <Button
               size="small"
@@ -829,7 +883,7 @@ export default function FinancialCalculators() {
               }
               onClick={() => setShowPlanned((p) => !p)}
             >
-              {showPlanned ? "Hide planned" : "Show planned"}
+              {showPlanned ? t("common.label.hidePlanned") : t("common.label.showPlanned")}
             </Button>
           </Stack>
           <Collapse in={showPlanned}>
@@ -871,8 +925,8 @@ export default function FinancialCalculators() {
                         <Stack spacing={1.25} sx={{ height: "100%" }}>
                           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                             {item.icon}
-                            <Tooltip title="Coming soon">
-                              <Chip label="Coming soon" size="small" color="default" />
+                            <Tooltip title={t("common.label.comingSoon")}>
+                              <Chip label={t("common.label.comingSoon")} size="small" color="default" />
                             </Tooltip>
                           </Box>
                           <Typography fontWeight={800}>{item.title}</Typography>
@@ -909,7 +963,7 @@ export default function FinancialCalculators() {
                             }
                             sx={{ alignSelf: "flex-start", borderRadius: 999, mt: "auto" }}
                           >
-                            Notify me
+                            {t("common.btn.notify")}
                           </Button>
                         </Stack>
                       </Paper>
@@ -961,10 +1015,10 @@ export default function FinancialCalculators() {
               FinWorld
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Practical finance tools that stay fresh and accurate.
+              {t("footer.tagline")}
             </Typography>
             <Typography variant="caption" color="text.secondary">
-              (c) 2025 FinCalc. All Rights Reserved.
+              {t("footer.rights")}
             </Typography>
           </Stack>
           <Stack
@@ -974,10 +1028,10 @@ export default function FinancialCalculators() {
             justifyContent={{ xs: "flex-start", md: "flex-end" }}
             sx={{ position: "relative", zIndex: 1 }}
           >
-            <Button size="small" color="inherit" variant="text">About Us</Button>
-            <Button size="small" color="inherit" variant="text">Contact</Button>
-            <Button size="small" color="inherit" variant="text">Help &amp; Guidance</Button>
-            <Button size="small" color="inherit" variant="text">Terms of Service</Button>
+            <Button size="small" color="inherit" variant="text">{t("footer.about")}</Button>
+            <Button size="small" color="inherit" variant="text">{t("footer.contact")}</Button>
+            <Button size="small" color="inherit" variant="text">{t("footer.help")}</Button>
+            <Button size="small" color="inherit" variant="text">{t("footer.terms")}</Button>
           </Stack>
         </Box>
       </Container>

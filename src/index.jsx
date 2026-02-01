@@ -6,6 +6,7 @@ import { ThemeProvider, CssBaseline } from "@mui/material";
 import { HelmetProvider } from "react-helmet-async"; // ✅ SEO provider
 import { ColorModeContext } from "./context/ColorModeContext"; // ✅ Context and theme imports
 import { useMode } from "./theme";
+import "./i18n";
 // ✅ Global Tailwind styles for the entire FinWorld app
 import "./index.css";
 // ✅ Ensure the TakeHomePay calculator's Tailwind + custom CSS loads too

@@ -2,31 +2,35 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, DollarSign, Clock } from 'lucide-react';
 import { formatCurrency, calculatePayoffDate, formatDate } from '../utils/loanCalculations';
+import { useTranslation } from 'react-i18next';
 
 const PayoffSummaryCard = ({ standard, accelerated, loanInputs }) => {
+  const { t } = useTranslation();
   const standardPayoffDate = calculatePayoffDate(loanInputs.startDate, standard.termMonths);
   const acceleratedPayoffDate = calculatePayoffDate(loanInputs.startDate, accelerated.actualMonths);
   
   const metrics = [
     {
       icon: Calendar,
-      label: 'New Payoff Date',
+      label: t("calculators.autoLoan.summary.newPayoffDate"),
       value: formatDate(acceleratedPayoffDate),
-      change: `(${accelerated.paymentsSaved} months sooner)`,
+      change: t("calculators.autoLoan.summary.monthsSooner", { months: accelerated.paymentsSaved }),
       color: 'text-semantic-success'
     },
     {
       icon: DollarSign,
-      label: 'Interest Saved',
+      label: t("calculators.autoLoan.summary.interestSaved"),
       value: formatCurrency(accelerated.interestSaved),
-      change: `${((accelerated.interestSaved / standard.totalInterest) * 100).toFixed(1)}% less interest`,
+      change: t("calculators.autoLoan.summary.lessInterest", {
+        percent: ((accelerated.interestSaved / standard.totalInterest) * 100).toFixed(1),
+      }),
       color: 'text-semantic-success'
     },
     {
       icon: Clock,
-      label: 'Loan Shortened By',
-      value: `${accelerated.paymentsSaved} months`,
-      change: `${(accelerated.paymentsSaved / 12).toFixed(1)} years`,
+      label: t("calculators.autoLoan.summary.loanShortened"),
+      value: t("calculators.autoLoan.summary.months", { months: accelerated.paymentsSaved }),
+      change: t("calculators.autoLoan.summary.years", { years: (accelerated.paymentsSaved / 12).toFixed(1) }),
       color: 'text-semantic-success'
     }
   ];
@@ -38,7 +42,7 @@ const PayoffSummaryCard = ({ standard, accelerated, loanInputs }) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <h2 className="text-2xl font-bold text-neutral-900 mb-4">Your Payoff Summary</h2>
+      <h2 className="text-2xl font-bold text-neutral-900 mb-4">{t("calculators.autoLoan.summary.title")}</h2>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {metrics.map((metric, index) => (
@@ -70,11 +74,13 @@ const PayoffSummaryCard = ({ standard, accelerated, loanInputs }) => {
         transition={{ duration: 0.5, delay: 0.4 }}
       >
         <h3 className="font-semibold text-neutral-900 mb-2">
-          💡 You're saving {formatCurrency(accelerated.interestSaved)} in interest!
+          {t("calculators.autoLoan.summary.savingInterest", { amount: formatCurrency(accelerated.interestSaved) })}
         </h3>
         <p className="text-sm text-neutral-600">
-          By adding just {formatCurrency(accelerated.actualMonths > 0 ? accelerated.totalInterest : 0)} extra per month, you'll pay off your loan{' '}
-          {accelerated.paymentsSaved} months early and save money on interest.
+          {t("calculators.autoLoan.summary.savingDetails", {
+            extra: formatCurrency(accelerated.actualMonths > 0 ? accelerated.totalInterest : 0),
+            months: accelerated.paymentsSaved,
+          })}
         </p>
       </motion.div>
     </motion.div>

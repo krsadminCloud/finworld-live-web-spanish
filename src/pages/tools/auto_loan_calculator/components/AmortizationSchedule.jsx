@@ -2,12 +2,23 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, Table, Download } from 'lucide-react';
 import { formatCurrency } from '../utils/loanCalculations';
+import { useTranslation } from 'react-i18next';
 
 const AmortizationSchedule = ({ schedule, isOpen, onToggle }) => {
+  const { t } = useTranslation();
   if (!schedule || schedule.length === 0) return null;
 
   const exportToCSV = () => {
-    const headers = ['Payment #', 'Date', 'Regular Payment', 'Extra Payment', 'Total Payment', 'Principal', 'Interest', 'Balance'];
+    const headers = [
+      t("calculators.autoLoan.amort.paymentNumber"),
+      t("calculators.autoLoan.amort.date"),
+      t("calculators.autoLoan.amort.regularPayment"),
+      t("calculators.autoLoan.amort.extraPayment"),
+      t("calculators.autoLoan.amort.totalPayment"),
+      t("calculators.autoLoan.amort.principal"),
+      t("calculators.autoLoan.amort.interest"),
+      t("calculators.autoLoan.amort.balance"),
+    ];
     const csvContent = [
       headers.join(','),
       ...schedule.map((payment, index) => [
@@ -46,12 +57,12 @@ const AmortizationSchedule = ({ schedule, isOpen, onToggle }) => {
       >
         <h2 className="text-h2 text-neutral-900 flex items-center gap-2">
           <Table className="w-6 h-6 text-primary-500" />
-          Accelerated Amortization Schedule
+          {t("calculators.autoLoan.amort.title")}
         </h2>
         
         <div className="flex items-center gap-4">
           <span className="text-sm text-neutral-400">
-            {isOpen ? 'Hide Details' : 'Show Details'}
+            {isOpen ? t("calculators.autoLoan.amort.hide") : t("calculators.autoLoan.amort.show")}
           </span>
           <motion.div
             animate={{ rotate: isOpen ? 180 : 0 }}
@@ -82,7 +93,7 @@ const AmortizationSchedule = ({ schedule, isOpen, onToggle }) => {
                   whileTap={{ scale: 0.95 }}
                 >
                   <Download className="w-4 h-4" />
-                  Export CSV
+                  {t("calculators.autoLoan.amort.exportCsv")}
                 </motion.button>
               </div>
 
@@ -91,14 +102,14 @@ const AmortizationSchedule = ({ schedule, isOpen, onToggle }) => {
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-neutral-200">
-                      <th className="text-left py-3 px-2 font-semibold text-neutral-900">Payment #</th>
-                      <th className="text-right py-3 px-2 font-semibold text-neutral-900">Date</th>
-                      <th className="text-right py-3 px-2 font-semibold text-neutral-900">Regular Payment</th>
-                      <th className="text-right py-3 px-2 font-semibold text-neutral-900">Extra Payment</th>
-                      <th className="text-right py-3 px-2 font-semibold text-neutral-900">Total Payment</th>
-                      <th className="text-right py-3 px-2 font-semibold text-neutral-900">Principal</th>
-                      <th className="text-right py-3 px-2 font-semibold text-neutral-900">Interest</th>
-                      <th className="text-right py-3 px-2 font-semibold text-neutral-900">Balance</th>
+                      <th className="text-left py-3 px-2 font-semibold text-neutral-900">{t("calculators.autoLoan.amort.paymentNumber")}</th>
+                      <th className="text-right py-3 px-2 font-semibold text-neutral-900">{t("calculators.autoLoan.amort.date")}</th>
+                      <th className="text-right py-3 px-2 font-semibold text-neutral-900">{t("calculators.autoLoan.amort.regularPayment")}</th>
+                      <th className="text-right py-3 px-2 font-semibold text-neutral-900">{t("calculators.autoLoan.amort.extraPayment")}</th>
+                      <th className="text-right py-3 px-2 font-semibold text-neutral-900">{t("calculators.autoLoan.amort.totalPayment")}</th>
+                      <th className="text-right py-3 px-2 font-semibold text-neutral-900">{t("calculators.autoLoan.amort.principal")}</th>
+                      <th className="text-right py-3 px-2 font-semibold text-neutral-900">{t("calculators.autoLoan.amort.interest")}</th>
+                      <th className="text-right py-3 px-2 font-semibold text-neutral-900">{t("calculators.autoLoan.amort.balance")}</th>
                     </tr>
                   </thead>
                   <tbody className="table-striped">
@@ -149,10 +160,10 @@ const AmortizationSchedule = ({ schedule, isOpen, onToggle }) => {
               {schedule.length > 12 && (
                 <div className="mt-4 text-center">
                   <p className="text-sm text-neutral-400">
-                    Showing first 12 months of {schedule.length} total payments
+                    {t("calculators.autoLoan.amort.showingFirst", { total: schedule.length })}
                   </p>
                   <p className="text-xs text-neutral-400 mt-1">
-                    Export the complete schedule to see all payments
+                    {t("calculators.autoLoan.amort.exportPrompt")}
                   </p>
                 </div>
               )}
@@ -164,12 +175,12 @@ const AmortizationSchedule = ({ schedule, isOpen, onToggle }) => {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.6 }}
               >
-                <h4 className="font-semibold text-neutral-900 mb-2">Payment Summary</h4>
+                <h4 className="font-semibold text-neutral-900 mb-2">{t("calculators.autoLoan.amort.paymentSummaryTitle")}</h4>
                 <div className="text-sm text-neutral-600 space-y-1">
-                  <p>• Total payments: {schedule.length}</p>
-                  <p>• Regular payment: {formatCurrency(schedule[0]?.payment || 0)}</p>
-                  <p>• Total extra payments: {formatCurrency(schedule.reduce((sum, p) => sum + p.extraPayment, 0))}</p>
-                  <p>• Final payment date: {new Date(2024, 0, 1 + (schedule.length * 30)).toLocaleDateString()}</p>
+                  <p>• {t("calculators.autoLoan.amort.totalPayments", { count: schedule.length })}</p>
+                  <p>• {t("calculators.autoLoan.amort.regularPayment", { amount: formatCurrency(schedule[0]?.payment || 0) })}</p>
+                  <p>• {t("calculators.autoLoan.amort.totalExtraPayments", { amount: formatCurrency(schedule.reduce((sum, p) => sum + p.extraPayment, 0)) })}</p>
+                  <p>• {t("calculators.autoLoan.amort.finalPaymentDate", { date: new Date(2024, 0, 1 + (schedule.length * 30)).toLocaleDateString() })}</p>
                 </div>
               </motion.div>
             </div>
